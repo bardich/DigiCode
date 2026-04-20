@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+<section class="pt-24 pb-12 bg-gray-50 min-h-screen">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 class="text-3xl font-bold text-primary mb-8">{% trans "Dashboard" %}</h1>
+        
+        <!-- Stats Cards -->
+        <div class="grid md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-xl p-6 shadow-soft">
+                <div class="text-2xl font-bold text-primary">{{ total_services }}</div>
+                <div class="text-sm text-gray-500">{% trans "Total Services" %}</div>
+            </div>
+            <div class="bg-white rounded-xl p-6 shadow-soft">
+                <div class="text-2xl font-bold text-green-500">{{ active_services }}</div>
+                <div class="text-sm text-gray-500">{% trans "Active Services" %}</div>
+            </div>
+            <div class="bg-white rounded-xl p-6 shadow-soft">
+                <div class="text-2xl font-bold text-highlight">{{ featured_services }}</div>
+                <div class="text-sm text-gray-500">{% trans "Featured Services" %}</div>
+            </div>
+            <div class="bg-white rounded-xl p-6 shadow-soft">
+                <div class="text-2xl font-bold text-accent">{{ total_page_views|default:0 }}</div>
+                <div class="text-sm text-gray-500">{% trans "Page Views" %}</div>
+            </div>
+        </div>
+        
+        <!-- Quick Actions -->
+        <div class="bg-white rounded-xl p-6 shadow-soft mb-8">
+            <h2 class="text-lg font-bold text-primary mb-4">{% trans "Quick Actions" %}</h2>
+            <div class="flex gap-4">
+                <a href="{% url 'dashboard:service_create' %}" class="px-4 py-2 bg-accent text-white rounded-lg hover:bg-blue-700 transition-colors">
+                    {% trans "Add Service" %}
+                </a>
+                <a href="{% url 'admin:index' %}" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                    {% trans "Admin Panel" %}
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

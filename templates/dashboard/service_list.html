@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+<section class="pt-24 pb-12 bg-gray-50 min-h-screen">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between mb-8">
+            <h1 class="text-3xl font-bold text-primary">{% trans "Services" %}</h1>
+            <a href="{% url 'dashboard:service_create' %}" class="px-4 py-2 bg-accent text-white rounded-lg hover:bg-blue-700 transition-colors">
+                {% trans "Add Service" %}
+            </a>
+        </div>
+        
+        <div class="bg-white rounded-xl shadow-soft overflow-hidden">
+            <table class="w-full">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">{% trans "Service" %}</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">{% trans "Status" %}</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">{% trans "Featured" %}</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">{% trans "Actions" %}</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y">
+                    {% for service in services %}
+                    <tr>
+                        <td class="px-6 py-4">
+                            <div class="font-medium text-primary">{{ service.title_fr }}</div>
+                            <div class="text-sm text-gray-500">/{{ service.slug }}</div>
+                        </td>
+                        <td class="px-6 py-4">
+                            {% if service.is_active %}
+                            <span class="px-2 py-1 bg-green-100 text-green-700 rounded text-sm">{% trans "Active" %}</span>
+                            {% else %}
+                            <span class="px-2 py-1 bg-red-100 text-red-700 rounded text-sm">{% trans "Inactive" %}</span>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4">
+                            {% if service.is_featured %}
+                            <span class="px-2 py-1 bg-yellow-100 text-yellow-700 rounded text-sm">{% trans "Featured" %}</span>
+                            {% else %}
+                            <span class="text-gray-400">-</span>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4">
+                            <a href="{% url 'dashboard:service_edit' service.pk %}" class="text-accent hover:underline mr-3">{% trans "Edit" %}</a>
+                            <a href="{% url 'dashboard:service_delete' service.pk %}" class="text-red-500 hover:underline">{% trans "Delete" %}</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="px-6 py-8 text-center text-gray-500">
+                            {% trans "No services yet." %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+{% endblock %}

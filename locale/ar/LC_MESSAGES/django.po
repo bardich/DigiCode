@@ -1,0 +1,188 @@
+# Arabic translations for DigiCode Web Agency
+msgid ""
+msgstr ""
+"Project-Id-Version: DigiCode 1.0\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+
+msgid "Home"
+msgstr "الرئيسية"
+
+msgid "Services"
+msgstr "الخدمات"
+
+msgid "About"
+msgstr "من نحن"
+
+msgid "Contact"
+msgstr "اتصل بنا"
+
+msgid "Get Quote"
+msgstr "احصل على عرض"
+
+msgid "Chat on WhatsApp"
+msgstr "دردشة على واتساب"
+
+msgid "Create Your"
+msgstr "أنشئ"
+
+msgid "Digital Presence"
+msgstr "حضورك الرقمي"
+
+msgid "With Us"
+msgstr "معنا"
+
+msgid "We build professional websites that help your business grow. From rental cars to e-commerce, we create solutions that work."
+msgstr "نبني مواقع احترافية تساعد عملك على النمو. من تأجير السيارات إلى التجارة الإلكترونية، ننشئ حلولاً فعالة."
+
+msgid "View Services"
+msgstr "عرض الخدمات"
+
+msgid "Get Free Quote"
+msgstr "احصل على عرض مجاني"
+
+msgid "Projects"
+msgstr "المشاريع"
+
+msgid "Clients"
+msgstr "العملاء"
+
+msgid "Years"
+msgstr "سنوات"
+
+msgid "Websites We Create"
+msgstr "المواقع التي ننشئها"
+
+msgid "From car rentals to e-commerce, we build websites that help your business succeed online."
+msgstr "من تأجير السيارات إلى التجارة الإلكترونية، نبني مواقع تساعد عملك على النجاح عبر الإنترنت."
+
+msgid "Learn More"
+msgstr "معرفة المزيد"
+
+msgid "View All Services"
+msgstr "عرض جميع الخدمات"
+
+msgid "What Makes Us Different"
+msgstr "ما الذي يميزنا"
+
+msgid "Fast Delivery"
+msgstr "تسليم سريع"
+
+msgid "Get your website up and running in record time."
+msgstr "احصل على موقعك الإلكتروني في وقت قياسي."
+
+msgid "Secure"
+msgstr "آمن"
+
+msgid "Enterprise-grade security for your business."
+msgstr "أمان على مستوى المؤسسات لعملك."
+
+msgid "24/7 Support"
+msgstr "دعم 24/7"
+
+msgid "We're always here when you need us."
+msgstr "نحن هنا دائماً عندما تحتاجنا."
+
+msgid "Modern Design"
+msgstr "تصميم عصري"
+
+msgid "Beautiful, responsive designs that convert."
+msgstr "تصاميم جميلة ومتجاوبة تحقق التحويلات."
+
+msgid "Ready to Start Your Project?"
+msgstr "مستعد لبدء مشروعك؟"
+
+msgid "Contact us today for a free consultation and quote."
+msgstr "تواصل معنا اليوم للحصول على استشارة وعرض مجاني."
+
+msgid "All rights reserved."
+msgstr "جميع الحقوق محفوظة."
+
+msgid "Our Services"
+msgstr "خدماتنا"
+
+msgid "Professional website solutions tailored to your business needs."
+msgstr "حلول مواقع احترافية مصممة خصيصاً لاحتياجات عملك."
+
+msgid "Key Benefits"
+msgstr "المزايا الرئيسية"
+
+msgid "Interested?"
+msgstr "مهتم؟"
+
+msgid "Get a free quote for your project. We're here to help!"
+msgstr "احصل على عرض مجاني لمشروعك. نحن هنا للمساعدة!"
+
+msgid "Other Services"
+msgstr "خدمات أخرى"
+
+# About Page
+msgid "About Us - DigiCode Web Agency"
+msgstr "من نحن - وكالة ديجي كود للويب"
+
+msgid "Learn more about DigiCode Web Agency, our mission, and our team in Morocco."
+msgstr "تعرف أكثر على وكالة ديجي كود للويب، مهمتنا، وفريقنا في المغرب."
+
+msgid "About DigiCode"
+msgstr "عن ديجي كود"
+
+msgid "Your trusted partner for professional web development in Morocco."
+msgstr "شريكك الموثوق لتطوير الويب الاحترافي في المغرب."
+
+msgid "Our Story"
+msgstr "قصتنا"
+
+msgid "DigiCode is a leading web development agency based in Morocco. We specialize in creating professional, modern websites that help businesses grow their online presence and reach more customers."
+msgstr "ديجي كود هي وكالة رائدة في تطوير الويب مقرها المغرب. نحن متخصصون في إنشاء مواقع احترافية وعصرية تساعد الشركات على تطوير حضورها على الإنترنت والوصول إلى المزيد من العملاء."
+
+msgid "Our team of experienced developers and designers work closely with clients to understand their needs and deliver solutions that exceed expectations. From rental car websites to e-commerce platforms, we have the expertise to bring your vision to life."
+msgstr "يعمل فريقنا من المطورين والمصممين ذوي الخبرة عن كثب مع العملاء لفهم احتياجاتهم وتقديم حلول تتجاوز التوقعات. من مواقع تأجير السيارات إلى منصات التجارة الإلكترونية، لدينا الخبرة لإحياء رؤيتك."
+
+msgid "Our Mission"
+msgstr "مهمتنا"
+
+msgid "To empower Moroccan businesses with professional digital solutions that drive growth and success. We believe every business deserves a stunning website that represents their brand and connects them with their customers."
+msgstr "تمكين الشركات المغربية بحلول رقمية احترافية تدفع النمو والنجاح. نؤمن بأن كل شركة تستحق موقعاً إلكترونياً رائعاً يمثل علامتها التجارية ويربطها بعملائها."
+
+# Contact Page
+msgid "Contact Us - DigiCode Web Agency"
+msgstr "اتصل بنا - وكالة ديجي كود للويب"
+
+msgid "Contact DigiCode Web Agency for professional website development services in Morocco."
+msgstr "تواصل مع وكالة ديجي كود للويب للحصول على خدمات تطوير مواقع احترافية في المغرب."
+
+msgid "Contact Us"
+msgstr "اتصل بنا"
+
+msgid "Ready to start your project? Get in touch with us today."
+msgstr "مستعد لبدء مشروعك؟ تواصل معنا اليوم."
+
+msgid "Get In Touch"
+msgstr "تواصل معنا"
+
+msgid "Phone"
+msgstr "الهاتف"
+
+msgid "Address"
+msgstr "العنوان"
+
+msgid "Prefer WhatsApp?"
+msgstr "تفضل واتساب؟"
+
+msgid "Chat with us directly on WhatsApp for quick responses."
+msgstr "دردش معنا مباشرة على واتساب للحصول على ردود سريعة."
+
+msgid "Send us a Message"
+msgstr "أرسل لنا رسالة"
+
+msgid "Please contact us via WhatsApp or email for the fastest response. We typically reply within 24 hours."
+msgstr "يرجى التواصل معنا عبر واتساب أو البريد الإلكتروني للحصول على أسرع رد. نرد عادةً خلال 24 ساعة."
+
+msgid "Email Us"
+msgstr "راسلنا عبر البريد"
+
+msgid "#1 Web Agency in Morocco"
+msgstr "#1 وكالة ويب في المغرب"

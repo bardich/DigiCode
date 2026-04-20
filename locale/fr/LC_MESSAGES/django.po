@@ -1,0 +1,197 @@
+# French translations for DigiCode Web Agency
+msgid ""
+msgstr ""
+"Project-Id-Version: DigiCode 1.0\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+msgid "Home"
+msgstr "Accueil"
+
+msgid "Services"
+msgstr "Services"
+
+msgid "About"
+msgstr "À propos"
+
+msgid "Contact"
+msgstr "Contact"
+
+msgid "Get Quote"
+msgstr "Devis Gratuit"
+
+msgid "Chat on WhatsApp"
+msgstr "Discuter sur WhatsApp"
+
+msgid "Create Your"
+msgstr "Créez Votre"
+
+msgid "Digital Presence"
+msgstr "Présence Digitale"
+
+msgid "With Us"
+msgstr "Avec Nous"
+
+msgid "We build professional websites that help your business grow. From rental cars to e-commerce, we create solutions that work."
+msgstr "Nous créons des sites web professionnels qui aident votre entreprise à se développer. De la location de voitures à l'e-commerce, nous créons des solutions qui fonctionnent."
+
+msgid "View Services"
+msgstr "Voir les Services"
+
+msgid "Get Free Quote"
+msgstr "Obtenir un Devis"
+
+msgid "Projects"
+msgstr "Projets"
+
+msgid "Clients"
+msgstr "Clients"
+
+msgid "Years"
+msgstr "Années"
+
+msgid "Websites We Create"
+msgstr "Sites Web Que Nous Créons"
+
+msgid "From car rentals to e-commerce, we build websites that help your business succeed online."
+msgstr "De la location de voitures à l'e-commerce, nous créons des sites web qui aident votre entreprise à réussir en ligne."
+
+msgid "Learn More"
+msgstr "En Savoir Plus"
+
+msgid "View All Services"
+msgstr "Voir Tous les Services"
+
+msgid "What Makes Us Different"
+msgstr "Ce Qui Nous Différencie"
+
+msgid "Fast Delivery"
+msgstr "Livraison Rapide"
+
+msgid "Get your website up and running in record time."
+msgstr "Obtenez votre site web opérationnel en un temps record."
+
+msgid "Secure"
+msgstr "Sécurisé"
+
+msgid "Enterprise-grade security for your business."
+msgstr "Sécurité de niveau entreprise pour votre business."
+
+msgid "24/7 Support"
+msgstr "Support 24/7"
+
+msgid "We're always here when you need us."
+msgstr "Nous sommes toujours là quand vous avez besoin de nous."
+
+msgid "Modern Design"
+msgstr "Design Moderne"
+
+msgid "Beautiful, responsive designs that convert."
+msgstr "Des designs magnifiques et responsifs qui convertissent."
+
+msgid "Ready to Start Your Project?"
+msgstr "Prêt à Démarrer Votre Projet ?"
+
+msgid "Contact us today for a free consultation and quote."
+msgstr "Contactez-nous aujourd'hui pour une consultation gratuite et un devis."
+
+msgid "All rights reserved."
+msgstr "Tous droits réservés."
+
+msgid "Our Services"
+msgstr "Nos Services"
+
+msgid "Professional website solutions tailored to your business needs."
+msgstr "Solutions web professionnelles adaptées aux besoins de votre entreprise."
+
+msgid "Key Benefits"
+msgstr "Avantages Clés"
+
+msgid "Interested?"
+msgstr "Intéressé ?"
+
+msgid "Get a free quote for your project. We're here to help!"
+msgstr "Obtenez un devis gratuit pour votre projet. Nous sommes là pour vous aider !"
+
+msgid "Other Services"
+msgstr "Autres Services"
+
+msgid "Site Location de Voitures"
+msgstr "Site Location de Voitures"
+
+msgid "Site web complet pour agence de location de voitures avec réservation en ligne."
+msgstr "Site web complet pour agence de location de voitures avec réservation en ligne."
+
+# About Page
+msgid "About Us - DigiCode Web Agency"
+msgstr "À Propos - Agence Web DigiCode"
+
+msgid "Learn more about DigiCode Web Agency, our mission, and our team in Morocco."
+msgstr "En savoir plus sur l'agence web DigiCode, notre mission et notre équipe au Maroc."
+
+msgid "About DigiCode"
+msgstr "À Propos de DigiCode"
+
+msgid "Your trusted partner for professional web development in Morocco."
+msgstr "Votre partenaire de confiance pour le développement web professionnel au Maroc."
+
+msgid "Our Story"
+msgstr "Notre Histoire"
+
+msgid "DigiCode is a leading web development agency based in Morocco. We specialize in creating professional, modern websites that help businesses grow their online presence and reach more customers."
+msgstr "DigiCode est une agence de développement web de premier plan basée au Maroc. Nous sommes spécialisés dans la création de sites web professionnels et modernes qui aident les entreprises à développer leur présence en ligne et à atteindre plus de clients."
+
+msgid "Our team of experienced developers and designers work closely with clients to understand their needs and deliver solutions that exceed expectations. From rental car websites to e-commerce platforms, we have the expertise to bring your vision to life."
+msgstr "Notre équipe de développeurs et de designers expérimentés travaille en étroite collaboration avec les clients pour comprendre leurs besoins et fournir des solutions qui dépassent les attentes. Des sites de location de voitures aux plateformes e-commerce, nous avons l'expertise pour donner vie à votre vision."
+
+msgid "Our Mission"
+msgstr "Notre Mission"
+
+msgid "To empower Moroccan businesses with professional digital solutions that drive growth and success. We believe every business deserves a stunning website that represents their brand and connects them with their customers."
+msgstr "Autonomiser les entreprises marocaines avec des solutions numériques professionnelles qui stimulent la croissance et le succès. Nous croyons que chaque entreprise mérite un site web magnifique qui représente leur marque et les connecte avec leurs clients."
+
+# Contact Page
+msgid "Contact Us - DigiCode Web Agency"
+msgstr "Contactez-Nous - Agence Web DigiCode"
+
+msgid "Contact DigiCode Web Agency for professional website development services in Morocco."
+msgstr "Contactez l'agence web DigiCode pour des services de développement de sites web professionnels au Maroc."
+
+msgid "Contact Us"
+msgstr "Contactez-Nous"
+
+msgid "Ready to start your project? Get in touch with us today."
+msgstr "Prêt à démarrer votre projet ? Contactez-nous aujourd'hui."
+
+msgid "Get In Touch"
+msgstr "Restez en Contact"
+
+msgid "Phone"
+msgstr "Téléphone"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Address"
+msgstr "Adresse"
+
+msgid "Prefer WhatsApp?"
+msgstr "Vous préférez WhatsApp ?"
+
+msgid "Chat with us directly on WhatsApp for quick responses."
+msgstr "Discutez avec nous directement sur WhatsApp pour des réponses rapides."
+
+msgid "Send us a Message"
+msgstr "Envoyez-nous un Message"
+
+msgid "Please contact us via WhatsApp or email for the fastest response. We typically reply within 24 hours."
+msgstr "Veuillez nous contacter via WhatsApp ou email pour la réponse la plus rapide. Nous répondons généralement sous 24 heures."
+
+msgid "WhatsApp"
+msgstr "WhatsApp"
+
+msgid "Email Us"
+msgstr "Envoyez-nous un Email"

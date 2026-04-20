@@ -1,0 +1,230 @@
+{% extends 'base.html' %}
+{% load i18n static %}
+
+{% block meta %}
+<title>{% trans "DigiCode Web Agency - Professional Website Development in Morocco" %}</title>
+<meta name="description" content="{% trans 'DigiCode creates professional websites in Morocco. Rental cars, e-commerce, real estate, and custom business websites.' %}">
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="relative min-h-screen flex items-center pt-20 bg-gradient-to-br from-primary via-slate-900 to-slate-800 overflow-hidden">
+    <!-- Background Pattern -->
+    <div class="absolute inset-0 opacity-10">
+        <div class="absolute inset-0" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 40px 40px;"></div>
+    </div>
+    
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+            <div class="text-center lg:text-left animate-fade-in">
+                <span class="inline-block px-4 py-2 bg-accent/20 text-accent rounded-full text-sm font-medium mb-6">
+                    {% trans "#1 Web Agency in Morocco" %}
+                </span>
+                <h1 class="text-4xl lg:text-6xl font-bold text-white leading-tight mb-6">
+                    {% trans "Create Your" %}<br>
+                    <span class="gradient-text">{% trans "Digital Presence" %}</span><br>
+                    {% trans "With Us" %}
+                </h1>
+                <p class="text-lg text-gray-300 mb-8 max-w-xl mx-auto lg:mx-0">
+                    {% trans "We build professional websites that help your business grow. From rental cars to e-commerce, we create solutions that work." %}
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                    <a href="{% url 'services:list' %}" class="inline-flex items-center justify-center px-8 py-4 bg-accent text-white rounded-xl font-semibold btn-hover">
+                        {% trans "View Services" %}
+                        <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                        </svg>
+                    </a>
+                    <a href="https://wa.me/{{ site_settings.whatsapp_number|cut:'+' }}" 
+                       target="_blank"
+                       class="inline-flex items-center justify-center px-8 py-4 bg-white/10 text-white rounded-xl font-semibold hover:bg-white/20 transition-colors backdrop-blur-sm">
+                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.13 1.58 5.929L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.35-8.413"/>
+                        </svg>
+                        {% trans "Get Free Quote" %}
+                    </a>
+                </div>
+                
+                <!-- Stats -->
+                <div class="grid grid-cols-3 gap-6 mt-12 pt-8 border-t border-white/10">
+                    <div>
+                        <div class="text-2xl lg:text-3xl font-bold text-white">100+</div>
+                        <div class="text-sm text-gray-400">{% trans "Projects" %}</div>
+                    </div>
+                    <div>
+                        <div class="text-2xl lg:text-3xl font-bold text-white">50+</div>
+                        <div class="text-sm text-gray-400">{% trans "Clients" %}</div>
+                    </div>
+                    <div>
+                        <div class="text-2xl lg:text-3xl font-bold text-white">5+</div>
+                        <div class="text-sm text-gray-400">{% trans "Years" %}</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Hero Image -->
+            <div class="hidden lg:block relative">
+                <div class="absolute inset-0 bg-gradient-to-r from-accent to-highlight rounded-3xl blur-2xl opacity-30 animate-pulse"></div>
+                <div class="relative bg-white/5 backdrop-blur-sm rounded-3xl p-8 border border-white/10">
+                    <div class="aspect-video bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl flex items-center justify-center">
+                        <svg class="w-32 h-32 text-accent/50" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                        </svg>
+                    </div>
+                    <div class="mt-6 flex items-center space-x-4">
+                        <div class="flex -space-x-2">
+                            <div class="w-10 h-10 rounded-full bg-accent flex items-center justify-center text-white text-sm font-medium">JS</div>
+                            <div class="w-10 h-10 rounded-full bg-highlight flex items-center justify-center text-white text-sm font-medium">PY</div>
+                            <div class="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center text-white text-sm font-medium">DJ</div>
+                        </div>
+                        <span class="text-gray-400 text-sm">{% trans "Modern Tech Stack" %}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Scroll Indicator -->
+    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+        <svg class="w-6 h-6 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+        </svg>
+    </div>
+</section>
+
+<!-- Services Section -->
+<section class="py-20 lg:py-32 bg-background">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <span class="text-accent font-medium">{% trans "Our Services" %}</span>
+            <h2 class="text-3xl lg:text-4xl font-bold text-primary mt-2 mb-4">
+                {% trans "Websites We Create" %}
+            </h2>
+            <p class="text-gray-600 max-w-2xl mx-auto">
+                {% trans "From car rentals to e-commerce, we build websites that help your business succeed online." %}
+            </p>
+        </div>
+        
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for service in services %}
+            <div class="group bg-white rounded-2xl shadow-soft overflow-hidden card-hover">
+                <div class="aspect-video bg-gradient-to-br from-slate-100 to-slate-200 relative overflow-hidden">
+                    {% if service.featured_image %}
+                    <img src="{{ service.featured_image.url }}" alt="{{ service.get_title }}" class="w-full h-full object-cover">
+                    {% else %}
+                    <div class="w-full h-full flex items-center justify-center">
+                        <svg class="w-20 h-20 text-slate-300" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                        </svg>
+                    </div>
+                    {% endif %}
+                    <div class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-primary mb-2">{{ service.get_title }}</h3>
+                    <p class="text-gray-600 text-sm mb-4 line-clamp-2">{{ service.get_short_description }}</p>
+                    <a href="{{ service.get_absolute_url }}" class="inline-flex items-center text-accent font-medium group-hover:translate-x-2 transition-transform">
+                        {% trans "Learn More" %}
+                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-span-3 text-center py-12">
+                <p class="text-gray-500">{% trans "Services coming soon..." %}</p>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="text-center mt-12">
+            <a href="{% url 'services:list' %}" class="inline-flex items-center px-6 py-3 border-2 border-accent text-accent rounded-xl font-medium hover:bg-accent hover:text-white transition-all">
+                {% trans "View All Services" %}
+                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                </svg>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Why Choose Us -->
+<section class="py-20 lg:py-32 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <span class="text-accent font-medium">{% trans "Why Us" %}</span>
+            <h2 class="text-3xl lg:text-4xl font-bold text-primary mt-2">
+                {% trans "What Makes Us Different" %}
+            </h2>
+        </div>
+        
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div class="text-center">
+                <div class="w-16 h-16 bg-accent/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-8 h-8 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-bold text-primary mb-2">{% trans "Fast Delivery" %}</h3>
+                <p class="text-gray-600 text-sm">{% trans "Get your website up and running in record time." %}</p>
+            </div>
+            
+            <div class="text-center">
+                <div class="w-16 h-16 bg-highlight/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-8 h-8 text-highlight" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-bold text-primary mb-2">{% trans "Secure" %}</h3>
+                <p class="text-gray-600 text-sm">{% trans "Enterprise-grade security for your business." %}</p>
+            </div>
+            
+            <div class="text-center">
+                <div class="w-16 h-16 bg-green-500/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-bold text-primary mb-2">{% trans "24/7 Support" %}</h3>
+                <p class="text-gray-600 text-sm">{% trans "We're always here when you need us." %}</p>
+            </div>
+            
+            <div class="text-center">
+                <div class="w-16 h-16 bg-purple-500/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-8 h-8 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-bold text-primary mb-2">{% trans "Modern Design" %}</h3>
+                <p class="text-gray-600 text-sm">{% trans "Beautiful, responsive designs that convert." %}</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-20 lg:py-32 bg-gradient-to-r from-accent to-blue-600">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-3xl lg:text-4xl font-bold text-white mb-4">
+            {% trans "Ready to Start Your Project?" %}
+        </h2>
+        <p class="text-xl text-white/80 mb-8">
+            {% trans "Contact us today for a free consultation and quote." %}
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="https://wa.me/{{ site_settings.whatsapp_number|cut:'+' }}" 
+               target="_blank"
+               class="inline-flex items-center justify-center px-8 py-4 bg-white text-accent rounded-xl font-semibold hover:bg-gray-100 transition-colors">
+                <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.13 1.58 5.929L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.35-8.413"/>
+                </svg>
+                {% trans "Chat on WhatsApp" %}
+            </a>
+            <a href="{% url 'core:contact' %}" class="inline-flex items-center justify-center px-8 py-4 border-2 border-white text-white rounded-xl font-semibold hover:bg-white/10 transition-colors">
+                {% trans "Contact Us" %}
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /__debug__/
+Disallow: /__reload__/
+Disallow: /rosetta/
+
+Sitemap: http://127.0.0.1:8000/sitemap.xml

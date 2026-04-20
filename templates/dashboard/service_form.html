@@ -1,0 +1,544 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block extra_css %}
+<style>
+    /* Form Input Styling */
+    input[type="text"],
+    input[type="url"],
+    input[type="number"],
+    input[type="email"],
+    input[type="file"],
+    textarea,
+    select {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 2px solid #e5e7eb;
+        border-radius: 0.75rem;
+        font-size: 0.95rem;
+        line-height: 1.5;
+        color: #1f2937;
+        background-color: #ffffff;
+        transition: all 0.2s ease-in-out;
+        box-sizing: border-box;
+    }
+    
+    input[type="text"]:focus,
+    input[type="url"]:focus,
+    input[type="number"]:focus,
+    input[type="email"]:focus,
+    textarea:focus,
+    select:focus {
+        outline: none;
+        border-color: #2563EB;
+        box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+    }
+    
+    input[type="text"]:hover,
+    input[type="url"]:hover,
+    input[type="number"]:hover,
+    textarea:hover,
+    select:hover {
+        border-color: #d1d5db;
+    }
+    
+    /* Textarea specific */
+    textarea {
+        min-height: 120px;
+        resize: vertical;
+        font-family: inherit;
+    }
+    
+    /* File input styling */
+    input[type="file"] {
+        padding: 0.5rem;
+        cursor: pointer;
+    }
+    
+    input[type="file"]::file-selector-button {
+        padding: 0.5rem 1rem;
+        margin-right: 1rem;
+        border: none;
+        border-radius: 0.5rem;
+        background-color: #2563EB;
+        color: white;
+        font-size: 0.875rem;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+    
+    input[type="file"]::file-selector-button:hover {
+        background-color: #1d4ed8;
+    }
+    
+    /* Labels */
+    .form-label {
+        display: block;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 0.5rem;
+    }
+    
+    /* Errors */
+    .form-error {
+        color: #dc2626;
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+    }
+    
+    /* Help text */
+    .form-help {
+        color: #6b7280;
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+    }
+    
+    /* Section cards */
+    .section-card {
+        background: white;
+        border-radius: 1rem;
+        padding: 1.5rem;
+        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.08);
+        border: 1px solid #f3f4f6;
+    }
+    
+    /* Language badges */
+    .lang-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.25rem 0.625rem;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        font-weight: 500;
+    }
+    
+    .lang-fr {
+        background-color: #dbeafe;
+        color: #1e40af;
+    }
+    
+    .lang-ar {
+        background-color: #dcfce7;
+        color: #166534;
+    }
+    
+    /* Tab buttons */
+    .tab-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        border-radius: 0.5rem;
+        transition: all 0.2s;
+        border: none;
+        cursor: pointer;
+        background: white;
+        color: #4b5563;
+    }
+    
+    .tab-btn:hover {
+        background-color: #f3f4f6;
+    }
+    
+    .tab-btn.active {
+        background-color: #2563EB;
+        color: white;
+    }
+    
+    /* Checkboxes */
+    input[type="checkbox"] {
+        width: 1.25rem;
+        height: 1.25rem;
+        border: 2px solid #d1d5db;
+        border-radius: 0.25rem;
+        cursor: pointer;
+        accent-color: #2563EB;
+    }
+    
+    /* Form grid spacing */
+    .form-grid {
+        display: grid;
+        gap: 1rem;
+    }
+    
+    @media (min-width: 768px) {
+        .form-grid-2 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    
+    /* Section headers */
+    .section-title {
+        font-size: 1.125rem;
+        font-weight: 700;
+        color: #0F172A;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    /* Required indicator */
+    .required {
+        color: #dc2626;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="pt-24 pb-12 bg-gray-50 min-h-screen">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-primary">
+                {% if object %}{% trans "Edit Service" %}{% else %}{% trans "Create New Service" %}{% endif %}
+            </h1>
+            <p class="text-gray-600 mt-2">
+                {% if object %}{% trans "Update your service details below." %}{% else %}{% trans "Fill in the details to create a new service." %}{% endif %}
+            </p>
+        </div>
+        
+        <!-- Language Tabs & Form Container -->
+        <div x-data="{ activeLang: 'fr' }">
+            
+            <!-- Language Tabs -->
+            <div class="flex gap-2 mb-6">
+                <button type="button" 
+                        @click="activeLang = 'fr'" 
+                        :class="{ 'active': activeLang === 'fr' }"
+                        class="tab-btn flex items-center gap-2">
+                    <span class="lang-badge lang-fr">FR</span>
+                    <span>{% trans "French" %}</span>
+                </button>
+                <button type="button" 
+                        @click="activeLang = 'ar'" 
+                        :class="{ 'active': activeLang === 'ar' }"
+                        class="tab-btn flex items-center gap-2">
+                    <span class="lang-badge lang-ar">AR</span>
+                    <span>{% trans "Arabic" %}</span>
+                </button>
+                <button type="button" 
+                        @click="activeLang = 'both'" 
+                        :class="{ 'active': activeLang === 'both' }"
+                        class="tab-btn flex items-center gap-2">
+                    <span>{% trans "Both Languages" %}</span>
+                </button>
+            </div>
+
+            <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            {% if form.non_field_errors %}
+            <div class="bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg mb-6">
+                <div class="flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                    </svg>
+                    {{ form.non_field_errors }}
+                </div>
+            </div>
+            {% endif %}
+            
+            <div class="grid lg:grid-cols-3 gap-6">
+                <!-- Main Content Column -->
+                <div class="lg:col-span-2 space-y-6">
+                    
+                    <!-- Basic Info Section -->
+                    <div class="section-card">
+                        <h2 class="section-title">
+                            <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            {% trans "Basic Information" %}
+                        </h2>
+                        
+                        <!-- Title Fields -->
+                        <div class="grid md:grid-cols-2 gap-4 mb-4">
+                            <div x-show="activeLang === 'fr' || activeLang === 'both'">
+                                <label class="form-label flex items-center gap-2">
+                                    {% trans "Title" %}
+                                    <span class="lang-badge lang-fr">FR</span>
+                                    <span class="text-red-500">*</span>
+                                </label>
+                                {{ form.title_fr }}
+                                {% if form.title_fr.errors %}
+                                <div class="form-error">{{ form.title_fr.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div x-show="activeLang === 'ar' || activeLang === 'both'">
+                                <label class="form-label flex items-center gap-2">
+                                    {% trans "Title" %}
+                                    <span class="lang-badge lang-ar">AR</span>
+                                </label>
+                                {{ form.title_ar }}
+                                {% if form.title_ar.errors %}
+                                <div class="form-error">{{ form.title_ar.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <!-- Slug Field -->
+                        <div class="mb-4">
+                            <label class="form-label flex items-center gap-2">
+                                {% trans "URL Slug" %}
+                                <span class="text-red-500">*</span>
+                            </label>
+                            {{ form.slug }}
+                            {% if form.slug.errors %}
+                            <div class="form-error">{{ form.slug.errors }}</div>
+                            {% endif %}
+                            <div class="form-help">{% trans "This will be used in the URL: /services/your-slug/" %}</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Descriptions Section -->
+                    <div class="section-card">
+                        <h2 class="section-title">
+                            <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"/>
+                            </svg>
+                            {% trans "Descriptions" %}
+                        </h2>
+                        
+                        <!-- Short Description -->
+                        <div class="mb-4">
+                            <div x-show="activeLang === 'fr' || activeLang === 'both'" class="mb-4">
+                                <label class="form-label flex items-center gap-2">
+                                    {% trans "Short Description" %}
+                                    <span class="lang-badge lang-fr">FR</span>
+                                    <span class="text-red-500">*</span>
+                                </label>
+                                {{ form.short_description_fr }}
+                                {% if form.short_description_fr.errors %}
+                                <div class="form-error">{{ form.short_description_fr.errors }}</div>
+                                {% endif %}
+                                <div class="form-help">{% trans "Brief description shown in service listings (150-200 characters recommended)" %}</div>
+                            </div>
+                            <div x-show="activeLang === 'ar' || activeLang === 'both'">
+                                <label class="form-label flex items-center gap-2">
+                                    {% trans "Short Description" %}
+                                    <span class="lang-badge lang-ar">AR</span>
+                                </label>
+                                {{ form.short_description_ar }}
+                                {% if form.short_description_ar.errors %}
+                                <div class="form-error">{{ form.short_description_ar.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <!-- Full Description -->
+                        <div class="mb-4">
+                            <div x-show="activeLang === 'fr' || activeLang === 'both'" class="mb-4">
+                                <label class="form-label flex items-center gap-2">
+                                    {% trans "Full Description" %}
+                                    <span class="lang-badge lang-fr">FR</span>
+                                    <span class="text-red-500">*</span>
+                                </label>
+                                {{ form.full_description_fr }}
+                                {% if form.full_description_fr.errors %}
+                                <div class="form-error">{{ form.full_description_fr.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div x-show="activeLang === 'ar' || activeLang === 'both'">
+                                <label class="form-label flex items-center gap-2">
+                                    {% trans "Full Description" %}
+                                    <span class="lang-badge lang-ar">AR</span>
+                                </label>
+                                {{ form.full_description_ar }}
+                                {% if form.full_description_ar.errors %}
+                                <div class="form-error">{{ form.full_description_ar.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Benefits Section -->
+                    <div class="section-card">
+                        <h2 class="section-title">
+                            <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            {% trans "Benefits" %}
+                        </h2>
+                        <div class="form-help mb-4">{% trans "Enter benefits as a JSON array, e.g.: [\"Benefit 1\", \"Benefit 2\"]" %}</div>
+                        
+                        <div x-show="activeLang === 'fr' || activeLang === 'both'" class="mb-4">
+                            <label class="form-label flex items-center gap-2">
+                                {% trans "Benefits" %}
+                                <span class="lang-badge lang-fr">FR</span>
+                            </label>
+                            {{ form.benefits_fr }}
+                            {% if form.benefits_fr.errors %}
+                            <div class="form-error">{{ form.benefits_fr.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div x-show="activeLang === 'ar' || activeLang === 'both'">
+                            <label class="form-label flex items-center gap-2">
+                                {% trans "Benefits" %}
+                                <span class="lang-badge lang-ar">AR</span>
+                            </label>
+                            {{ form.benefits_ar }}
+                            {% if form.benefits_ar.errors %}
+                            <div class="form-error">{{ form.benefits_ar.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <!-- SEO Section -->
+                    <div class="section-card">
+                        <h2 class="section-title">
+                            <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                            </svg>
+                            {% trans "SEO Settings" %}
+                        </h2>
+                        
+                        <div class="grid md:grid-cols-2 gap-4 mb-4">
+                            <div x-show="activeLang === 'fr' || activeLang === 'both'">
+                                <label class="form-label flex items-center gap-2">
+                                    {% trans "Meta Title" %}
+                                    <span class="lang-badge lang-fr">FR</span>
+                                </label>
+                                {{ form.meta_title_fr }}
+                                {% if form.meta_title_fr.errors %}
+                                <div class="form-error">{{ form.meta_title_fr.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div x-show="activeLang === 'ar' || activeLang === 'both'">
+                                <label class="form-label flex items-center gap-2">
+                                    {% trans "Meta Title" %}
+                                    <span class="lang-badge lang-ar">AR</span>
+                                </label>
+                                {{ form.meta_title_ar }}
+                                {% if form.meta_title_ar.errors %}
+                                <div class="form-error">{{ form.meta_title_ar.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <div x-show="activeLang === 'fr' || activeLang === 'both'" class="mb-4">
+                                <label class="form-label flex items-center gap-2">
+                                    {% trans "Meta Description" %}
+                                    <span class="lang-badge lang-fr">FR</span>
+                                </label>
+                                {{ form.meta_description_fr }}
+                                {% if form.meta_description_fr.errors %}
+                                <div class="form-error">{{ form.meta_description_fr.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div x-show="activeLang === 'ar' || activeLang === 'both'">
+                                <label class="form-label flex items-center gap-2">
+                                    {% trans "Meta Description" %}
+                                    <span class="lang-badge lang-ar">AR</span>
+                                </label>
+                                {{ form.meta_description_ar }}
+                                {% if form.meta_description_ar.errors %}
+                                <div class="form-error">{{ form.meta_description_ar.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sidebar Column -->
+                <div class="space-y-6">
+                    <!-- Media Section -->
+                    <div class="section-card">
+                        <h2 class="section-title">
+                            <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                            {% trans "Media" %}
+                        </h2>
+                        
+                        <div class="mb-4">
+                            <label class="form-label">
+                                {% trans "Featured Image" %}
+                                <span class="text-red-500">*</span>
+                            </label>
+                            {% if object and object.featured_image %}
+                            <div class="mb-3">
+                                <img src="{{ object.featured_image.url }}" alt="{{ object.title_fr }}" class="w-full h-40 object-cover rounded-lg">
+                                <p class="text-sm text-gray-500 mt-2">{% trans "Current image" %}</p>
+                            </div>
+                            {% endif %}
+                            {{ form.featured_image }}
+                            {% if form.featured_image.errors %}
+                            <div class="form-error">{{ form.featured_image.errors }}</div>
+                            {% endif %}
+                            <div class="form-help">{% trans "Recommended size: 1200x800px" %}</div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="form-label">{% trans "YouTube Video URL" %}</label>
+                            {{ form.youtube_url }}
+                            {% if form.youtube_url.errors %}
+                            <div class="form-error">{{ form.youtube_url.errors }}</div>
+                            {% endif %}
+                            <div class="form-help">{% trans "Optional: Add a YouTube video to showcase this service" %}</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Settings Section -->
+                    <div class="section-card">
+                        <h2 class="section-title">
+                            <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                            {% trans "Settings" %}
+                        </h2>
+                        
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                <div>
+                                    <label class="font-medium text-gray-700">{% trans "Active" %}</label>
+                                    <p class="text-sm text-gray-500">{% trans "Show on website" %}</p>
+                                </div>
+                                {{ form.is_active }}
+                            </div>
+                            
+                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                <div>
+                                    <label class="font-medium text-gray-700">{% trans "Featured" %}</label>
+                                    <p class="text-sm text-gray-500">{% trans "Highlight on homepage" %}</p>
+                                </div>
+                                {{ form.is_featured }}
+                            </div>
+                            
+                            <div>
+                                <label class="form-label">{% trans "Display Order" %}</label>
+                                {{ form.display_order }}
+                                {% if form.display_order.errors %}
+                                <div class="form-error">{{ form.display_order.errors }}</div>
+                                {% endif %}
+                                <div class="form-help">{% trans "Lower numbers appear first" %}</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Action Buttons -->
+                    <div class="flex flex-col gap-3">
+                        <button type="submit" class="w-full px-6 py-3 bg-accent text-white rounded-xl font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            {% if object %}{% trans "Update Service" %}{% else %}{% trans "Create Service" %}{% endif %}
+                        </button>
+                        <a href="{% url 'dashboard:service_list' %}" class="w-full px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition-colors text-center">
+                            {% trans "Cancel" %}
+                        </a>
+                    </div>
+                </div>
+            </div>
+            </form>
+            
+        </div><!-- End Language Tabs & Form Container -->
+    </div>
+</section>
+
+{% endblock %}

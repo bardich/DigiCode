@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block meta %}
+<title>{% trans "About Us - DigiCode Web Agency" %}</title>
+<meta name="description" content="{% trans 'Learn more about DigiCode Web Agency, our mission, and our team in Morocco.' %}">
+{% endblock %}
+
+{% block content %}
+<section class="pt-32 pb-12 bg-gradient-to-br from-primary to-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h1 class="text-4xl lg:text-5xl font-bold text-white mb-4">{% trans "About DigiCode" %}</h1>
+        <p class="text-xl text-gray-300 max-w-2xl mx-auto">
+            {% trans "Your trusted partner for professional web development in Morocco." %}
+        </p>
+    </div>
+</section>
+
+<section class="py-20 bg-background">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="prose prose-lg max-w-none text-gray-600">
+            <h2 class="text-3xl font-bold text-primary mb-6">{% trans "Our Story" %}</h2>
+            <p class="mb-4">
+                {% trans "DigiCode is a leading web development agency based in Morocco. We specialize in creating professional, modern websites that help businesses grow their online presence and reach more customers." %}
+            </p>
+            <p class="mb-4">
+                {% trans "Our team of experienced developers and designers work closely with clients to understand their needs and deliver solutions that exceed expectations. From rental car websites to e-commerce platforms, we have the expertise to bring your vision to life." %}
+            </p>
+            <h2 class="text-3xl font-bold text-primary mb-6 mt-12">{% trans "Our Mission" %}</h2>
+            <p class="mb-4">
+                {% trans "To empower Moroccan businesses with professional digital solutions that drive growth and success. We believe every business deserves a stunning website that represents their brand and connects them with their customers." %}
+            </p>
+        </div>
+    </div>
+</section>
+{% endblock %}

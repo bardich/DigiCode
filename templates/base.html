@@ -1,0 +1,201 @@
+{% load i18n static compress %}
+<!DOCTYPE html>
+<html lang="{{ CURRENT_LANGUAGE|default:'fr' }}" dir="{% if IS_RTL %}rtl{% else %}ltr{% endif %}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    {% block meta %}
+    <title>{% block title %}{{ site_settings.site_name }}{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}{{ site_settings.site_description_fr }}{% endblock %}">
+    {% endblock %}
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="{{ request.build_absolute_uri }}">
+    
+    <!-- Favicon -->
+    {% if site_settings.favicon %}
+    <link rel="icon" type="image/png" href="{{ site_settings.favicon.url }}">
+    {% endif %}
+    
+    <!-- Preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Alyamama:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0F172A',
+                        accent: '#2563EB',
+                        highlight: '#F59E0B',
+                        background: '#F8FAFC',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        arabic: ['Alyamama', 'Noto Sans Arabic', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    {% compress css %}
+    <link rel="stylesheet" href="{% static 'css/tailwind.css' %}">
+    {% endcompress %}
+    
+    <!-- Custom Styles -->
+    <style>
+        /* RTL Base Styles */
+        [dir="rtl"] { 
+            text-align: right; 
+            font-family: 'Alyamama', 'Noto Sans Arabic', system-ui, sans-serif;
+            direction: rtl;
+        }
+        
+        /* Ensure all text inherits RTL alignment */
+        [dir="rtl"] body,
+        [dir="rtl"] p,
+        [dir="rtl"] h1,
+        [dir="rtl"] h2,
+        [dir="rtl"] h3,
+        [dir="rtl"] h4,
+        [dir="rtl"] h5,
+        [dir="rtl"] h6,
+        [dir="rtl"] span,
+        [dir="rtl"] div,
+        [dir="rtl"] a,
+        [dir="rtl"] li,
+        [dir="rtl"] label,
+        [dir="rtl"] button {
+            text-align: right;
+        }
+        
+        /* Flex direction for RTL */
+        [dir="rtl"] .flex {
+            direction: rtl;
+        }
+        
+        /* Space direction for RTL */
+        [dir="rtl"] .space-x-1 > * + *,
+        [dir="rtl"] .space-x-2 > * + *,
+        [dir="rtl"] .space-x-3 > * + *,
+        [dir="rtl"] .space-x-4 > * + *,
+        [dir="rtl"] .space-x-6 > * + *,
+        [dir="rtl"] .space-x-8 > * + * {
+            --tw-space-x-reverse: 1;
+        }
+        
+        /* Margin/padding utilities for RTL */
+        [dir="rtl"] .ml-1, [dir="rtl"] .ml-2, [dir="rtl"] .ml-3, [dir="rtl"] .ml-4,
+        [dir="rtl"] .ml-6, [dir="rtl"] .ml-8, [dir="rtl"] .ml-auto {
+            margin-left: 0;
+        }
+        
+        [dir="rtl"] .mr-1, [dir="rtl"] .mr-2, [dir="rtl"] .mr-3, [dir="rtl"] .mr-4,
+        [dir="rtl"] .mr-6, [dir="rtl"] .mr-8, [dir="rtl"] .mr-auto {
+            margin-right: 0;
+        }
+        
+        /* Fix text alignment for specific elements */
+        [dir="rtl"] .text-left {
+            text-align: right;
+        }
+        
+        [dir="rtl"] .text-center {
+            text-align: center !important;
+        }
+        
+        /* Hero section h1 should be right-aligned in RTL */
+        [dir="rtl"] section:first-of-type h1,
+        [dir="rtl"] .text-center.lg\:text-left h1,
+        [dir="rtl"] h1.text-4xl {
+            text-align: right !important;
+        }
+        
+        /* Ensure title sections stay centered in RTL */
+        [dir="rtl"] h1.text-center,
+        [dir="rtl"] h2.text-center,
+        [dir="rtl"] h3.text-center,
+        [dir="rtl"] .text-center h1,
+        [dir="rtl"] .text-center h2,
+        [dir="rtl"] .text-center h3,
+        [dir="rtl"] section .text-center {
+            text-align: center !important;
+        }
+        
+        /* Font family utilities */
+        .font-arabic { 
+            font-family: 'Alyamama', 'Noto Sans Arabic', system-ui, sans-serif; 
+        }
+        
+        /* Ensure body has RTL when Arabic */
+        body.font-arabic {
+            direction: rtl;
+            text-align: right;
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #2563EB 0%, #F59E0B 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .card-hover { transition: all 0.3s ease; }
+        .card-hover:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(15, 23, 42, 0.15); }
+        .btn-hover { transition: all 0.3s ease; }
+        .btn-hover:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3); }
+        .shadow-soft { box-shadow: 0 4px 20px rgba(15, 23, 42, 0.08); }
+        .shadow-medium { box-shadow: 0 10px 40px rgba(15, 23, 42, 0.12); }
+        .animate-fade-in { animation: fadeIn 0.6s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .line-clamp-1 { display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+    </style>
+    
+    {% block extra_css %}{% endblock %}
+    
+    <!-- HTMX -->
+    <script src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-D1Kt99CQMDuVetoL1lrEwbo" crossorigin="anonymous"></script>
+    
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="font-sans bg-background text-primary antialiased" 
+      x-data="{ mobileMenu: false, scrolled: false }" 
+      x-init="window.addEventListener('scroll', () => scrolled = window.scrollY > 50)"
+      :class="{ 'font-arabic': '{{ CURRENT_LANGUAGE }}' === 'ar' }"
+      :dir="'{{ CURRENT_LANGUAGE }}' === 'ar' ? 'rtl' : 'ltr'"
+      hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+    
+    {% include 'includes/header.html' %}
+    
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    
+    {% include 'includes/footer.html' %}
+    {% include 'includes/whatsapp_button.html' %}
+    
+    <!-- Toast Notifications -->
+    <div x-data="{ toasts: [] }" 
+         @toast.window="toasts.push({message: $event.detail.message, type: $event.detail.type}); setTimeout(() => toasts.shift(), 5000)"
+         class="fixed bottom-4 right-4 rtl:right-auto rtl:left-4 z-50 space-y-2">
+        <template x-for="(toast, index) in toasts" :key="index">
+            <div class="px-4 py-3 rounded-lg shadow-lg text-white animate-fade-in"
+                 :class="toast.type === 'success' ? 'bg-green-500' : 'bg-red-500'"
+                 x-text="toast.message"></div>
+        </template>
+    </div>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

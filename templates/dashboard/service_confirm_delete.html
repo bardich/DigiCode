@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+<section class="pt-24 pb-12 bg-gray-50 min-h-screen">
+    <div class="max-w-md mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-white rounded-xl p-8 shadow-soft text-center">
+            <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg class="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                </svg>
+            </div>
+            <h1 class="text-2xl font-bold text-primary mb-2">{% trans "Delete Service" %}</h1>
+            <p class="text-gray-600 mb-6">
+                {% blocktrans with title=object.title_fr %}Are you sure you want to delete "{{ title }}"? This action cannot be undone.{% endblocktrans %}
+            </p>
+            
+            <form method="post">
+                {% csrf_token %}
+                <div class="flex gap-4 justify-center">
+                    <button type="submit" class="px-6 py-3 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors">
+                        {% trans "Delete" %}
+                    </button>
+                    <a href="{% url 'dashboard:service_list' %}" class="px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                        {% trans "Cancel" %}
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}
