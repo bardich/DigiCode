@@ -1,43 +1,193 @@
-{% extends 'base.html' %}
+{% extends 'dashboard/base.html' %}
 {% load i18n %}
 
-{% block content %}
-<section class="pt-24 pb-12 bg-gray-50 min-h-screen">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 class="text-3xl font-bold text-primary mb-8">{% trans "Dashboard" %}</h1>
+{% block dashboard_content %}
+<!-- Header -->
+<div class="dashboard-header">
+    <div>
+        <h1 class="text-2xl font-bold text-gray-800">{% trans "Dashboard Overview" %}</h1>
+        <p class="text-sm text-gray-500">{% trans "Welcome back! Here's what's happening with your website." %}</p>
+    </div>
+    <div class="flex items-center gap-4">
+        <a href="{% url 'dashboard:service_create' %}" class="btn-primary">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+            </svg>
+            {% trans "Add Service" %}
+        </a>
+    </div>
+</div>
+
+<div class="dashboard-content">
+    <!-- Stats Grid -->
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <!-- Total Services -->
+        <div class="stat-card">
+            <div class="flex items-center justify-between mb-4">
+                <div class="stat-icon bg-blue-100 text-blue-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                    </svg>
+                </div>
+                <span class="badge badge-success">+{{ new_services_today|default:0 }} {% trans "today" %}</span>
+            </div>
+            <div class="stat-value">{{ total_services|default:0 }}</div>
+            <div class="stat-label">{% trans "Total Services" %}</div>
+        </div>
         
-        <!-- Stats Cards -->
-        <div class="grid md:grid-cols-4 gap-6 mb-8">
-            <div class="bg-white rounded-xl p-6 shadow-soft">
-                <div class="text-2xl font-bold text-primary">{{ total_services }}</div>
-                <div class="text-sm text-gray-500">{% trans "Total Services" %}</div>
+        <!-- Active Services -->
+        <div class="stat-card">
+            <div class="flex items-center justify-between mb-4">
+                <div class="stat-icon bg-green-100 text-green-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
             </div>
-            <div class="bg-white rounded-xl p-6 shadow-soft">
-                <div class="text-2xl font-bold text-green-500">{{ active_services }}</div>
-                <div class="text-sm text-gray-500">{% trans "Active Services" %}</div>
+            <div class="stat-value">{{ active_services|default:0 }}</div>
+            <div class="stat-label">{% trans "Active Services" %}</div>
+        </div>
+        
+        <!-- Featured Services -->
+        <div class="stat-card">
+            <div class="flex items-center justify-between mb-4">
+                <div class="stat-icon bg-amber-100 text-amber-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
+                    </svg>
+                </div>
             </div>
-            <div class="bg-white rounded-xl p-6 shadow-soft">
-                <div class="text-2xl font-bold text-highlight">{{ featured_services }}</div>
-                <div class="text-sm text-gray-500">{% trans "Featured Services" %}</div>
+            <div class="stat-value">{{ featured_services|default:0 }}</div>
+            <div class="stat-label">{% trans "Featured Services" %}</div>
+        </div>
+        
+        <!-- Page Views -->
+        <div class="stat-card">
+            <div class="flex items-center justify-between mb-4">
+                <div class="stat-icon bg-purple-100 text-purple-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                    </svg>
+                </div>
+                <span class="badge badge-success">+{{ views_today|default:0 }} {% trans "today" %}</span>
             </div>
-            <div class="bg-white rounded-xl p-6 shadow-soft">
-                <div class="text-2xl font-bold text-accent">{{ total_page_views|default:0 }}</div>
-                <div class="text-sm text-gray-500">{% trans "Page Views" %}</div>
+            <div class="stat-value">{{ total_page_views|default:0 }}</div>
+            <div class="stat-label">{% trans "Total Page Views" %}</div>
+        </div>
+    </div>
+    
+    <!-- Two Column Layout -->
+    <div class="grid lg:grid-cols-2 gap-6">
+        <!-- Recent Services -->
+        <div class="bg-white rounded-xl shadow-soft overflow-hidden">
+            <div class="p-6 border-b border-gray-100">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-lg font-bold text-gray-800">{% trans "Recent Services" %}</h2>
+                    <a href="{% url 'dashboard:service_list' %}" class="text-sm text-blue-600 hover:text-blue-700">
+                        {% trans "View All" %} →
+                    </a>
+                </div>
+            </div>
+            <div class="divide-y divide-gray-100">
+                {% for service in recent_services %}
+                <div class="p-4 flex items-center gap-4 hover:bg-gray-50">
+                    {% if service.featured_image %}
+                    <img src="{{ service.featured_image.url }}" alt="{{ service.title_fr }}" class="w-12 h-12 rounded-lg object-cover">
+                    {% else %}
+                    <div class="w-12 h-12 rounded-lg bg-gray-200 flex items-center justify-center">
+                        <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    {% endif %}
+                    <div class="flex-1">
+                        <h3 class="font-medium text-gray-800">{{ service.title_fr }}</h3>
+                        <p class="text-sm text-gray-500">{{ service.created_at|date:"M d, Y" }}</p>
+                    </div>
+                    {% if service.is_active %}
+                    <span class="badge badge-success">{% trans "Active" %}</span>
+                    {% else %}
+                    <span class="badge badge-warning">{% trans "Inactive" %}</span>
+                    {% endif %}
+                </div>
+                {% empty %}
+                <div class="p-8 text-center text-gray-500">
+                    {% trans "No services yet." %}
+                </div>
+                {% endfor %}
             </div>
         </div>
         
-        <!-- Quick Actions -->
-        <div class="bg-white rounded-xl p-6 shadow-soft mb-8">
-            <h2 class="text-lg font-bold text-primary mb-4">{% trans "Quick Actions" %}</h2>
-            <div class="flex gap-4">
-                <a href="{% url 'dashboard:service_create' %}" class="px-4 py-2 bg-accent text-white rounded-lg hover:bg-blue-700 transition-colors">
-                    {% trans "Add Service" %}
-                </a>
-                <a href="{% url 'admin:index' %}" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-                    {% trans "Admin Panel" %}
-                </a>
+        <!-- Popular Services -->
+        <div class="bg-white rounded-xl shadow-soft overflow-hidden">
+            <div class="p-6 border-b border-gray-100">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-lg font-bold text-gray-800">{% trans "Most Viewed Services" %}</h2>
+                    <a href="{% url 'dashboard:analytics' %}" class="text-sm text-blue-600 hover:text-blue-700">
+                        {% trans "Analytics" %} →
+                    </a>
+                </div>
+            </div>
+            <div class="divide-y divide-gray-100">
+                {% for item in popular_services %}
+                <div class="p-4 flex items-center gap-4 hover:bg-gray-50">
+                    <div class="w-12 h-12 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 font-bold">
+                        {{ forloop.counter }}
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-medium text-gray-800">{{ item.service.title_fr }}</h3>
+                        <p class="text-sm text-gray-500">{{ item.total_views }} {% trans "views" %}</p>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="p-8 text-center text-gray-500">
+                    {% trans "No view data available." %}
+                </div>
+                {% endfor %}
             </div>
         </div>
     </div>
-</section>
+    
+    <!-- Quick Actions -->
+    <div class="mt-8 bg-white rounded-xl p-6 shadow-soft">
+        <h2 class="text-lg font-bold text-gray-800 mb-4">{% trans "Quick Actions" %}</h2>
+        <div class="grid md:grid-cols-3 gap-4">
+            <a href="{% url 'dashboard:service_create' %}" class="flex items-center gap-4 p-4 rounded-lg border border-gray-200 hover:border-blue-500 hover:bg-blue-50 transition-all">
+                <div class="w-12 h-12 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="font-medium text-gray-800">{% trans "Add Service" %}</h3>
+                    <p class="text-sm text-gray-500">{% trans "Create a new service" %}</p>
+                </div>
+            </a>
+            <a href="{% url 'dashboard:settings' %}" class="flex items-center gap-4 p-4 rounded-lg border border-gray-200 hover:border-green-500 hover:bg-green-50 transition-all">
+                <div class="w-12 h-12 rounded-lg bg-green-100 text-green-600 flex items-center justify-center">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="font-medium text-gray-800">{% trans "Site Settings" %}</h3>
+                    <p class="text-sm text-gray-500">{% trans "Update site info" %}</p>
+                </div>
+            </a>
+            <a href="{% url 'dashboard:analytics' %}" class="flex items-center gap-4 p-4 rounded-lg border border-gray-200 hover:border-purple-500 hover:bg-purple-50 transition-all">
+                <div class="w-12 h-12 rounded-lg bg-purple-100 text-purple-600 flex items-center justify-center">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="font-medium text-gray-800">{% trans "View Analytics" %}</h3>
+                    <p class="text-sm text-gray-500">{% trans "Check statistics" %}</p>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
 {% endblock %}

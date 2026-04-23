@@ -1,11 +1,17 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth import authenticate, login, logout
 from django.views.generic import TemplateView, ListView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
+from django.shortcuts import get_object_or_404, redirect, render
 from apps.services.models import Service
 from apps.analytics.models import PageView, ClickEvent, ServiceViewCount
+from apps.core.models import SiteSettings
 
+
+from django.utils import timezone
+from datetime import timedelta
 
 class DashboardView(LoginRequiredMixin, TemplateView):
     template_name = 'dashboard/index.html'
@@ -15,9 +21,19 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         context['total_services'] = Service.objects.count()
         context['active_services'] = Service.objects.filter(is_active=True).count()
         context['featured_services'] = Service.objects.filter(is_featured=True).count()
-        context['recent_views'] = PageView.objects.all()[:5]
         context['total_page_views'] = PageView.objects.count()
+        context['recent_services'] = Service.objects.order_by('-created_at')[:5]
         context['popular_services'] = ServiceViewCount.objects.order_by('-total_views')[:5]
+        
+        # Today's stats
+        today = timezone.now().date()
+        context['new_services_today'] = Service.objects.filter(
+            created_at__date=today
+        ).count()
+        context['views_today'] = PageView.objects.filter(
+            timestamp__date=today
+        ).count()
+        
         return context
 
 
@@ -89,3 +105,85 @@ class AnalyticsView(LoginRequiredMixin, TemplateView):
         context['recent_clicks'] = ClickEvent.objects.all()[:20]
         context['popular_services'] = ServiceViewCount.objects.order_by('-total_views')[:10]
         return context
+
+
+class SettingsView(LoginRequiredMixin, TemplateView):
+    template_name = 'dashboard/settings.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['settings'] = SiteSettings.objects.first()
+        return context
+    
+    def post(self, request, *args, **kwargs):
+        settings = SiteSettings.objects.first()
+        if not settings:
+            settings = SiteSettings.objects.create()
+        
+        fields = [
+            'site_name', 'whatsapp_number', 'email', 'phone',
+            'address_fr', 'address_ar', 'facebook_url', 'instagram_url',
+            'linkedin_url', 'youtube_url', 'meta_title', 'meta_description',
+            'google_analytics_id',
+            'footer_text_fr', 'footer_text_ar',
+            'primary_color', 'accent_color', 'highlight_color'
+        ]
+        
+        for field in fields:
+            if field in request.POST:
+                setattr(settings, field, request.POST.get(field))
+        
+        # Handle description fields
+        if 'site_description_fr' in request.POST:
+            settings.site_description_fr = request.POST.get('site_description_fr')
+        if 'site_description_ar' in request.POST:
+            settings.site_description_ar = request.POST.get('site_description_ar')
+        
+        if 'logo' in request.FILES:
+            settings.logo = request.FILES['logo']
+        if 'favicon' in request.FILES:
+            settings.favicon = request.FILES['favicon']
+        
+        settings.save()
+        messages.success(request, _('Settings updated successfully.'))
+        return redirect('dashboard:settings')
+
+
+class DashboardLoginView(TemplateView):
+    """Custom login view for dashboard."""
+    template_name = 'dashboard/login.html'
+    
+    def get(self, request, *args, **kwargs):
+        # Redirect if already authenticated
+        if request.user.is_authenticated:
+            return redirect('dashboard:index')
+        return super().get(request, *args, **kwargs)
+    
+    def post(self, request, *args, **kwargs):
+        username = request.POST.get('username', '')
+        password = request.POST.get('password', '')
+        
+        user = authenticate(request, username=username, password=password)
+        
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                messages.success(request, _('Welcome back!'))
+                # Redirect to next URL if provided, otherwise to dashboard
+                next_url = request.GET.get('next', 'dashboard:index')
+                return redirect(next_url)
+            else:
+                messages.error(request, _('Your account is disabled.'))
+        else:
+            messages.error(request, _('Invalid username or password.'))
+        
+        return render(request, self.template_name)
+
+
+class DashboardLogoutView(TemplateView):
+    """Logout view that redirects to login page."""
+    
+    def get(self, request, *args, **kwargs):
+        logout(request)
+        messages.success(request, _('You have been logged out.'))
+        return redirect('dashboard:login')

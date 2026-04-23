@@ -193,3 +193,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Compressor
 COMPRESS_ENABLED = True
 COMPRESS_OFFLINE = True
+
+# Authentication
+LOGIN_URL = '/dashboard/login/'
+LOGIN_REDIRECT_URL = '/dashboard/'
