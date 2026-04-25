@@ -169,9 +169,9 @@
     
     {% block extra_head %}{% endblock %}
 </head>
-<body class="font-sans bg-background text-primary antialiased" 
-      x-data="{ mobileMenu: false, scrolled: false }" 
-      x-init="window.addEventListener('scroll', () => scrolled = window.scrollY > 50)"
+<body class="font-sans bg-background text-primary antialiased"
+      x-data="{ mobileMenu: false, scrolled: window.scrollY > 50 }"
+      x-init="scrolled = window.scrollY > 50; window.addEventListener('scroll', () => scrolled = window.scrollY > 50)"
       :class="{ 'font-arabic': '{{ CURRENT_LANGUAGE }}' === 'ar' }"
       :dir="'{{ CURRENT_LANGUAGE }}' === 'ar' ? 'rtl' : 'ltr'"
       hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>

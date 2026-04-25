@@ -231,6 +231,211 @@
             </div>
         </div>
 
+        <!-- Hero Slides Management -->
+        <div class="mt-6 bg-white rounded-xl p-6 shadow-soft">
+            <h2 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                <svg class="w-5 h-5 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/>
+                </svg>
+                {% trans "Hero Slider Management" %}
+            </h2>
+
+            <!-- Existing Slides -->
+            {% if hero_slides %}
+            <div class="space-y-4 mb-6">
+                {% for slide in hero_slides %}
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <div class="flex items-start justify-between mb-3">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg {{ slide.get_color_classes.1 }} flex items-center justify-center">
+                                <span class="text-lg">{{ slide.icon }}</span>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-gray-800">{{ slide.title_fr }}</h3>
+                                <p class="text-sm text-gray-500">{{ slide.title_ar }}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <!-- Reorder buttons -->
+                            <form method="post" class="inline">
+                                {% csrf_token %}
+                                <input type="hidden" name="slide_action" value="reorder">
+                                <input type="hidden" name="slide_id" value="{{ slide.id }}">
+                                <input type="hidden" name="direction" value="up">
+                                <button type="submit" class="p-1 hover:bg-gray-100 rounded" {% if forloop.first %}disabled{% endif %}>
+                                    <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/>
+                                    </svg>
+                                </button>
+                            </form>
+                            <form method="post" class="inline">
+                                {% csrf_token %}
+                                <input type="hidden" name="slide_action" value="reorder">
+                                <input type="hidden" name="slide_id" value="{{ slide.id }}">
+                                <input type="hidden" name="direction" value="down">
+                                <button type="submit" class="p-1 hover:bg-gray-100 rounded" {% if forloop.last %}disabled{% endif %}>
+                                    <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                    </svg>
+                                </button>
+                            </form>
+                            <!-- Edit button -->
+                            <button type="button" onclick="toggleSlideEdit({{ slide.id }})" class="p-1 hover:bg-gray-100 rounded text-blue-600">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                </svg>
+                            </button>
+                            <!-- Delete button -->
+                            <form method="post" class="inline" onsubmit="return confirm('{% trans "Delete this slide?" %}')">
+                                {% csrf_token %}
+                                <input type="hidden" name="slide_action" value="delete">
+                                <input type="hidden" name="slide_id" value="{{ slide.id }}">
+                                <button type="submit" class="p-1 hover:bg-gray-100 rounded text-red-600">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                    </svg>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Edit Form (hidden by default) -->
+                    <div id="slide-edit-{{ slide.id }}" class="hidden mt-4 pt-4 border-t border-gray-100">
+                        <form method="post" class="space-y-4">
+                            {% csrf_token %}
+                            <input type="hidden" name="slide_action" value="edit">
+                            <input type="hidden" name="slide_id" value="{{ slide.id }}">
+
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">{% trans "Title (FR)" %}</label>
+                                    <input type="text" name="slide_title_fr" value="{{ slide.title_fr }}" class="w-full px-3 py-2 border rounded-lg" required>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">{% trans "Title (AR)" %}</label>
+                                    <input type="text" name="slide_title_ar" value="{{ slide.title_ar }}" class="w-full px-3 py-2 border rounded-lg">
+                                </div>
+                            </div>
+
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">{% trans "Description (FR)" %}</label>
+                                    <textarea name="slide_description_fr" class="w-full px-3 py-2 border rounded-lg" rows="2">{{ slide.description_fr }}</textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">{% trans "Description (AR)" %}</label>
+                                    <textarea name="slide_description_ar" class="w-full px-3 py-2 border rounded-lg" rows="2">{{ slide.description_ar }}</textarea>
+                                </div>
+                            </div>
+
+                            <div class="grid md:grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">{% trans "Icon" %}</label>
+                                    <select name="slide_icon" class="w-full px-3 py-2 border rounded-lg">
+                                        {% for icon_value, icon_label in icon_choices %}
+                                        <option value="{{ icon_value }}" {% if slide.icon == icon_value %}selected{% endif %}>{{ icon_label }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">{% trans "Color Theme" %}</label>
+                                    <select name="slide_color" class="w-full px-3 py-2 border rounded-lg">
+                                        {% for color_value, color_label in color_choices %}
+                                        <option value="{{ color_value }}" {% if slide.color_theme == color_value %}selected{% endif %}>{{ color_label }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">{% trans "Link" %}</label>
+                                    <input type="url" name="slide_link" value="{{ slide.link }}" class="w-full px-3 py-2 border rounded-lg" placeholder="https://">
+                                </div>
+                            </div>
+
+                            <div class="flex items-center gap-2">
+                                <input type="checkbox" name="slide_is_active" id="slide_active_{{ slide.id }}" {% if slide.is_active %}checked{% endif %} class="rounded border-gray-300">
+                                <label for="slide_active_{{ slide.id }}" class="text-sm text-gray-700">{% trans "Active" %}</label>
+                            </div>
+
+                            <div class="flex gap-2">
+                                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">{% trans "Update Slide" %}</button>
+                                <button type="button" onclick="toggleSlideEdit({{ slide.id }})" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">{% trans "Cancel" %}</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <!-- Add New Slide Form -->
+            <div class="border-t border-gray-200 pt-6">
+                <h3 class="font-medium text-gray-800 mb-4">{% trans "Add New Slide" %}</h3>
+                <form method="post" class="space-y-4">
+                    {% csrf_token %}
+                    <input type="hidden" name="slide_action" value="add">
+
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">{% trans "Title (FR)" %} *</label>
+                            <input type="text" name="slide_title_fr" class="w-full px-3 py-2 border rounded-lg" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">{% trans "Title (AR)" %}</label>
+                            <input type="text" name="slide_title_ar" class="w-full px-3 py-2 border rounded-lg">
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">{% trans "Description (FR)" %}</label>
+                            <textarea name="slide_description_fr" class="w-full px-3 py-2 border rounded-lg" rows="2"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">{% trans "Description (AR)" %}</label>
+                            <textarea name="slide_description_ar" class="w-full px-3 py-2 border rounded-lg" rows="2"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">{% trans "Icon" %}</label>
+                            <select name="slide_icon" class="w-full px-3 py-2 border rounded-lg">
+                                {% for icon_value, icon_label in icon_choices %}
+                                <option value="{{ icon_value }}">{{ icon_label }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">{% trans "Color Theme" %}</label>
+                            <select name="slide_color" class="w-full px-3 py-2 border rounded-lg">
+                                {% for color_value, color_label in color_choices %}
+                                <option value="{{ color_value }}">{{ color_label }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">{% trans "Link" %}</label>
+                            <input type="url" name="slide_link" class="w-full px-3 py-2 border rounded-lg" placeholder="https://">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                        </svg>
+                        {% trans "Add Slide" %}
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <script>
+        function toggleSlideEdit(slideId) {
+            const editForm = document.getElementById('slide-edit-' + slideId);
+            editForm.classList.toggle('hidden');
+        }
+        </script>
+
         <!-- Action Buttons -->
         <div class="mt-6 flex gap-4">
             <button type="submit" class="btn-primary">

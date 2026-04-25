@@ -7,7 +7,7 @@ from django.utils.translation import gettext_lazy as _
 from django.shortcuts import get_object_or_404, redirect, render
 from apps.services.models import Service
 from apps.analytics.models import PageView, ClickEvent, ServiceViewCount
-from apps.core.models import SiteSettings
+from apps.core.models import SiteSettings, HeroSlide
 
 
 from django.utils import timezone
@@ -113,9 +113,17 @@ class SettingsView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['settings'] = SiteSettings.objects.first()
+        context['hero_slides'] = HeroSlide.objects.filter(is_active=True).order_by('order')
+        context['icon_choices'] = HeroSlide.ICON_CHOICES
+        context['color_choices'] = HeroSlide.COLOR_CHOICES
         return context
     
     def post(self, request, *args, **kwargs):
+        # Handle HeroSlide management
+        if 'slide_action' in request.POST:
+            return self.handle_slide_action(request)
+        
+        # Handle site settings
         settings = SiteSettings.objects.first()
         if not settings:
             settings = SiteSettings.objects.create()
@@ -146,6 +154,64 @@ class SettingsView(LoginRequiredMixin, TemplateView):
         
         settings.save()
         messages.success(request, _('Settings updated successfully.'))
+        return redirect('dashboard:settings')
+    
+    def handle_slide_action(self, request):
+        action = request.POST.get('slide_action')
+        
+        if action == 'add':
+            HeroSlide.objects.create(
+                title_fr=request.POST.get('slide_title_fr', ''),
+                title_ar=request.POST.get('slide_title_ar', ''),
+                description_fr=request.POST.get('slide_description_fr', ''),
+                description_ar=request.POST.get('slide_description_ar', ''),
+                icon=request.POST.get('slide_icon', 'code'),
+                color_theme=request.POST.get('slide_color', 'blue'),
+                link=request.POST.get('slide_link', ''),
+                order=HeroSlide.objects.count()
+            )
+            messages.success(request, _('Slide added successfully.'))
+            
+        elif action == 'edit':
+            slide_id = request.POST.get('slide_id')
+            try:
+                slide = HeroSlide.objects.get(id=slide_id)
+                slide.title_fr = request.POST.get('slide_title_fr', '')
+                slide.title_ar = request.POST.get('slide_title_ar', '')
+                slide.description_fr = request.POST.get('slide_description_fr', '')
+                slide.description_ar = request.POST.get('slide_description_ar', '')
+                slide.icon = request.POST.get('slide_icon', 'code')
+                slide.color_theme = request.POST.get('slide_color', 'blue')
+                slide.link = request.POST.get('slide_link', '')
+                slide.is_active = request.POST.get('slide_is_active') == 'on'
+                slide.save()
+                messages.success(request, _('Slide updated successfully.'))
+            except HeroSlide.DoesNotExist:
+                messages.error(request, _('Slide not found.'))
+                
+        elif action == 'delete':
+            slide_id = request.POST.get('slide_id')
+            try:
+                slide = HeroSlide.objects.get(id=slide_id)
+                slide.delete()
+                messages.success(request, _('Slide deleted successfully.'))
+            except HeroSlide.DoesNotExist:
+                messages.error(request, _('Slide not found.'))
+                
+        elif action == 'reorder':
+            slide_id = request.POST.get('slide_id')
+            direction = request.POST.get('direction')
+            try:
+                slide = HeroSlide.objects.get(id=slide_id)
+                if direction == 'up':
+                    slide.order = max(0, slide.order - 1)
+                else:
+                    slide.order = slide.order + 1
+                slide.save()
+                messages.success(request, _('Slide order updated.'))
+            except HeroSlide.DoesNotExist:
+                messages.error(request, _('Slide not found.'))
+        
         return redirect('dashboard:settings')
 
 

@@ -11,8 +11,10 @@ class HomeView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         from apps.services.models import Service
+        from apps.core.models import HeroSlide
         context['featured_services'] = Service.objects.filter(is_active=True, is_featured=True)[:6]
         context['services'] = Service.objects.filter(is_active=True)[:8]
+        context['hero_slides'] = HeroSlide.objects.filter(is_active=True).order_by('order')
         return context
 
 
