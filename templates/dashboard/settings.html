@@ -204,8 +204,8 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">{% trans "Primary Color" %}</label>
                         <div class="flex items-center gap-3">
-                            <input type="color" name="primary_color" value="{{ settings.primary_color|default:'#0F172A' }}" class="w-12 h-10 border rounded-lg cursor-pointer">
-                            <input type="text" name="primary_color" value="{{ settings.primary_color|default:'#0F172A' }}" class="flex-1 px-3 py-2 border rounded-lg" maxlength="7">
+                            <input type="color" name="primary_color" value="{{ settings.primary_color|default:'#0F172A' }}" class="w-12 h-10 border rounded-lg cursor-pointer color-picker" data-target="primary_color_text">
+                            <input type="text" id="primary_color_text" value="{{ settings.primary_color|default:'#0F172A' }}" class="flex-1 px-3 py-2 border rounded-lg" maxlength="7" onchange="document.querySelector('input[name=primary_color]').value = this.value">
                         </div>
                         <p class="text-xs text-gray-500 mt-1">{% trans "Dark slate - used for headers and text" %}</p>
                     </div>
@@ -213,8 +213,8 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">{% trans "Accent Color" %}</label>
                         <div class="flex items-center gap-3">
-                            <input type="color" name="accent_color" value="{{ settings.accent_color|default:'#2563EB' }}" class="w-12 h-10 border rounded-lg cursor-pointer">
-                            <input type="text" name="accent_color" value="{{ settings.accent_color|default:'#2563EB' }}" class="flex-1 px-3 py-2 border rounded-lg" maxlength="7">
+                            <input type="color" name="accent_color" value="{{ settings.accent_color|default:'#2563EB' }}" class="w-12 h-10 border rounded-lg cursor-pointer color-picker" data-target="accent_color_text">
+                            <input type="text" id="accent_color_text" value="{{ settings.accent_color|default:'#2563EB' }}" class="flex-1 px-3 py-2 border rounded-lg" maxlength="7" onchange="document.querySelector('input[name=accent_color]').value = this.value">
                         </div>
                         <p class="text-xs text-gray-500 mt-1">{% trans "Blue - used for buttons and links" %}</p>
                     </div>
@@ -222,8 +222,8 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">{% trans "Highlight Color" %}</label>
                         <div class="flex items-center gap-3">
-                            <input type="color" name="highlight_color" value="{{ settings.highlight_color|default:'#F59E0B' }}" class="w-12 h-10 border rounded-lg cursor-pointer">
-                            <input type="text" name="highlight_color" value="{{ settings.highlight_color|default:'#F59E0B' }}" class="flex-1 px-3 py-2 border rounded-lg" maxlength="7">
+                            <input type="color" name="highlight_color" value="{{ settings.highlight_color|default:'#F59E0B' }}" class="w-12 h-10 border rounded-lg cursor-pointer color-picker" data-target="highlight_color_text">
+                            <input type="text" id="highlight_color_text" value="{{ settings.highlight_color|default:'#F59E0B' }}" class="flex-1 px-3 py-2 border rounded-lg" maxlength="7" onchange="document.querySelector('input[name=highlight_color]').value = this.value">
                         </div>
                         <p class="text-xs text-gray-500 mt-1">{% trans "Amber/Gold - used for highlights and badges" %}</p>
                     </div>
@@ -231,14 +231,28 @@
             </div>
         </div>
 
-        <!-- Hero Slides Management -->
-        <div class="mt-6 bg-white rounded-xl p-6 shadow-soft">
-            <h2 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
-                <svg class="w-5 h-5 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/>
+        <!-- Action Buttons for Site Settings -->
+        <div class="mt-6 flex gap-4">
+            <button type="submit" class="btn-primary">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                 </svg>
-                {% trans "Hero Slider Management" %}
-            </h2>
+                {% trans "Save Changes" %}
+            </button>
+            <a href="{% url 'dashboard:index' %}" class="btn-secondary">
+                {% trans "Cancel" %}
+            </a>
+        </div>
+    </form>
+
+    <!-- Hero Slides Management - Separate Form -->
+    <div class="mt-6 bg-white rounded-xl p-6 shadow-soft">
+        <h2 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+            <svg class="w-5 h-5 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/>
+            </svg>
+            {% trans "Hero Slider Management" %}
+        </h2>
 
             <!-- Existing Slides -->
             {% if hero_slides %}
@@ -430,25 +444,23 @@
         </div>
 
         <script>
+        // Sync color picker with text input
+        document.querySelectorAll('.color-picker').forEach(picker => {
+            picker.addEventListener('input', function() {
+                const targetId = this.dataset.target;
+                const textInput = document.getElementById(targetId);
+                if (textInput) {
+                    textInput.value = this.value;
+                }
+            });
+        });
+
         function toggleSlideEdit(slideId) {
             const editForm = document.getElementById('slide-edit-' + slideId);
             editForm.classList.toggle('hidden');
         }
         </script>
-
-        <!-- Action Buttons -->
-        <div class="mt-6 flex gap-4">
-            <button type="submit" class="btn-primary">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                </svg>
-                {% trans "Save Changes" %}
-            </button>
-            <a href="{% url 'dashboard:index' %}" class="btn-secondary">
-                {% trans "Cancel" %}
-            </a>
-        </div>
-    </form>
+    </div>
 </div>
 
 <style>

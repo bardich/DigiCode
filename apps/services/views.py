@@ -1,6 +1,23 @@
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, TemplateView
 from django.utils.translation import gettext_lazy as _
 from .models import Service
+
+
+class RentalLandingPageView(TemplateView):
+    """Landing page for Rental Cars service in Arabic."""
+    template_name = 'services/lp_rental_ar.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Get the rental cars service if it exists
+        try:
+            context['service'] = Service.objects.filter(
+                is_active=True,
+                slug__icontains='rental'
+            ).first()
+        except Service.DoesNotExist:
+            context['service'] = None
+        return context
 
 
 class ServiceListView(ListView):

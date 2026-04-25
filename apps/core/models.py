@@ -120,6 +120,16 @@ class SiteSettings(models.Model):
     
     def __str__(self):
         return self.site_name
+
+    @classmethod
+    def load(cls):
+        """Get or create the singleton SiteSettings instance."""
+        obj, created = cls.objects.get_or_create(pk=1, defaults={
+            'site_name': 'DigiCode Web Agency',
+            'email': 'contact@digicode.ma',
+            'whatsapp_number': '+212600000000',
+        })
+        return obj
     
     def save(self, *args, **kwargs):
         self.pk = 1
@@ -127,8 +137,3 @@ class SiteSettings(models.Model):
     
     def delete(self, *args, **kwargs):
         pass
-    
-    @classmethod
-    def load(cls):
-        obj, created = cls.objects.get_or_create(pk=1)
-        return obj

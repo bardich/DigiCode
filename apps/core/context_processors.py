@@ -3,8 +3,14 @@ from .models import SiteSettings
 
 def site_settings(request):
     """Add site settings to template context."""
+    from .models import SiteSettings
+    try:
+        settings = SiteSettings.load()
+    except Exception:
+        # Return default values if database isn't ready
+        settings = None
     return {
-        'site_settings': SiteSettings.load(),
+        'site_settings': settings,
     }
 
 

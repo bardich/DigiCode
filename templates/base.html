@@ -29,6 +29,16 @@
     <!-- Alpine.js -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     
+    <!-- Dynamic Theme Colors -->
+    <style>
+        :root {
+            --color-primary: {{ site_settings.primary_color|default:'#0F172A' }};
+            --color-accent: {{ site_settings.accent_color|default:'#2563EB' }};
+            --color-highlight: {{ site_settings.highlight_color|default:'#F59E0B' }};
+            --color-background: #F8FAFC;
+        }
+    </style>
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -36,10 +46,10 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: '#0F172A',
-                        accent: '#2563EB',
-                        highlight: '#F59E0B',
-                        background: '#F8FAFC',
+                        primary: 'var(--color-primary)',
+                        accent: 'var(--color-accent)',
+                        highlight: 'var(--color-highlight)',
+                        background: 'var(--color-background)',
                     },
                     fontFamily: {
                         sans: ['Inter', 'system-ui', 'sans-serif'],
