@@ -20,6 +20,40 @@ class RentalLandingPageView(TemplateView):
         return context
 
 
+class UsedCarsLandingPageView(TemplateView):
+    """Landing page for Used Cars service (AutoMaroc) in Arabic."""
+    template_name = 'services/lp_usedcars_ar.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Get the used cars service if it exists
+        try:
+            context['service'] = Service.objects.filter(
+                is_active=True,
+                slug__icontains='used'
+            ).first()
+        except Service.DoesNotExist:
+            context['service'] = None
+        return context
+
+
+class ArtisanaLandingPageView(TemplateView):
+    """Landing page for Artisana e-commerce platform for artisans in Arabic."""
+    template_name = 'services/lp_artisana_ar.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Get the artisana service if it exists
+        try:
+            context['service'] = Service.objects.filter(
+                is_active=True,
+                slug__icontains='artisana'
+            ).first()
+        except Service.DoesNotExist:
+            context['service'] = None
+        return context
+
+
 class ServiceListView(ListView):
     model = Service
     template_name = 'services/list.html'

@@ -1,0 +1,647 @@
+{% extends 'base.html' %}
+
+{% block title %}Artisana - منصة التجارة الإلكترونية للحرفيين{% endblock %}
+
+{% block meta_description %}منصة احترافية مصممة خصيصاً للحرفيين والمبدعين لعرض وبيع منتجاتهم الفريدة عبر الإنترنت{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 overflow-hidden" dir="rtl">
+    <!-- Background Pattern -->
+    <div class="absolute inset-0 opacity-5">
+        <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg fill=\"%23ffffff\" fill-opacity=\"0.4\"%3E%3Cpath d=\"M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+    </div>
+    
+    <!-- Floating Elements -->
+    <div class="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-20 right-10 w-96 h-96 bg-accent/10 rounded-full blur-3xl"></div>
+    
+    <div class="w-full px-4 sm:px-6 lg:px-8 xl:px-12 relative z-10">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center">
+                <!-- Badge -->
+                <div class="inline-flex items-center gap-2 px-4 py-2 bg-highlight/20 rounded-full mb-6">
+                    <span class="w-2 h-2 bg-highlight rounded-full animate-pulse"></span>
+                    <span class="text-highlight font-semibold text-sm">منصة متخصصة للحرفيين</span>
+                </div>
+                
+                <!-- Main Title -->
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
+                    منصة <span class="text-highlight">Artisana</span><br>
+                    <span class="text-2xl md:text-3xl lg:text-4xl font-normal text-gray-300">حلول رقمية متكاملة لإدارة أعمالك الحرفية</span>
+                </h1>
+                
+                <!-- Subtitle -->
+                <p class="text-xl text-gray-400 max-w-3xl mx-auto mb-8">
+                    نحن نقدم لك منصة احترافية مصممة خصيصاً للحرفيين والمبدعين الذين يرغبون في عرض وبيع منتجاتهم الفريدة عبر الإنترنت. سواء كنت تصنع الملابس التقليدية، الأحذية اليدوية، الإكسسوارات، أو المنتجات الغذائية الفاخرة - لدينا كل ما تحتاجه لإدارة عملك بنجاح.
+                </p>
+                
+                <!-- CTA Buttons -->
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                    <a href="#pricing" class="inline-flex items-center gap-2 px-8 py-4 bg-highlight hover:bg-highlight/90 text-white font-bold rounded-xl transition-all shadow-lg shadow-highlight/30">
+                        اكتشف الباقات
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                        </svg>
+                    </a>
+                    <a href="#features" class="inline-flex items-center gap-2 px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl transition-all backdrop-blur-sm border border-white/20">
+                        استكشف المميزات
+                    </a>
+                </div>
+                
+                <!-- Trust Badges -->
+                <div class="mt-12 flex flex-wrap justify-center gap-6 text-gray-400 text-sm">
+                    <div class="flex items-center gap-2">
+                        <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        دعم فني 24/7
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        إعداد فوري
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        أمان وحماية كاملة
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Scroll Indicator -->
+    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+        <svg class="w-6 h-6 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+        </svg>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section id="features" class="py-20 bg-white" dir="rtl">
+    <div class="w-full px-4 sm:px-6 lg:px-8 xl:px-12">
+        <div class="max-w-7xl mx-auto">
+            <!-- Section Header -->
+            <div class="text-center mb-16">
+                <span class="inline-block px-4 py-2 bg-primary/10 text-primary font-semibold rounded-full mb-4">
+                    ✨ المميزات الرئيسية
+                </span>
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
+                    كل ما تحتاجه لإدارة متجرك
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    منصة متكاملة مصممة خصيصاً لاحتياجات الحرفيين والمبدعين
+                </p>
+            </div>
+            
+            <!-- Features Grid -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Feature 1: Product Management -->
+                <div class="group bg-slate-50 rounded-2xl p-8 hover:bg-white hover:shadow-xl transition-all border border-slate-100">
+                    <div class="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <svg class="w-7 h-7 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">إدارة المنتجات المتقدمة</h3>
+                    <ul class="space-y-2 text-gray-600 text-sm">
+                        <li class="flex items-start gap-2">
+                            <span class="text-primary mt-1">•</span>
+                            دعم كامل للملابس بمقاسات XS-XXL
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-primary mt-1">•</span>
+                            الأحذية بمقاسات 36-45
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-primary mt-1">•</span>
+                            نظام تتبع مخزون ذكي
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-primary mt-1">•</span>
+                            تصنيفات مرنة للمنتجات
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Feature 2: Orders & Cart -->
+                <div class="group bg-slate-50 rounded-2xl p-8 hover:bg-white hover:shadow-xl transition-all border border-slate-100">
+                    <div class="w-14 h-14 bg-accent/10 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <svg class="w-7 h-7 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">نظام الطلبات والسلة</h3>
+                    <ul class="space-y-2 text-gray-600 text-sm">
+                        <li class="flex items-start gap-2">
+                            <span class="text-accent mt-1">•</span>
+                            سلة تسوق سهلة الاستخدام
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-accent mt-1">•</span>
+                            إدارة الطلبات المتكاملة
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-accent mt-1">•</span>
+                            نظام شحن مدمج
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-accent mt-1">•</span>
+                            تتبع حالة الطلبات
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Feature 3: Admin Dashboard -->
+                <div class="group bg-slate-50 rounded-2xl p-8 hover:bg-white hover:shadow-xl transition-all border border-slate-100">
+                    <div class="w-14 h-14 bg-highlight/10 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <svg class="w-7 h-7 text-highlight" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">لوحة تحكم الإدارة</h3>
+                    <ul class="space-y-2 text-gray-600 text-sm">
+                        <li class="flex items-start gap-2">
+                            <span class="text-highlight mt-1">•</span>
+                            إدارة المنتجات بسهولة
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-highlight mt-1">•</span>
+                            تصفية وبحث متقدم
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-highlight mt-1">•</span>
+                            إحصائيات real-time
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-highlight mt-1">•</span>
+                            تفعيل/تعطيل بنقرة واحدة
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Feature 4: Multi-language -->
+                <div class="group bg-slate-50 rounded-2xl p-8 hover:bg-white hover:shadow-xl transition-all border border-slate-100">
+                    <div class="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <svg class="w-7 h-7 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">دعم متعدد اللغات</h3>
+                    <ul class="space-y-2 text-gray-600 text-sm">
+                        <li class="flex items-start gap-2">
+                            <span class="text-primary mt-1">•</span>
+                            دعم العربية والفرنسية والإنجليزية
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-primary mt-1">•</span>
+                            واجهة RTL احترافية
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-primary mt-1">•</span>
+                            ترجمة ذكية للمحتوى
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-primary mt-1">•</span>
+                            تجربة عربية متكاملة
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Feature 5: Responsive Design -->
+                <div class="group bg-slate-50 rounded-2xl p-8 hover:bg-white hover:shadow-xl transition-all border border-slate-100">
+                    <div class="w-14 h-14 bg-accent/10 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <svg class="w-7 h-7 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">تصميم عصري متجاوب</h3>
+                    <ul class="space-y-2 text-gray-600 text-sm">
+                        <li class="flex items-start gap-2">
+                            <span class="text-accent mt-1">•</span>
+                            Tailwind CSS حديث
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-accent mt-1">•</span>
+                            متوافق مع جميع الأجهزة
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-accent mt-1">•</span>
+                            ألوان قابلة للتخصيص
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-accent mt-1">•</span>
+                            تجربة موبايل مثالية
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Feature 6: Artisan Features -->
+                <div class="group bg-slate-50 rounded-2xl p-8 hover:bg-white hover:shadow-xl transition-all border border-slate-100">
+                    <div class="w-14 h-14 bg-highlight/10 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <svg class="w-7 h-7 text-highlight" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">ميزات خاصة للحرفيين</h3>
+                    <ul class="space-y-2 text-gray-600 text-sm">
+                        <li class="flex items-start gap-2">
+                            <span class="text-highlight mt-1">•</span>
+                            دعم أسعار الجملة والتجزئة
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-highlight mt-1">•</span>
+                            منتجات قابلة للتخصيص
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-highlight mt-1">•</span>
+                            نظام مقاسات ذكي
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-highlight mt-1">•</span>
+                            إظهار المواد المستخدمة
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="py-20 bg-slate-50" dir="rtl">
+    <div class="w-full px-4 sm:px-6 lg:px-8 xl:px-12">
+        <div class="max-w-7xl mx-auto">
+            <!-- Section Header -->
+            <div class="text-center mb-16">
+                <span class="inline-block px-4 py-2 bg-accent/10 text-accent font-semibold rounded-full mb-4">
+                    🚀 كيف يعمل
+                </span>
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
+                    أربع خطوات بسيطة للنجاح
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    ابدأ رحلتك الرقمية في دقائق معدودة
+                </p>
+            </div>
+            
+            <!-- Steps -->
+            <div class="grid md:grid-cols-4 gap-8">
+                <!-- Step 1 -->
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-primary rounded-full flex items-center justify-center mx-auto mb-4 text-white font-bold text-2xl shadow-lg shadow-primary/30">1</div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-2">إضافة منتجاتك</h3>
+                    <p class="text-gray-600 text-sm">أضف منتجاتك مع الصور والوصف والسعر. حدد نوع المنتج لعرض الخيارات المناسبة.</p>
+                </div>
+                
+                <!-- Step 2 -->
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-accent rounded-full flex items-center justify-center mx-auto mb-4 text-white font-bold text-2xl shadow-lg shadow-accent/30">2</div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-2">تنظيم متجرك</h3>
+                    <p class="text-gray-600 text-sm">أنشئ أقساماً منظمة لمنتجاتك. يمكن للعملاء تصفح المنتجات حسب الفئة بسهولة.</p>
+                </div>
+                
+                <!-- Step 3 -->
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-highlight rounded-full flex items-center justify-center mx-auto mb-4 text-white font-bold text-2xl shadow-lg shadow-highlight/30">3</div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-2">استلام الطلبات</h3>
+                    <p class="text-gray-600 text-sm">تتبع الطلبات من لحظة الإنشاء حتى التسليم. نظام إشعارات يبقيك على اطلاع دائم.</p>
+                </div>
+                
+                <!-- Step 4 -->
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4 text-white font-bold text-2xl shadow-lg shadow-green-500/30">4</div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-2">التحليلات والنمو</h3>
+                    <p class="text-gray-600 text-sm">اطلع على إحصائيات مبيعاتك والمنتجات الأكثر مبيعاً لتحسين أداء متجرك.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Product Types Section -->
+<section class="py-20 bg-white" dir="rtl">
+    <div class="w-full px-4 sm:px-6 lg:px-8 xl:px-12">
+        <div class="max-w-7xl mx-auto">
+            <!-- Section Header -->
+            <div class="text-center mb-16">
+                <span class="inline-block px-4 py-2 bg-highlight/10 text-highlight font-semibold rounded-full mb-4">
+                    🎨 أنواع المنتجات المدعومة
+                </span>
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
+                    متجرك يدعم جميع أنواع المنتجات الحرفية
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    نظام مرن يتكيف مع طبيعة منتجاتك
+                </p>
+            </div>
+            
+            <!-- Product Types Grid -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Clothes -->
+                <div class="bg-gradient-to-br from-primary/5 to-primary/10 rounded-2xl p-6 border border-primary/20">
+                    <div class="w-12 h-12 bg-primary/20 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-4-4-4 4H5a2 2 0 00-2 2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-2">الملابس</h3>
+                    <p class="text-gray-600 text-sm">مقاسات متعددة (XS إلى XXL)، الألوان، جدول المقاسات</p>
+                </div>
+                
+                <!-- Shoes -->
+                <div class="bg-gradient-to-br from-accent/5 to-accent/10 rounded-2xl p-6 border border-accent/20">
+                    <div class="w-12 h-12 bg-accent/20 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-2">الأحذية</h3>
+                    <p class="text-gray-600 text-sm">مقاسات أوروبية قياسية (36-45)، الألوان</p>
+                </div>
+                
+                <!-- Accessories -->
+                <div class="bg-gradient-to-br from-highlight/5 to-highlight/10 rounded-2xl p-6 border border-highlight/20">
+                    <div class="w-12 h-12 bg-highlight/20 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-highlight" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-2">الإكسسوارات</h3>
+                    <p class="text-gray-600 text-sm">تحديد المواد (جلد، معدن، خشب، إلخ)</p>
+                </div>
+                
+                <!-- Food Products -->
+                <div class="bg-gradient-to-br from-green-500/5 to-green-500/10 rounded-2xl p-6 border border-green-500/20">
+                    <div class="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-2">المنتجات الغذائية</h3>
+                    <p class="text-gray-600 text-sm">الوزن، تاريخ الصلاحية، معلومات التخزين</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Why Choose Us Section -->
+<section class="py-20 bg-slate-900" dir="rtl">
+    <div class="w-full px-4 sm:px-6 lg:px-8 xl:px-12">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <!-- Content -->
+                <div>
+                    <span class="inline-block px-4 py-2 bg-highlight/20 text-highlight font-semibold rounded-full mb-6">
+                        ⭐ لماذا تختارنا
+                    </span>
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
+                        منصة مصممة خصيصاً للحرفيين
+                    </h2>
+                    <p class="text-xl text-gray-400 mb-8">
+                        نفهم احتياجاتك الخاصة كحرفي، ونوفر لك كل الأدوات اللازمة للنجاح في العالم الرقمي
+                    </p>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 bg-green-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold text-white">سهولة الاستخدام</h4>
+                                <p class="text-gray-400">واجهة بسيطة لا تحتاج لخبرة تقنية</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 bg-green-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold text-white">دعم الحرفيين</h4>
+                                <p class="text-gray-400">مصمم خصيصاً لاحتياجات المنتجات اليدوية والفريدة</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 bg-green-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold text-white">أمان عالي</h4>
+                                <p class="text-gray-400">حماية كاملة لبياناتك وبيانات عملائك</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 bg-green-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold text-white">دعم فني</h4>
+                                <p class="text-gray-400">فريق متخصص لمساعدتك على مدار الساعة</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 bg-green-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold text-white">تكلفة منافسة</h4>
+                                <p class="text-gray-400">أسعار مناسبة للحرفيين وأصحاب المشاريع الصغيرة</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Visual -->
+                <div class="relative">
+                    <div class="absolute -inset-4 bg-gradient-to-r from-primary/20 via-accent/20 to-highlight/20 rounded-3xl blur-2xl opacity-50"></div>
+                    <div class="relative bg-slate-800 rounded-2xl p-8 border border-slate-700">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-slate-700 rounded-xl p-4 text-center">
+                                <div class="text-3xl font-bold text-highlight mb-1">+500</div>
+                                <div class="text-gray-400 text-sm">حرفي مسجل</div>
+                            </div>
+                            <div class="bg-slate-700 rounded-xl p-4 text-center">
+                                <div class="text-3xl font-bold text-primary mb-1">+10K</div>
+                                <div class="text-gray-400 text-sm">منتج معروض</div>
+                            </div>
+                            <div class="bg-slate-700 rounded-xl p-4 text-center">
+                                <div class="text-3xl font-bold text-accent mb-1">+50K</div>
+                                <div class="text-gray-400 text-sm">طلب ناجح</div>
+                            </div>
+                            <div class="bg-slate-700 rounded-xl p-4 text-center">
+                                <div class="text-3xl font-bold text-green-400 mb-1">99%</div>
+                                <div class="text-gray-400 text-sm">ر satisfaction</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Pricing Section -->
+<section id="pricing" class="py-20 bg-slate-900" dir="rtl">
+    <div class="w-full px-4 sm:px-6 lg:px-8 xl:px-12">
+        <div class="max-w-5xl mx-auto">
+            <!-- Section Header -->
+            <div class="text-center mb-16">
+                <span class="inline-block px-4 py-2 bg-highlight/20 text-highlight font-semibold rounded-full mb-4">
+                    💰 باقات الاشتراك
+                </span>
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+                    اختر الباقة المناسبة لمتجرك
+                </h2>
+                <p class="text-xl text-gray-400 max-w-2xl mx-auto">
+                    باقات مرنة تشمل جميع المميزات مع دعم فني على مدار الساعة
+                </p>
+            </div>
+            
+            <!-- Pricing Cards -->
+            <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <!-- 6 Months Plan -->
+                <div class="bg-slate-800 rounded-2xl p-8 border border-slate-700 hover:border-slate-600 transition-all">
+                    <div class="text-center mb-8">
+                        <div class="inline-block px-4 py-2 bg-blue-500/20 text-blue-400 font-semibold rounded-full mb-4">
+                            6 أشهر
+                        </div>
+                        <div class="flex items-baseline justify-center gap-2">
+                            <span class="text-5xl font-bold text-white">3,800</span>
+                            <span class="text-gray-400 text-lg">درهم</span>
+                        </div>
+                    </div>
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-center gap-3 text-gray-300">
+                            <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            نسخة كاملة مع جميع المميزات
+                        </li>
+                        <li class="flex items-center gap-3 text-gray-300">
+                            <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            دعم فني 24/7
+                        </li>
+                        <li class="flex items-center gap-3 text-gray-300">
+                            <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            اسم النطاق .ma لمدة سنة
+                        </li>
+                        <li class="flex items-center gap-3 text-gray-300">
+                            <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            استضافة لمدة 6 أشهر
+                        </li>
+                    </ul>
+                    <a href="#contact" class="block w-full py-4 px-4 bg-slate-700 hover:bg-slate-600 text-white text-center font-semibold rounded-xl transition-all">
+                        اطلب الآن
+                    </a>
+                </div>
+                
+                <!-- 1 Year Plan (Popular) -->
+                <div class="bg-gradient-to-br from-highlight/20 to-highlight/5 rounded-2xl p-8 border-2 border-highlight relative transform scale-105">
+                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                        <span class="px-4 py-1 bg-highlight text-white text-sm font-semibold rounded-full">الأفضل قيمة</span>
+                    </div>
+                    <div class="text-center mb-8">
+                        <div class="inline-block px-4 py-2 bg-highlight/20 text-highlight font-semibold rounded-full mb-4">
+                            سنة كاملة
+                        </div>
+                        <div class="flex items-baseline justify-center gap-2">
+                            <span class="text-5xl font-bold text-highlight">4,500</span>
+                            <span class="text-gray-400 text-lg">درهم</span>
+                        </div>
+                        <div class="text-green-400 text-sm mt-2">وفّر 3100 درهم!</div>
+                    </div>
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-center gap-3 text-gray-300">
+                            <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            نسخة كاملة مع جميع المميزات
+                        </li>
+                        <li class="flex items-center gap-3 text-gray-300">
+                            <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            دعم فني 24/7
+                        </li>
+                        <li class="flex items-center gap-3 text-gray-300">
+                            <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            اسم النطاق .ma لمدة سنة
+                        </li>
+                        <li class="flex items-center gap-3 text-gray-300">
+                            <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            استضافة لمدة 12 شهر
+                        </li>
+                        <li class="flex items-center gap-3 text-highlight">
+                            <svg class="w-5 h-5 text-highlight" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span class="font-semibold">الاستفادة من تحديثات النظام</span>
+                        </li>
+                    </ul>
+                    <a href="#contact" class="block w-full py-4 px-4 bg-highlight hover:bg-highlight/90 text-white text-center font-semibold rounded-xl transition-all shadow-lg shadow-highlight/30">
+                        اطلب الآن
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section id="contact" class="py-20 bg-gradient-to-br from-primary to-primary/90" dir="rtl">
+    <div class="w-full px-4 sm:px-6 lg:px-8 xl:px-12">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
+                هل أنت مستعد لنقل عملك الحرفي إلى المستوى التالي؟
+            </h2>
+            <p class="text-xl text-white/80 mb-8">
+                انضم إلى مئات الحرفيين الذين يوسعون نطاق أعمالهم عبر الإنترنت. ابدأ رحلتك الرقمية اليوم!
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="mailto:contact@artisana.ma" class="inline-flex items-center gap-2 px-8 py-4 bg-white text-primary font-bold rounded-xl transition-all shadow-lg hover:shadow-xl">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                    </svg>
+                    تواصل معنا
+                </a>
+                <a href="tel:+212600000000" class="inline-flex items-center gap-2 px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl transition-all backdrop-blur-sm border border-white/30">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                    </svg>
+                    اتصل بنا
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
