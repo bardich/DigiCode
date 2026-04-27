@@ -265,6 +265,26 @@
             {% trans "Site Settings" %}
         </a>
         
+        <div class="nav-section">{% trans "Landing Pages" %}</div>
+        <a href="{% url 'services:rental_landing' %}" class="nav-item" target="_blank">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
+            </svg>
+            {% trans "Rental Cars LP" %}
+        </a>
+        <a href="{% url 'services:usedcars_landing' %}" class="nav-item" target="_blank">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
+            </svg>
+            {% trans "Used Cars LP" %}
+        </a>
+        <a href="{% url 'services:artisana_landing' %}" class="nav-item" target="_blank">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
+            </svg>
+            {% trans "Artisana LP" %}
+        </a>
+        
         <div class="nav-section">{% trans "Analytics" %}</div>
         <a href="{% url 'dashboard:analytics' %}" class="nav-item {% if request.resolver_match.url_name == 'analytics' %}active{% endif %}">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
