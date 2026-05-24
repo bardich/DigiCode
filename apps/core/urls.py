@@ -8,4 +8,5 @@ urlpatterns = [
     path('set-language/<str:lang>/', views.SetLanguageView.as_view(), name='set_language'),
     path('about/', views.AboutView.as_view(), name='about'),
     path('contact/', views.ContactView.as_view(), name='contact'),
+    path('projects/', views.ProjectListView.as_view(), name='project_list'),
 ]

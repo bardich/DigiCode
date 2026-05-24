@@ -137,3 +137,22 @@ class SiteSettings(models.Model):
     
     def delete(self, *args, **kwargs):
         pass
+
+
+class Project(models.Model):
+    """Project/portfolio item showcasing completed work."""
+    title = models.CharField(_('Title'), max_length=200)
+    short_description = models.TextField(_('Short Description'), max_length=500, help_text=_('Brief summary shown on the list page'))
+    full_description = models.TextField(_('Full Description'), help_text=_('Detailed description shown on the detail page'))
+    link = models.URLField(_('Project Link'), blank=True, null=True, help_text=_('External link to the live project'))
+    is_active = models.BooleanField(_('Active'), default=True)
+    created_at = models.DateTimeField(_('Created At'), auto_now_add=True)
+    updated_at = models.DateTimeField(_('Updated At'), auto_now=True)
+
+    class Meta:
+        verbose_name = _('Project')
+        verbose_name_plural = _('Projects')
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return self.title

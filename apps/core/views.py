@@ -1,8 +1,10 @@
 from django.shortcuts import redirect
-from django.views.generic import TemplateView, View
+from django.views.generic import TemplateView, View, ListView
 from django.utils.translation import activate, get_language
 from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
+
+from apps.core.models import Project
 
 
 class HomeView(TemplateView):
@@ -35,3 +37,13 @@ class AboutView(TemplateView):
 
 class ContactView(TemplateView):
     template_name = 'core/contact.html'
+
+
+class ProjectListView(ListView):
+    """Public page listing all active projects."""
+    model = Project
+    template_name = 'core/project_list.html'
+    context_object_name = 'projects'
+
+    def get_queryset(self):
+        return Project.objects.filter(is_active=True).order_by('-created_at')

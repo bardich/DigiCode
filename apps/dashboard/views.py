@@ -7,7 +7,7 @@ from django.utils.translation import gettext_lazy as _
 from django.shortcuts import get_object_or_404, redirect, render
 from apps.services.models import Service
 from apps.analytics.models import PageView, ClickEvent, ServiceViewCount
-from apps.core.models import SiteSettings, HeroSlide
+from apps.core.models import SiteSettings, HeroSlide, Project
 
 
 from django.utils import timezone
@@ -244,6 +244,75 @@ class DashboardLoginView(TemplateView):
             messages.error(request, _('Invalid username or password.'))
         
         return render(request, self.template_name)
+
+
+class ProjectListView(LoginRequiredMixin, ListView):
+    model = Project
+    template_name = 'dashboard/project_list.html'
+    context_object_name = 'projects'
+    paginate_by = 20
+
+
+class ProjectCreateView(LoginRequiredMixin, CreateView):
+    model = Project
+    template_name = 'dashboard/project_form.html'
+    fields = [
+        'title', 'short_description', 'full_description',
+        'link', 'is_active',
+    ]
+    success_url = reverse_lazy('dashboard:project_list')
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        tailwind_input = 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all'
+        tailwind_textarea = 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all min-h-[120px]'
+        tailwind_checkbox = 'w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary'
+        form.fields['title'].widget.attrs.update({'class': tailwind_input, 'placeholder': _('Project title')})
+        form.fields['short_description'].widget.attrs.update({'class': tailwind_textarea, 'placeholder': _('Brief summary of the project'), 'rows': 3})
+        form.fields['full_description'].widget.attrs.update({'class': tailwind_textarea, 'placeholder': _('Detailed project description'), 'rows': 6})
+        form.fields['link'].widget.attrs.update({'class': tailwind_input, 'placeholder': 'https://example.com'})
+        form.fields['is_active'].widget.attrs.update({'class': tailwind_checkbox})
+        return form
+
+    def form_valid(self, form):
+        messages.success(self.request, _('Project created successfully.'))
+        return super().form_valid(form)
+
+
+class ProjectUpdateView(LoginRequiredMixin, UpdateView):
+    model = Project
+    template_name = 'dashboard/project_form.html'
+    fields = [
+        'title', 'short_description', 'full_description',
+        'link', 'is_active',
+    ]
+    success_url = reverse_lazy('dashboard:project_list')
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        tailwind_input = 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all'
+        tailwind_textarea = 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all min-h-[120px]'
+        tailwind_checkbox = 'w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary'
+        form.fields['title'].widget.attrs.update({'class': tailwind_input, 'placeholder': _('Project title')})
+        form.fields['short_description'].widget.attrs.update({'class': tailwind_textarea, 'placeholder': _('Brief summary of the project'), 'rows': 3})
+        form.fields['full_description'].widget.attrs.update({'class': tailwind_textarea, 'placeholder': _('Detailed project description'), 'rows': 6})
+        form.fields['link'].widget.attrs.update({'class': tailwind_input, 'placeholder': 'https://example.com'})
+        form.fields['is_active'].widget.attrs.update({'class': tailwind_checkbox})
+        return form
+
+    def form_valid(self, form):
+        messages.success(self.request, _('Project updated successfully.'))
+        return super().form_valid(form)
+
+
+class ProjectDeleteView(LoginRequiredMixin, DeleteView):
+    model = Project
+    template_name = 'dashboard/project_confirm_delete.html'
+    success_url = reverse_lazy('dashboard:project_list')
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(request, _('Project deleted successfully.'))
+        return super().delete(request, *args, **kwargs)
 
 
 class DashboardLogoutView(TemplateView):

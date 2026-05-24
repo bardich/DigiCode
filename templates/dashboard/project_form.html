@@ -1,0 +1,147 @@
+{% extends 'dashboard/base.html' %}
+{% load i18n %}
+
+{% block extra_css %}
+<style>
+    .form-group { margin-bottom: 1.5rem; }
+    .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; color: #374151; }
+    .form-group .helptext { font-size: 0.875rem; color: #6b7280; margin-top: 0.25rem; display: block; }
+    .form-group .errorlist { color: #dc2626; font-size: 0.875rem; margin-top: 0.25rem; list-style: none; padding: 0; }
+    .form-group input[type="text"],
+    .form-group input[type="url"],
+    .form-group textarea { width: 100%; padding: 0.625rem 0.875rem; border: 1px solid #d1d5db; border-radius: 0.5rem; background-color: white; transition: all 0.2s; }
+    .form-group input[type="text"]:focus,
+    .form-group input[type="url"]:focus,
+    .form-group textarea:focus { outline: none; border-color: var(--color-primary); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
+    .form-group input[type="checkbox"] { width: 1.25rem; height: 1.25rem; border-radius: 0.25rem; border-color: #d1d5db; color: var(--color-primary); }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="pt-24 pb-12 bg-gray-50 min-h-screen">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="flex items-center mb-8">
+            <a href="{% url 'dashboard:project_list' %}" class="text-gray-500 hover:text-gray-700 mr-4 transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                </svg>
+            </a>
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900">
+                    {% if object %}{% trans "Edit Project" %}{% else %}{% trans "Add Project" %}{% endif %}
+                </h1>
+                <p class="text-gray-500 mt-1">
+                    {% if object %}{% trans "Update your project details." %}{% else %}{% trans "Create a new project for your portfolio." %}{% endif %}
+                </p>
+            </div>
+        </div>
+
+        <form method="post" class="lg:grid lg:grid-cols-3 lg:gap-8">
+            {% csrf_token %}
+
+            <!-- Main Content -->
+            <div class="lg:col-span-2 space-y-6">
+                <!-- Basic Info -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                    <div class="px-6 py-4 border-b border-gray-100 bg-gray-50/50">
+                        <h2 class="text-lg font-semibold text-gray-900">{% trans "Basic Information" %}</h2>
+                    </div>
+                    <div class="p-6 space-y-6">
+                        <!-- Title -->
+                        <div class="form-group">
+                            <label for="{{ form.title.id_for_label }}">
+                                {% trans "Title" %}
+                                <span class="text-red-500">*</span>
+                            </label>
+                            {{ form.title }}
+                            {% if form.title.errors %}
+                            <ul class="errorlist">{{ form.title.errors }}</ul>
+                            {% endif %}
+                        </div>
+
+                        <!-- Short Description -->
+                        <div class="form-group">
+                            <label for="{{ form.short_description.id_for_label }}">
+                                {% trans "Short Description" %}
+                                <span class="text-red-500">*</span>
+                            </label>
+                            {{ form.short_description }}
+                            <span class="helptext">{% trans "Brief summary shown on the list page (max 500 characters)" %}</span>
+                            {% if form.short_description.errors %}
+                            <ul class="errorlist">{{ form.short_description.errors }}</ul>
+                            {% endif %}
+                        </div>
+
+                        <!-- Full Description -->
+                        <div class="form-group">
+                            <label for="{{ form.full_description.id_for_label }}">
+                                {% trans "Full Description" %}
+                                <span class="text-red-500">*</span>
+                            </label>
+                            {{ form.full_description }}
+                            <span class="helptext">{% trans "Detailed description shown on the detail page" %}</span>
+                            {% if form.full_description.errors %}
+                            <ul class="errorlist">{{ form.full_description.errors }}</ul>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project Link -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                    <div class="px-6 py-4 border-b border-gray-100 bg-gray-50/50">
+                        <h2 class="text-lg font-semibold text-gray-900">{% trans "Project Link" %}</h2>
+                    </div>
+                    <div class="p-6">
+                        <div class="form-group mb-0">
+                            <label for="{{ form.link.id_for_label }}">
+                                {% trans "External URL" %}
+                            </label>
+                            {{ form.link }}
+                            <span class="helptext">{% trans "Link to the live project or demo (optional)" %}</span>
+                            {% if form.link.errors %}
+                            <ul class="errorlist">{{ form.link.errors }}</ul>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="mt-6 lg:mt-0 space-y-6">
+                <!-- Status -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                    <div class="px-6 py-4 border-b border-gray-100 bg-gray-50/50">
+                        <h2 class="text-lg font-semibold text-gray-900">{% trans "Status" %}</h2>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center">
+                            {{ form.is_active }}
+                            <label for="{{ form.is_active.id_for_label }}" class="ml-3 text-sm font-medium text-gray-700">
+                                {% trans "Active" %}
+                            </label>
+                        </div>
+                        <span class="helptext mt-2 block">{% trans "Inactive projects are hidden from the public page." %}</span>
+                        {% if form.is_active.errors %}
+                        <ul class="errorlist">{{ form.is_active.errors }}</ul>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                    <div class="p-6 space-y-3">
+                        <button type="submit" class="w-full px-4 py-2.5 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium">
+                            {% if object %}{% trans "Save Changes" %}{% else %}{% trans "Create Project" %}{% endif %}
+                        </button>
+                        <a href="{% url 'dashboard:project_list' %}" class="w-full block text-center px-4 py-2.5 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium">
+                            {% trans "Cancel" %}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

@@ -13,4 +13,8 @@ urlpatterns = [
     path('services/<int:pk>/delete/', views.ServiceDeleteView.as_view(), name='service_delete'),
     path('analytics/', views.AnalyticsView.as_view(), name='analytics'),
     path('settings/', views.SettingsView.as_view(), name='settings'),
+    path('projects/', views.ProjectListView.as_view(), name='project_list'),
+    path('projects/create/', views.ProjectCreateView.as_view(), name='project_create'),
+    path('projects/<int:pk>/edit/', views.ProjectUpdateView.as_view(), name='project_edit'),
+    path('projects/<int:pk>/delete/', views.ProjectDeleteView.as_view(), name='project_delete'),
 ]
