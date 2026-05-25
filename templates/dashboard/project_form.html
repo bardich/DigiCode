@@ -37,7 +37,7 @@
             </div>
         </div>
 
-        <form method="post" class="lg:grid lg:grid-cols-3 lg:gap-8">
+        <form method="post" enctype="multipart/form-data" class="lg:grid lg:grid-cols-3 lg:gap-8">
             {% csrf_token %}
 
             <!-- Main Content -->
@@ -48,41 +48,91 @@
                         <h2 class="text-lg font-semibold text-gray-900">{% trans "Basic Information" %}</h2>
                     </div>
                     <div class="p-6 space-y-6">
-                        <!-- Title -->
+                        <!-- Title (FR) -->
                         <div class="form-group">
-                            <label for="{{ form.title.id_for_label }}">
-                                {% trans "Title" %}
+                            <label for="{{ form.title_fr.id_for_label }}">
+                                {% trans "Title (French)" %}
                                 <span class="text-red-500">*</span>
                             </label>
-                            {{ form.title }}
-                            {% if form.title.errors %}
-                            <ul class="errorlist">{{ form.title.errors }}</ul>
+                            {{ form.title_fr }}
+                            {% if form.title_fr.errors %}
+                            <ul class="errorlist">{{ form.title_fr.errors }}</ul>
                             {% endif %}
                         </div>
 
-                        <!-- Short Description -->
+                        <!-- Title (AR) -->
                         <div class="form-group">
-                            <label for="{{ form.short_description.id_for_label }}">
-                                {% trans "Short Description" %}
+                            <label for="{{ form.title_ar.id_for_label }}">
+                                {% trans "Title (Arabic)" %}
+                            </label>
+                            {{ form.title_ar }}
+                            {% if form.title_ar.errors %}
+                            <ul class="errorlist">{{ form.title_ar.errors }}</ul>
+                            {% endif %}
+                        </div>
+
+                        <!-- Image -->
+                        <div class="form-group">
+                            <label for="{{ form.image.id_for_label }}">
+                                {% trans "Image" %}
+                            </label>
+                            {% if form.instance.image %}
+                            <div class="mb-2">
+                                <img src="{{ form.instance.image.url }}" alt="Current image" class="w-32 h-32 object-cover rounded-lg border">
+                            </div>
+                            {% endif %}
+                            {{ form.image }}
+                            <span class="helptext">{% trans "Project thumbnail or screenshot (optional)" %}</span>
+                            {% if form.image.errors %}
+                            <ul class="errorlist">{{ form.image.errors }}</ul>
+                            {% endif %}
+                        </div>
+
+                        <!-- Short Description (FR) -->
+                        <div class="form-group">
+                            <label for="{{ form.short_description_fr.id_for_label }}">
+                                {% trans "Short Description (French)" %}
                                 <span class="text-red-500">*</span>
                             </label>
-                            {{ form.short_description }}
+                            {{ form.short_description_fr }}
                             <span class="helptext">{% trans "Brief summary shown on the list page (max 500 characters)" %}</span>
-                            {% if form.short_description.errors %}
-                            <ul class="errorlist">{{ form.short_description.errors }}</ul>
+                            {% if form.short_description_fr.errors %}
+                            <ul class="errorlist">{{ form.short_description_fr.errors }}</ul>
                             {% endif %}
                         </div>
 
-                        <!-- Full Description -->
+                        <!-- Short Description (AR) -->
                         <div class="form-group">
-                            <label for="{{ form.full_description.id_for_label }}">
-                                {% trans "Full Description" %}
+                            <label for="{{ form.short_description_ar.id_for_label }}">
+                                {% trans "Short Description (Arabic)" %}
+                            </label>
+                            {{ form.short_description_ar }}
+                            {% if form.short_description_ar.errors %}
+                            <ul class="errorlist">{{ form.short_description_ar.errors }}</ul>
+                            {% endif %}
+                        </div>
+
+                        <!-- Full Description (FR) -->
+                        <div class="form-group">
+                            <label for="{{ form.full_description_fr.id_for_label }}">
+                                {% trans "Full Description (French)" %}
                                 <span class="text-red-500">*</span>
                             </label>
-                            {{ form.full_description }}
+                            {{ form.full_description_fr }}
                             <span class="helptext">{% trans "Detailed description shown on the detail page" %}</span>
-                            {% if form.full_description.errors %}
-                            <ul class="errorlist">{{ form.full_description.errors }}</ul>
+                            {% if form.full_description_fr.errors %}
+                            <ul class="errorlist">{{ form.full_description_fr.errors }}</ul>
+                            {% endif %}
+                        </div>
+
+                        <!-- Full Description (AR) -->
+                        <div class="form-group">
+                            <label for="{{ form.full_description_ar.id_for_label }}">
+                                {% trans "Full Description (Arabic)" %}
+                            </label>
+                            {{ form.full_description_ar }}
+                            {% if form.full_description_ar.errors %}
+                            <ul class="errorlist">{{ form.full_description_ar.errors }}</ul>
                             {% endif %}
                         </div>
                     </div>

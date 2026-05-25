@@ -195,3 +195,30 @@ msgstr "WhatsApp"
 
 msgid "Email Us"
 msgstr "Envoyez-nous un Email"
+
+msgid "Portfolio"
+msgstr "Portfolio"
+
+msgid "Our Projects"
+msgstr "Nos Projets"
+
+msgid "Explore our latest work and discover how we bring ideas to life through innovative solutions."
+msgstr "Découvrez nos dernières réalisations et comment nous donnons vie aux idées grâce à des solutions innovantes."
+
+msgid "Live"
+msgstr "En Ligne"
+
+msgid "View Project"
+msgstr "Voir le Projet"
+
+msgid "Coming Soon"
+msgstr "Bientôt Disponible"
+
+msgid "No projects yet"
+msgstr "Aucun projet pour le moment"
+
+msgid "We're working on exciting projects. Check back soon for updates."
+msgstr "Nous travaillons sur des projets passionnants. Revenez bientôt pour les mises à jour."
+
+msgid "Back to Home"
+msgstr "Retour à l'Accueil"

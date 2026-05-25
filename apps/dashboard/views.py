@@ -257,8 +257,8 @@ class ProjectCreateView(LoginRequiredMixin, CreateView):
     model = Project
     template_name = 'dashboard/project_form.html'
     fields = [
-        'title', 'short_description', 'full_description',
-        'link', 'is_active',
+        'title_fr', 'title_ar', 'image', 'short_description_fr', 'short_description_ar',
+        'full_description_fr', 'full_description_ar', 'link', 'is_active',
     ]
     success_url = reverse_lazy('dashboard:project_list')
 
@@ -267,9 +267,12 @@ class ProjectCreateView(LoginRequiredMixin, CreateView):
         tailwind_input = 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all'
         tailwind_textarea = 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all min-h-[120px]'
         tailwind_checkbox = 'w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary'
-        form.fields['title'].widget.attrs.update({'class': tailwind_input, 'placeholder': _('Project title')})
-        form.fields['short_description'].widget.attrs.update({'class': tailwind_textarea, 'placeholder': _('Brief summary of the project'), 'rows': 3})
-        form.fields['full_description'].widget.attrs.update({'class': tailwind_textarea, 'placeholder': _('Detailed project description'), 'rows': 6})
+        form.fields['title_fr'].widget.attrs.update({'class': tailwind_input, 'placeholder': _('Project title (French)')})
+        form.fields['title_ar'].widget.attrs.update({'class': tailwind_input, 'placeholder': _('Project title (Arabic)')})
+        form.fields['short_description_fr'].widget.attrs.update({'class': tailwind_textarea, 'placeholder': _('Brief summary (French)'), 'rows': 3})
+        form.fields['short_description_ar'].widget.attrs.update({'class': tailwind_textarea, 'placeholder': _('Brief summary (Arabic)'), 'rows': 3})
+        form.fields['full_description_fr'].widget.attrs.update({'class': tailwind_textarea, 'placeholder': _('Detailed description (French)'), 'rows': 6})
+        form.fields['full_description_ar'].widget.attrs.update({'class': tailwind_textarea, 'placeholder': _('Detailed description (Arabic)'), 'rows': 6})
         form.fields['link'].widget.attrs.update({'class': tailwind_input, 'placeholder': 'https://example.com'})
         form.fields['is_active'].widget.attrs.update({'class': tailwind_checkbox})
         return form
@@ -283,8 +286,8 @@ class ProjectUpdateView(LoginRequiredMixin, UpdateView):
     model = Project
     template_name = 'dashboard/project_form.html'
     fields = [
-        'title', 'short_description', 'full_description',
-        'link', 'is_active',
+        'title_fr', 'title_ar', 'image', 'short_description_fr', 'short_description_ar',
+        'full_description_fr', 'full_description_ar', 'link', 'is_active',
     ]
     success_url = reverse_lazy('dashboard:project_list')
 
@@ -293,9 +296,12 @@ class ProjectUpdateView(LoginRequiredMixin, UpdateView):
         tailwind_input = 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all'
         tailwind_textarea = 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all min-h-[120px]'
         tailwind_checkbox = 'w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary'
-        form.fields['title'].widget.attrs.update({'class': tailwind_input, 'placeholder': _('Project title')})
-        form.fields['short_description'].widget.attrs.update({'class': tailwind_textarea, 'placeholder': _('Brief summary of the project'), 'rows': 3})
-        form.fields['full_description'].widget.attrs.update({'class': tailwind_textarea, 'placeholder': _('Detailed project description'), 'rows': 6})
+        form.fields['title_fr'].widget.attrs.update({'class': tailwind_input, 'placeholder': _('Project title (French)')})
+        form.fields['title_ar'].widget.attrs.update({'class': tailwind_input, 'placeholder': _('Project title (Arabic)')})
+        form.fields['short_description_fr'].widget.attrs.update({'class': tailwind_textarea, 'placeholder': _('Brief summary (French)'), 'rows': 3})
+        form.fields['short_description_ar'].widget.attrs.update({'class': tailwind_textarea, 'placeholder': _('Brief summary (Arabic)'), 'rows': 3})
+        form.fields['full_description_fr'].widget.attrs.update({'class': tailwind_textarea, 'placeholder': _('Detailed description (French)'), 'rows': 6})
+        form.fields['full_description_ar'].widget.attrs.update({'class': tailwind_textarea, 'placeholder': _('Detailed description (Arabic)'), 'rows': 6})
         form.fields['link'].widget.attrs.update({'class': tailwind_input, 'placeholder': 'https://example.com'})
         form.fields['is_active'].widget.attrs.update({'class': tailwind_checkbox})
         return form

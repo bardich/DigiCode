@@ -37,6 +37,7 @@
             --color-highlight: {{ site_settings.highlight_color|default:'#F59E0B' }};
             --color-background: #F8FAFC;
         }
+        [x-cloak] { display: none !important; }
     </style>
 
     <!-- Tailwind CSS -->
@@ -168,8 +169,9 @@
         .shadow-medium { box-shadow: 0 10px 40px rgba(15, 23, 42, 0.12); }
         .animate-fade-in { animation: fadeIn 0.6s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
         .line-clamp-1 { display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+        .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
     </style>
     
     {% block extra_css %}{% endblock %}
@@ -180,8 +182,8 @@
     {% block extra_head %}{% endblock %}
 </head>
 <body class="font-sans bg-background text-primary antialiased"
-      x-data="{ mobileMenu: false, scrolled: window.scrollY > 50 }"
-      x-init="scrolled = window.scrollY > 50; window.addEventListener('scroll', () => scrolled = window.scrollY > 50)"
+      x-data="{ mobileMenu: false, scrolled: {% block navbar_scrolled %}window.scrollY > 50{% endblock %} }"
+      x-init="if (!scrolled) { scrolled = window.scrollY > 50; } window.addEventListener('scroll', () => scrolled = window.scrollY > 50)"
       :class="{ 'font-arabic': '{{ CURRENT_LANGUAGE }}' === 'ar' }"
       :dir="'{{ CURRENT_LANGUAGE }}' === 'ar' ? 'rtl' : 'ltr'"
       hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>

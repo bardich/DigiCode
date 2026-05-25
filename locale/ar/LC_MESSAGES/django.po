@@ -186,3 +186,30 @@ msgstr "راسلنا عبر البريد"
 
 msgid "#1 Web Agency in Morocco"
 msgstr "#1 وكالة ويب في المغرب"
+
+msgid "Portfolio"
+msgstr "المحفظة"
+
+msgid "Our Projects"
+msgstr "مشاريعنا"
+
+msgid "Explore our latest work and discover how we bring ideas to life through innovative solutions."
+msgstr "اكتشف أحدث أعمالنا وكيف نحول الأفكار إلى واقع من خلال حلول مبتكرة."
+
+msgid "Live"
+msgstr "مباشر"
+
+msgid "View Project"
+msgstr "عرض المشروع"
+
+msgid "Coming Soon"
+msgstr "قريباً"
+
+msgid "No projects yet"
+msgstr "لا توجد مشاريع حالياً"
+
+msgid "We're working on exciting projects. Check back soon for updates."
+msgstr "نحن نعمل على مشاريع مثيرة. تفقد قريباً للحصول على التحديثات."
+
+msgid "Back to Home"
+msgstr "العودة للرئيسية"

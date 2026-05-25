@@ -1,5 +1,5 @@
 from django.db import models
-from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext_lazy as _, get_language
 
 
 class HeroSlide(models.Model):
@@ -141,9 +141,13 @@ class SiteSettings(models.Model):
 
 class Project(models.Model):
     """Project/portfolio item showcasing completed work."""
-    title = models.CharField(_('Title'), max_length=200)
-    short_description = models.TextField(_('Short Description'), max_length=500, help_text=_('Brief summary shown on the list page'))
-    full_description = models.TextField(_('Full Description'), help_text=_('Detailed description shown on the detail page'))
+    title_fr = models.CharField(_('Title (FR)'), max_length=200, default='')
+    title_ar = models.CharField(_('Title (AR)'), max_length=200, blank=True, default='')
+    image = models.ImageField(_('Image'), upload_to='projects/', blank=True, null=True, help_text=_('Project thumbnail or screenshot'))
+    short_description_fr = models.TextField(_('Short Description (FR)'), max_length=500, default='', help_text=_('Brief summary shown on the list page'))
+    short_description_ar = models.TextField(_('Short Description (AR)'), max_length=500, blank=True, default='')
+    full_description_fr = models.TextField(_('Full Description (FR)'), default='', help_text=_('Detailed description shown on the detail page'))
+    full_description_ar = models.TextField(_('Full Description (AR)'), blank=True, default='')
     link = models.URLField(_('Project Link'), blank=True, null=True, help_text=_('External link to the live project'))
     is_active = models.BooleanField(_('Active'), default=True)
     created_at = models.DateTimeField(_('Created At'), auto_now_add=True)
@@ -155,4 +159,19 @@ class Project(models.Model):
         ordering = ['-created_at']
 
     def __str__(self):
-        return self.title
+        return self.title_fr
+
+    def get_title(self):
+        if get_language() == 'ar' and self.title_ar:
+            return self.title_ar
+        return self.title_fr
+
+    def get_short_description(self):
+        if get_language() == 'ar' and self.short_description_ar:
+            return self.short_description_ar
+        return self.short_description_fr
+
+    def get_full_description(self):
+        if get_language() == 'ar' and self.full_description_ar:
+            return self.full_description_ar
+        return self.full_description_fr
