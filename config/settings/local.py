@@ -4,6 +4,9 @@ from .base import *
 
 DEBUG = True
 
+# Add browser reload middleware for development
+MIDDLEWARE = MIDDLEWARE + ['django_browser_reload.middleware.BrowserReloadMiddleware']
+
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '*']
 
 # SQLite for local development

@@ -123,17 +123,26 @@ class SiteSettings(models.Model):
 
     @classmethod
     def load(cls):
-        """Get or create the singleton SiteSettings instance."""
+        """Get or create the singleton SiteSettings instance (cached for 5 minutes)."""
+        from django.core.cache import cache
+        cache_key = 'site_settings'
+        cached = cache.get(cache_key)
+        if cached:
+            return cached
+        
         obj, created = cls.objects.get_or_create(pk=1, defaults={
             'site_name': 'DigiCode Web Agency',
             'email': 'contact@digicode.ma',
             'whatsapp_number': '+212600000000',
         })
+        cache.set(cache_key, obj, 300)  # Cache for 5 minutes
         return obj
     
     def save(self, *args, **kwargs):
         self.pk = 1
         super().save(*args, **kwargs)
+        from django.core.cache import cache
+        cache.delete('site_settings')  # Invalidate cache on save
     
     def delete(self, *args, **kwargs):
         pass

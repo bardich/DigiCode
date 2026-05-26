@@ -19,31 +19,45 @@
     <link rel="icon" type="image/png" href="{{ site_settings.favicon.url }}">
     {% endif %}
     
-    <!-- Preconnect -->
+    <!-- Resource Hints -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Alyamama:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Async Font Loading -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Alyamama:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Alyamama:wght@400;500;600;700&display=swap"></noscript>
     
-    <!-- Alpine.js -->
+    <!-- Alpine.js - deferred (non-blocking) -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     
-    <!-- Dynamic Theme Colors -->
+    <!-- Critical JS for navbar scroll state -->
+    <script>
+        // Set initial scroll state before Alpine loads
+        document.documentElement.dataset.scrolled = window.scrollY > 50 ? 'true' : 'false';
+        document.documentElement.dataset.rtl = '{{ CURRENT_LANGUAGE }}' === 'ar' ? 'true' : 'false';
+    </script>
+    
+    <!-- Minimal Critical CSS -->
     <style>
-        :root {
-            --color-primary: {{ site_settings.primary_color|default:'#0F172A' }};
-            --color-accent: {{ site_settings.accent_color|default:'#2563EB' }};
-            --color-highlight: {{ site_settings.highlight_color|default:'#F59E0B' }};
-            --color-background: #F8FAFC;
-        }
-        [x-cloak] { display: none !important; }
+        *,*:before,*:after{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,sans-serif;line-height:1.5}
+        :root{--color-primary:{{ site_settings.primary_color|default:'#0F172A' }};--color-accent:{{ site_settings.accent_color|default:'#2563EB' }};--color-highlight:{{ site_settings.highlight_color|default:'#F59E0B' }};--color-background:#F8FAFC}
+        .bg-primary{background-color:var(--color-primary)}.text-white{color:#fff}.text-accent{color:var(--color-accent)}
+        .gradient-text{background:linear-gradient(135deg,var(--color-accent),var(--color-highlight));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .relative{position:relative}.absolute{position:absolute}.inset-0{inset:0}.flex{display:flex}.grid{display:grid}.hidden{display:none}
+        .items-center{align-items:center}.justify-center{justify-content:center}.min-h-\[80vh\]{min-height:80vh}.w-full{width:100%}.h-full{height:100%}.max-w-7xl{max-width:80rem}.mx-auto{margin-left:auto;margin-right:auto}.px-4{padding-left:1rem;padding-right:1rem}.py-16{padding-top:4rem;padding-bottom:4rem}.pt-20{padding-top:5rem}.text-center{text-align:center}.overflow-hidden{overflow:hidden}
+        .bg-gradient-to-br{background-image:linear-gradient(to bottom right,var(--tw-gradient-stops))}.from-primary{--tw-gradient-from:var(--color-primary);--tw-gradient-stops:var(--tw-gradient-from),rgba(15,23,42,0)}.via-slate-900{--tw-gradient-stops:var(--tw-gradient-from),#0f172a,rgba(15,23,42,0)}.to-slate-800{--tw-gradient-to:#1e293b}
+        .text-sm{font-size:.875rem}.text-lg{font-size:1.125rem}.text-xl{font-size:1.25rem}.text-3xl{font-size:1.875rem}.text-4xl{font-size:2.25rem}.font-medium{font-weight:500}.font-semibold{font-weight:600}.font-bold{font-weight:700}.leading-tight{line-height:1.25}
+        .gap-4{gap:1rem}.gap-6{gap:1.5rem}.mb-4{margin-bottom:1rem}.mb-6{margin-bottom:1.5rem}.mb-8{margin-bottom:2rem}.mt-12{margin-top:3rem}
+        .grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}.grid-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+        .flex-col{flex-direction:column}@media(min-width:1024px){.lg\\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}.lg\\:text-left{text-align:left}.lg\\:text-right{text-align:right}.lg\\:py-24{padding-top:6rem;padding-bottom:6rem}.lg\\:text-6xl{font-size:3.75rem;line-height:1}}
+        .opacity-5{opacity:.05}.inline-flex{display:inline-flex}[x-cloak]{display:none!important}
+        @font-face{font-family:Inter;font-style:normal;font-weight:400;font-display:swap;src:local('Inter')}@font-face{font-family:Inter;font-style:normal;font-weight:700;font-display:swap;src:local('Inter Bold')}
     </style>
 
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tailwind CSS - Async Load at End of Body -->
     <script>
-        tailwind.config = {
+        // Tailwind Config
+        window.tailwindConfig = {
             theme: {
                 extend: {
                     colors: {
@@ -58,9 +72,41 @@
                     }
                 }
             }
-        }
+        };
     </script>
     
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="font-sans antialiased" style="background-color:#F8FAFC;color:#0F172A;" 
+      x-data="{ mobileMenu: false, scrolled: false }" 
+      x-init="scrolled = window.scrollY > 50; window.addEventListener('scroll', () => scrolled = window.scrollY > 50)"
+      :class="{ 'font-arabic': '{{ CURRENT_LANGUAGE }}' === 'ar' }" 
+      :dir="'{{ CURRENT_LANGUAGE }}' === 'ar' ? 'rtl' : 'ltr'"
+      hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+    
+    {% include 'includes/header.html' %}
+    
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    
+    {% include 'includes/footer.html' %}
+    {% include 'includes/whatsapp_button.html' %}
+    
+    <!-- Toast Notifications -->
+    <div x-data="{ toasts: [] }" 
+         @toast.window="toasts.push({message: $event.detail.message, type: $event.detail.type}); setTimeout(() => toasts.shift(), 5000)"
+         class="fixed bottom-4 right-4 rtl:right-auto rtl:left-4 z-50 space-y-2">
+        <template x-for="(toast, index) in toasts" :key="index">
+            <div class="px-4 py-3 rounded-lg shadow-lg text-white animate-fade-in"
+                 :class="toast.type === 'success' ? 'bg-green-500' : 'bg-red-500'"
+                 x-text="toast.message"></div>
+        </template>
+    </div>
+    
+    {% block extra_js %}{% endblock %}
+    
+    <!-- Deferred CSS and Scripts -->
     {% compress css %}
     <link rel="stylesheet" href="{% static 'css/tailwind.css' %}">
     {% endcompress %}
@@ -176,38 +222,17 @@
     
     {% block extra_css %}{% endblock %}
     
-    <!-- HTMX -->
+    <!-- Load Fonts After Content (FOUT is better than FOIT) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Alyamama:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Non-blocking Scripts - Loaded at end of body -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Apply Tailwind config once loaded
+        if (window.tailwind) {
+            tailwind.config = window.tailwindConfig;
+        }
+    </script>
     <script src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-D1Kt99CQMDuVetoL1lrEwbo" crossorigin="anonymous"></script>
-    
-    {% block extra_head %}{% endblock %}
-</head>
-<body class="font-sans bg-background text-primary antialiased"
-      x-data="{ mobileMenu: false, scrolled: {% block navbar_scrolled %}window.scrollY > 50{% endblock %} }"
-      x-init="if (!scrolled) { scrolled = window.scrollY > 50; } window.addEventListener('scroll', () => scrolled = window.scrollY > 50)"
-      :class="{ 'font-arabic': '{{ CURRENT_LANGUAGE }}' === 'ar' }"
-      :dir="'{{ CURRENT_LANGUAGE }}' === 'ar' ? 'rtl' : 'ltr'"
-      hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
-    
-    {% include 'includes/header.html' %}
-    
-    <main>
-        {% block content %}{% endblock %}
-    </main>
-    
-    {% include 'includes/footer.html' %}
-    {% include 'includes/whatsapp_button.html' %}
-    
-    <!-- Toast Notifications -->
-    <div x-data="{ toasts: [] }" 
-         @toast.window="toasts.push({message: $event.detail.message, type: $event.detail.type}); setTimeout(() => toasts.shift(), 5000)"
-         class="fixed bottom-4 right-4 rtl:right-auto rtl:left-4 z-50 space-y-2">
-        <template x-for="(toast, index) in toasts" :key="index">
-            <div class="px-4 py-3 rounded-lg shadow-lg text-white animate-fade-in"
-                 :class="toast.type === 'success' ? 'bg-green-500' : 'bg-red-500'"
-                 x-text="toast.message"></div>
-        </template>
-    </div>
-    
-    {% block extra_js %}{% endblock %}
 </body>
 </html>

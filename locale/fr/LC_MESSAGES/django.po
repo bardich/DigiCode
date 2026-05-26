@@ -222,3 +222,24 @@ msgstr "Nous travaillons sur des projets passionnants. Revenez bientôt pour les
 
 msgid "Back to Home"
 msgstr "Retour à l'Accueil"
+
+msgid "Select language"
+msgstr "Choisir la langue"
+
+msgid "Toggle menu"
+msgstr "Ouvrir/fermer le menu"
+
+msgid "Switch to French"
+msgstr "Passer au Français"
+
+msgid "Switch to Arabic"
+msgstr "Passer à l'Arabe"
+
+msgid "Previous slide"
+msgstr "Diapositive précédente"
+
+msgid "Next slide"
+msgstr "Diapositive suivante"
+
+msgid "Go to slide"
+msgstr "Aller à la diapositive"

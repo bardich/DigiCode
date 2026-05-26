@@ -213,3 +213,24 @@ msgstr "نحن نعمل على مشاريع مثيرة. تفقد قريباً ل
 
 msgid "Back to Home"
 msgstr "العودة للرئيسية"
+
+msgid "Select language"
+msgstr "اختيار اللغة"
+
+msgid "Toggle menu"
+msgstr "فتح/إغلاق القائمة"
+
+msgid "Switch to French"
+msgstr "التبديل إلى الفرنسية"
+
+msgid "Switch to Arabic"
+msgstr "التبديل إلى العربية"
+
+msgid "Previous slide"
+msgstr "الشريحة السابقة"
+
+msgid "Next slide"
+msgstr "الشريحة التالية"
+
+msgid "Go to slide"
+msgstr "الذهاب إلى الشريحة"

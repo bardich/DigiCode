@@ -35,7 +35,7 @@
             <div class="hidden lg:flex items-center space-x-4 rtl:space-x-reverse">
                 <!-- Language Switcher -->
                 <div class="relative" x-data="{ open: false }" @click.outside="open = false">
-                    <button @click="open = !open" class="flex items-center space-x-1 rtl:space-x-reverse text-sm font-medium transition-colors" :class="scrolled ? 'text-primary' : 'text-white/90'">
+                    <button @click="open = !open" aria-label="{% trans 'Select language' %}" class="flex items-center space-x-1 rtl:space-x-reverse text-sm font-medium transition-colors" :class="scrolled ? 'text-primary' : 'text-white/90'">
                         <span>{{ CURRENT_LANGUAGE|upper }}</span>
                         <svg class="w-4 h-4 transition-transform" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -73,7 +73,7 @@
             </div>
             
             <!-- Mobile Menu Button -->
-            <button @click="mobileMenu = !mobileMenu" class="lg:hidden p-2 transition-colors" :class="scrolled ? 'text-primary' : 'text-white'">
+            <button @click="mobileMenu = !mobileMenu" aria-label="{% trans 'Toggle menu' %}" class="lg:hidden p-2 transition-colors" :class="scrolled ? 'text-primary' : 'text-white'">
                 <svg x-show="!mobileMenu" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                 </svg>
@@ -97,10 +97,10 @@
             <a href="{% url 'core:about' %}" class="block py-2 text-base font-medium">{% trans "About" %}</a>
             <a href="{% url 'core:contact' %}" class="block py-2 text-base font-medium">{% trans "Contact" %}</a>
             <div class="pt-3 border-t flex items-center space-x-4 rtl:space-x-reverse">
-                <a href="{% url 'core:set_language' lang='fr' %}" 
-                   class="{% if CURRENT_LANGUAGE == 'fr' %}text-accent font-medium{% endif %}">FR</a>
-                <a href="{% url 'core:set_language' lang='ar' %}" 
-                   class="{% if CURRENT_LANGUAGE == 'ar' %}text-accent font-medium{% endif %}">AR</a>
+                <a href="{% url 'core:set_language' lang='fr' %}" aria-label="{% trans 'Switch to French' %}"
+                   class="{% if CURRENT_LANGUAGE == 'fr' %}text-accent font-medium{% endif %}">Français</a>
+                <a href="{% url 'core:set_language' lang='ar' %}" aria-label="{% trans 'Switch to Arabic' %}"
+                   class="{% if CURRENT_LANGUAGE == 'ar' %}text-accent font-medium{% endif %}">العربية</a>
             </div>
         </div>
     </div>

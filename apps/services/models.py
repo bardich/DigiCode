@@ -63,6 +63,16 @@ class Service(models.Model):
     def get_absolute_url(self):
         return reverse('services:detail', kwargs={'slug': self.slug})
     
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        from django.core.cache import cache
+        cache.delete('header_services')  # Invalidate header cache
+    
+    def delete(self, *args, **kwargs):
+        from django.core.cache import cache
+        cache.delete('header_services')  # Invalidate header cache
+        super().delete(*args, **kwargs)
+    
     def get_whatsapp_message(self):
         """Generate WhatsApp message for this service."""
         lang = get_language()
