@@ -25,7 +25,7 @@
                 <!-- Project Image -->
                 {% if project.image %}
                 <div class="relative h-52 overflow-hidden">
-                    <img src="{{ project.image.url }}" alt="{{ project.get_title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                    <img src="{{ project.image.url }}" alt="{{ project.get_title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" width="400" height="208">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent"></div>
                     <div class="absolute bottom-4 left-4 right-4 flex items-center justify-between">
                         <span class="text-xs font-medium text-white/80 backdrop-blur-sm bg-black/20 px-2.5 py-1 rounded-full">{{ project.created_at|date:"M Y" }}</span>
