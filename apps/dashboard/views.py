@@ -5,6 +5,7 @@ from django.urls import reverse_lazy
 from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
 from django.shortcuts import get_object_or_404, redirect, render
+from django.http import JsonResponse
 from apps.services.models import Service
 from apps.analytics.models import PageView, ClickEvent, ServiceViewCount
 from apps.core.models import SiteSettings, HeroSlide, Project
@@ -60,8 +61,28 @@ class ServiceCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('dashboard:service_list')
     
     def form_valid(self, form):
+        response = super().form_valid(form)
         messages.success(self.request, _('Service created successfully.'))
-        return super().form_valid(form)
+        
+        # Handle HTMX request
+        if self.request.headers.get('HX-Request'):
+            return JsonResponse({
+                'success': True,
+                'message': _('Service created successfully.'),
+                'redirect_url': self.get_success_url()
+            })
+        return response
+    
+    def form_invalid(self, form):
+        response = super().form_invalid(form)
+        
+        # Handle HTMX request
+        if self.request.headers.get('HX-Request'):
+            return JsonResponse({
+                'success': False,
+                'errors': form.errors
+            }, status=400)
+        return response
 
 
 class ServiceUpdateView(LoginRequiredMixin, UpdateView):
@@ -80,8 +101,28 @@ class ServiceUpdateView(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy('dashboard:service_list')
     
     def form_valid(self, form):
+        response = super().form_valid(form)
         messages.success(self.request, _('Service updated successfully.'))
-        return super().form_valid(form)
+        
+        # Handle HTMX request
+        if self.request.headers.get('HX-Request'):
+            return JsonResponse({
+                'success': True,
+                'message': _('Service updated successfully.'),
+                'redirect_url': self.get_success_url()
+            })
+        return response
+    
+    def form_invalid(self, form):
+        response = super().form_invalid(form)
+        
+        # Handle HTMX request
+        if self.request.headers.get('HX-Request'):
+            return JsonResponse({
+                'success': False,
+                'errors': form.errors
+            }, status=400)
+        return response
 
 
 class ServiceDeleteView(LoginRequiredMixin, DeleteView):
@@ -278,8 +319,28 @@ class ProjectCreateView(LoginRequiredMixin, CreateView):
         return form
 
     def form_valid(self, form):
+        response = super().form_valid(form)
         messages.success(self.request, _('Project created successfully.'))
-        return super().form_valid(form)
+        
+        # Handle HTMX request
+        if self.request.headers.get('HX-Request'):
+            return JsonResponse({
+                'success': True,
+                'message': _('Project created successfully.'),
+                'redirect_url': self.get_success_url()
+            })
+        return response
+    
+    def form_invalid(self, form):
+        response = super().form_invalid(form)
+        
+        # Handle HTMX request
+        if self.request.headers.get('HX-Request'):
+            return JsonResponse({
+                'success': False,
+                'errors': form.errors
+            }, status=400)
+        return response
 
 
 class ProjectUpdateView(LoginRequiredMixin, UpdateView):
@@ -307,8 +368,28 @@ class ProjectUpdateView(LoginRequiredMixin, UpdateView):
         return form
 
     def form_valid(self, form):
+        response = super().form_valid(form)
         messages.success(self.request, _('Project updated successfully.'))
-        return super().form_valid(form)
+        
+        # Handle HTMX request
+        if self.request.headers.get('HX-Request'):
+            return JsonResponse({
+                'success': True,
+                'message': _('Project updated successfully.'),
+                'redirect_url': self.get_success_url()
+            })
+        return response
+    
+    def form_invalid(self, form):
+        response = super().form_invalid(form)
+        
+        # Handle HTMX request
+        if self.request.headers.get('HX-Request'):
+            return JsonResponse({
+                'success': False,
+                'errors': form.errors
+            }, status=400)
+        return response
 
 
 class ProjectDeleteView(LoginRequiredMixin, DeleteView):

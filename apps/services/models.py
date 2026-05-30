@@ -34,7 +34,7 @@ class Service(models.Model):
     benefits_ar = models.JSONField(_('Benefits (AR)'), default=list)
     
     # Media
-    featured_image = models.ImageField(_('Featured Image'), upload_to='services/')
+    featured_image = models.ImageField(_('Featured Image'), upload_to='services/', blank=True, null=True)
     youtube_url = models.URLField(_('YouTube Video URL'), blank=True)
     
     # Meta

@@ -37,7 +37,7 @@
             </div>
         </div>
 
-        <form method="post" enctype="multipart/form-data" class="lg:grid lg:grid-cols-3 lg:gap-8">
+        <form method="post" enctype="multipart/form-data" class="lg:grid lg:grid-cols-3 lg:gap-8" hx-post="" hx-target="body" hx-swap="innerHTML">
             {% csrf_token %}
 
             <!-- Main Content -->
@@ -194,4 +194,85 @@
         </form>
     </div>
 </section>
+
+{% block extra_js %}
+<script>
+document.addEventListener('htmx:beforeRequest', function(evt) {
+    // Show saving indicator on submit button
+    const submitBtn = document.querySelector('button[type="submit"]');
+    if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `
+            <svg class="animate-spin h-5 w-5 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            {% trans "Saving..." %}
+        `;
+    }
+});
+
+document.addEventListener('htmx:afterRequest', function(evt) {
+    // Restore submit button
+    const submitBtn = document.querySelector('button[type="submit"]');
+    if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '{% if object %}{% trans "Save Changes" %}{% else %}{% trans "Create Project" %}{% endif %}';
+    }
+    
+    // Handle JSON response
+    if (evt.detail.xhr.response) {
+        try {
+            const response = JSON.parse(evt.detail.xhr.response);
+            
+            if (response.success) {
+                // Show success message
+                const alert = document.createElement('div');
+                alert.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-4 rounded-lg shadow-lg z-50 flex items-center gap-3';
+                alert.innerHTML = `
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    <span>${response.message}</span>
+                `;
+                document.body.appendChild(alert);
+                
+                // Remove alert after 2 seconds and redirect
+                setTimeout(() => {
+                    alert.remove();
+                    window.location.href = response.redirect_url;
+                }, 2000);
+            } else {
+                // Show error messages
+                const errorContainer = document.querySelector('.form-error-container') || createErrorContainer();
+                errorContainer.innerHTML = '';
+                
+                if (response.errors) {
+                    Object.keys(response.errors).forEach(field => {
+                        const errorDiv = document.createElement('div');
+                        errorDiv.className = 'bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg mb-4';
+                        errorDiv.innerHTML = `
+                            <strong>${field}:</strong>
+                            <ul class="mt-1">
+                                ${response.errors[field].map(err => `<li>• ${err}</li>`).join('')}
+                            </ul>
+                        `;
+                        errorContainer.appendChild(errorDiv);
+                    });
+                }
+            }
+        } catch (e) {
+            console.error('Error parsing response:', e);
+        }
+    }
+});
+
+function createErrorContainer() {
+    const container = document.createElement('div');
+    container.className = 'form-error-container';
+    const form = document.querySelector('form');
+    form.insertBefore(container, form.firstChild);
+    return container;
+}
+</script>
 {% endblock %}

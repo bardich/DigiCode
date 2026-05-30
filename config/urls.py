@@ -16,7 +16,7 @@ sitemaps = {
 }
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('secret-admin-dc2024/', admin.site.urls),  # Obscured admin URL
     path('rosetta/', include('rosetta.urls')),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='sitemap'),
     path('robots.txt', TemplateView.as_view(template_name='robots.txt', content_type='text/plain')),

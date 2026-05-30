@@ -6,6 +6,9 @@ DEBUG = False
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=lambda v: [s.strip() for s in v.split(',')])
 
+# Admin security - restrict admin access to specific IPs (empty = no restriction)
+ADMIN_ALLOWED_IPS = config('ADMIN_ALLOWED_IPS', default='', cast=lambda v: [s.strip() for s in v.split(',') if s.strip()])
+
 # Security
 SECURE_SSL_REDIRECT = config('SECURE_SSL_REDIRECT', default=True, cast=bool)
 SESSION_COOKIE_SECURE = config('SESSION_COOKIE_SECURE', default=True, cast=bool)
