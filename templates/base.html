@@ -23,8 +23,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
-    <!-- Async Font Loading -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Alyamama:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <!-- Preload Critical Fonts -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Alyamama:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Alyamama:wght@400;500;600;700&display=swap"></noscript>
     
     <!-- Alpine.js - deferred (non-blocking) -->
@@ -54,10 +54,11 @@
         @font-face{font-family:Inter;font-style:normal;font-weight:400;font-display:swap;src:local('Inter')}@font-face{font-family:Inter;font-style:normal;font-weight:700;font-display:swap;src:local('Inter Bold')}
     </style>
 
-    <!-- Tailwind CSS - Async Load at End of Body -->
+    <!-- Tailwind CSS - Load synchronously to prevent FOUC -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <script>
         // Tailwind Config
-        window.tailwindConfig = {
+        tailwind.config = {
             theme: {
                 extend: {
                     colors: {
@@ -222,17 +223,7 @@
     
     {% block extra_css %}{% endblock %}
     
-    <!-- Load Fonts After Content (FOUT is better than FOIT) -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Alyamama:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Non-blocking Scripts - Loaded at end of body -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        // Apply Tailwind config once loaded
-        if (window.tailwind) {
-            tailwind.config = window.tailwindConfig;
-        }
-    </script>
+    <!-- HTMX - Non-blocking -->
     <script src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-D1Kt99CQMDuVetoL1lrEwbo" crossorigin="anonymous"></script>
 </body>
 </html>
