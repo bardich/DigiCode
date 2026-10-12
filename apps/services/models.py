@@ -83,25 +83,23 @@ class Service(models.Model):
         """Generate WhatsApp message for this service."""
         lang = get_language()
         if lang == 'ar':
-            return f"مرحباً، أنا مهتم بخدمة {self.title_ar or self.title_fr}. يرجى إرسال المزيد من التفاصيل."
+            return f"مرحباً، أنا مهتم بخدمة {self.get_title()}. يرجى إرسال المزيد من التفاصيل."
         return f"Bonjour, je suis intéressé par votre service {self.title_fr}. Veuillez m'envoyer plus de détails."
     
     def get_title(self):
-        if get_language() == 'ar' and self.title_ar:
-            return self.title_ar
-        return self.title_fr
-    
+        if get_language() == 'ar':
+            return self.title_ar or 'حل ويب مخصص'
+        return self.title_fr or 'Solution web sur mesure'
+
     def get_short_description(self):
-        if get_language() == 'ar' and self.short_description_ar:
-            return self.short_description_ar
-        return self.short_description_fr
-    
+        if get_language() == 'ar':
+            return self.short_description_ar or 'لنناقش احتياجات نشاطك ونحدد الحل المناسب.'
+        return self.short_description_fr or 'Parlons de votre activité pour définir la bonne solution.'
+
     def get_full_description(self):
-        if get_language() == 'ar' and self.full_description_ar:
-            return self.full_description_ar
-        return self.full_description_fr
-    
+        if get_language() == 'ar':
+            return self.full_description_ar or 'تواصل معنا لمناقشة نطاق مشروعك والحصول على عرض مخصص.'
+        return self.full_description_fr or 'Contactez-nous pour préciser votre projet et recevoir un devis personnalisé.'
+
     def get_benefits(self):
-        if get_language() == 'ar' and self.benefits_ar:
-            return self.benefits_ar
-        return self.benefits_fr
+        return self.benefits_ar if get_language() == 'ar' else self.benefits_fr

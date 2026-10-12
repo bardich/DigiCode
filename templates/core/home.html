@@ -30,10 +30,10 @@
 </i>
 <i>
 </i>
-<span>digicode / studio</span>
+<span>{% text "digicode / studio" "ديجي كود / الاستوديو" %}</span>
 </div>{% with project=featured_projects.0 %}
 {% if project.image %}<img class="hero-project-image" src="{{ project.image.url }}" alt="{{ project.get_title }}" width="720" height="520" fetchpriority="high">{% else %}<div class="concept-art">
-<span class="eyebrow">DIGICODE / DESIGN & CODE</span>
+<span class="eyebrow">{% text "DIGICODE / DESIGN & DÉVELOPPEMENT" "ديجي كود / تصميم وتطوير" %}</span>
 <span class="concept-title">{% text "Place à<br>votre vision." "مساحة<br>لرؤيتك." %}</span>
 <div class="concept-bottom">
 <span dir="ltr" class="concept-shape" aria-hidden="true">d.</span>
@@ -49,7 +49,7 @@
 <span>{% text "Construit avec soin." "مبني بعناية." %}</span>
 </div>
 </div>
-<span class="art-caption">DIGITAL CRAFT / DIGICODE</span>
+<span class="art-caption">{% text "SAVOIR-FAIRE DIGITAL / DIGICODE" "خبرة رقمية / ديجي كود" %}</span>
 </div>
 </section>
 <div class="capability-strip">
@@ -122,28 +122,28 @@
 <p class="eyebrow">{% text "Expertises sectorielles" "خبرات قطاعية" %}</p>
 <h2>{% text "Votre métier. Sa solution." "لكل نشاط حله." %}</h2>
 </div>
-<p>{% text "Découvrez nos approches spécialisées. Présentations disponibles en arabe." "اكتشف حلولنا المتخصصة. العروض متاحة بالعربية." %}</p>
+<p>{% text "Découvrez nos approches spécialisées, adaptées aux besoins de votre métier." "اكتشف حلولنا المتخصصة والمناسبة لاحتياجات نشاطك." %}</p>
 </div>
 <div class="solution-grid">
 <a class="solution-card" data-reveal href="{% url 'services:rental_landing' %}">
-<span class="eyebrow">01 / MOBILITY</span>
+<span class="eyebrow">{% text "01 / LOCATION" "01 / تأجير السيارات" %}</span>
 <h3>{% text "Location de voitures" "تأجير السيارات" %}</h3>
 <p>{% text "Flotte, réservations et présence en ligne." "الأسطول والحجوزات والحضور الرقمي." %}</p>
-<span class="text-link">{% text "Découvrir · العربية" "اكتشف الحل" %}<span class="arrow" aria-hidden="true">↗</span>
+<span class="text-link">{% text "Découvrir la solution" "اكتشف الحل" %}<span class="arrow" aria-hidden="true">↗</span>
 </span>
 </a>
 <a class="solution-card" data-reveal href="{% url 'services:usedcars_landing' %}">
-<span class="eyebrow">02 / AUTOMOTIVE</span>
+<span class="eyebrow">{% text "02 / AUTOMOBILE" "02 / السيارات" %}</span>
 <h3>{% text "Vente de véhicules" "بيع السيارات" %}</h3>
 <p>{% text "Catalogue, recherche et demandes clients." "كتالوج وبحث وطلبات العملاء." %}</p>
-<span class="text-link">{% text "Découvrir · العربية" "اكتشف الحل" %}<span class="arrow" aria-hidden="true">↗</span>
+<span class="text-link">{% text "Découvrir la solution" "اكتشف الحل" %}<span class="arrow" aria-hidden="true">↗</span>
 </span>
 </a>
 <a class="solution-card" data-reveal href="{% url 'services:artisana_landing' %}">
-<span class="eyebrow">03 / COMMERCE</span>
+<span class="eyebrow">{% text "03 / COMMERCE" "03 / التجارة" %}</span>
 <h3>{% text "Artisanat & e-commerce" "الحرف والتجارة الإلكترونية" %}</h3>
 <p>{% text "Produits, commandes et gestion de boutique." "منتجات وطلبات وإدارة المتجر." %}</p>
-<span class="text-link">{% text "Découvrir · العربية" "اكتشف الحل" %}<span class="arrow" aria-hidden="true">↗</span>
+<span class="text-link">{% text "Découvrir la solution" "اكتشف الحل" %}<span class="arrow" aria-hidden="true">↗</span>
 </span>
 </a>
 </div>

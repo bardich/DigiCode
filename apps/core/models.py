@@ -182,29 +182,34 @@ class Project(models.Model):
         return self.title_fr
 
     def get_title(self):
-        if get_language() == 'ar' and self.title_ar:
-            return self.title_ar
-        return self.title_fr
+        if get_language() == 'ar':
+            return self.title_ar or 'مشروع ديجي كود'
+        return self.title_fr or 'Projet DigiCode'
 
     def get_short_description(self):
-        if get_language() == 'ar' and self.short_description_ar:
-            return self.short_description_ar
-        return self.short_description_fr
+        if get_language() == 'ar':
+            return self.short_description_ar or 'تفاصيل هذا المشروع بالعربية متاحة عند الطلب.'
+        return self.short_description_fr or 'Les détails de ce projet sont disponibles sur demande.'
 
     def get_full_description(self):
-        if get_language() == 'ar' and self.full_description_ar:
-            return self.full_description_ar
-        return self.full_description_fr
-    
+        if get_language() == 'ar':
+            return self.full_description_ar or 'تواصل معنا للحصول على تفاصيل هذا المشروع بالعربية.'
+        return self.full_description_fr or 'Contactez-nous pour en savoir plus sur ce projet.'
+
     def save(self, *args, **kwargs):
         # Generate slug if not provided
         if not self.slug:
-            # Use Arabic title if available, otherwise French
-            title = self.title_ar if self.title_ar else self.title_fr
+            # Legacy projects may have no title in either language.
+            title = self.title_ar or self.title_fr or (f'project-{self.pk}' if self.pk else 'project')
             self.slug = create_unique_slug(Project, title, self)
+            if kwargs.get('update_fields') is not None:
+                kwargs['update_fields'] = set(kwargs['update_fields']) | {'slug'}
         super().save(*args, **kwargs)
     
     def get_absolute_url(self):
+        # Keep the gallery renderable for unmigrated or bulk-imported records.
+        if not self.slug:
+            return reverse('core:project_list')
         return reverse('core:project_detail', kwargs={'slug': self.slug})
 
 

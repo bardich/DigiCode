@@ -154,3 +154,96 @@ class RedesignTests(TestCase):
     def test_error_templates_render(self):
         for name in ['404.html', '500.html']:
             self.assertIn('DigiCode', render_to_string(name, {'CURRENT_LANGUAGE':'fr'}))
+
+    def test_specialist_pages_have_consistent_language(self):
+        titles = {'rental': ('Site de location de voitures', 'موقع تأجير السيارات'),
+                  'usedcars': ('Plateforme de vente de véhicules d’occasion', 'منصة بيع السيارات المستعملة'),
+                  'artisana': ('Boutique en ligne pour les artisans', 'متجر إلكتروني للحرفيين')}
+        for lang in ['fr', 'ar']:
+            self.client.get(f'/set-language/{lang}/')
+            for slug, (fr, ar) in titles.items():
+                with self.subTest(language=lang, page=slug):
+                    response = self.client.get(f'/services/lp/{slug}/')
+                    self.assertContains(response, fr if lang == 'fr' else ar)
+                    self.assertNotContains(response, ar if lang == 'fr' else fr)
+                    self.assertContains(response, 'dir="ltr"' if lang == 'fr' else 'dir="rtl"')
+                    self.assertContains(response, 'Démarrer mon projet' if lang == 'fr' else 'ابدأ مشروعي')
+                    self.assertNotContains(response, 'En Vedette')
+                    self.assertNotContains(response, 'real-time')
+                    if lang == 'ar':
+                        self.assertContains(response, 'fonts/fustat-arabic.woff2')
+                    else:
+                        self.assertNotContains(response, 'fonts/fustat-arabic.woff2')
+
+    def test_missing_translations_do_not_leak_another_language(self):
+        from django.utils.translation import override
+        service = Service(title_fr='French-only title', short_description_fr='French-only summary', full_description_fr='French-only details', benefits_fr=['French-only benefit'])
+        project = Project(title_fr='French-only project', short_description_fr='French-only summary', full_description_fr='French-only details')
+        with override('ar'):
+            for obj in [service, project]:
+                for method in ['get_title', 'get_short_description', 'get_full_description']:
+                    self.assertNotIn('French-only', getattr(obj, method)())
+                    self.assertTrue(getattr(obj, method)())
+            self.assertEqual(service.get_benefits(), [])
+            self.assertNotIn('French-only', service.get_whatsapp_message())
+        service = Service(title_ar='عنوان عربي', short_description_ar='وصف عربي', full_description_ar='تفاصيل عربية')
+        project = Project(title_ar='عنوان عربي', short_description_ar='وصف عربي', full_description_ar='تفاصيل عربية')
+        with override('fr'):
+            for obj in [service, project]:
+                for method in ['get_title', 'get_short_description', 'get_full_description']:
+                    self.assertNotIn('عربي', getattr(obj, method)())
+                    self.assertTrue(getattr(obj, method)())
+
+    def test_arabic_font_is_fustat_in_public_and_login(self):
+        from pathlib import Path
+        from django.conf import settings
+        self.client.get('/set-language/ar/')
+        for path in ['/', '/contact/', '/dashboard/login/']:
+            self.assertContains(self.client.get(path), 'fonts/fustat-arabic.woff2')
+        css = (settings.BASE_DIR / 'static/css/site.css').read_text()
+        self.assertIn('font-family:Fustat', css)
+        self.assertNotIn('Noto Sans Arabic', css)
+        self.assertTrue((settings.BASE_DIR / 'static/fonts/fustat-arabic.woff2').exists())
+
+    def test_project_without_slug_does_not_break_gallery(self):
+        Project.objects.filter(pk=self.project.pk).update(slug='')
+        self.project.refresh_from_db()
+        self.assertEqual(self.project.get_absolute_url(), reverse('core:project_list'))
+        self.assertEqual(self.client.get('/projects/').status_code, 200)
+        self.assertEqual(self.client.get('/').status_code, 200)
+
+    def test_untitled_projects_receive_unique_slugs(self):
+        first = Project.objects.create()
+        second = Project.objects.create()
+        self.assertTrue(first.slug)
+        self.assertTrue(second.slug)
+        self.assertNotEqual(first.slug, second.slug)
+        self.assertEqual(self.client.get(first.get_absolute_url()).status_code, 200)
+        self.assertEqual(self.client.get(second.get_absolute_url()).status_code, 200)
+
+    def test_save_with_update_fields_repairs_legacy_slug(self):
+        Project.objects.filter(pk=self.project.pk).update(slug='', title_fr='', title_ar='')
+        self.project.refresh_from_db()
+        self.project.save(update_fields=['is_active'])
+        self.project.refresh_from_db()
+        self.assertEqual(self.project.slug, f'project-{self.project.pk}')
+        self.assertEqual(self.client.get(self.project.get_absolute_url()).status_code, 200)
+
+    def test_data_migration_backfills_slug_and_handles_collisions(self):
+        from importlib import import_module
+        from django.apps import apps
+        from django.db import connection
+        from types import SimpleNamespace
+        migration = import_module('apps.core.migrations.0012_backfill_project_slugs')
+        collision = Project.objects.create(title_fr='Collision', slug='existing')
+        Project.objects.filter(pk=self.project.pk).update(slug='', title_fr='Existing', title_ar='')
+        migration.backfill_project_slugs(apps, SimpleNamespace(connection=connection))
+        self.project.refresh_from_db()
+        self.assertEqual(self.project.slug, 'existing-1')
+        collision.refresh_from_db()
+        self.assertEqual(collision.slug, 'existing')
+        self.assertEqual(self.client.get(self.project.get_absolute_url()).status_code, 200)
+        Project.objects.filter(pk=self.project.pk).update(slug='', title_fr='', title_ar='')
+        migration.backfill_project_slugs(apps, SimpleNamespace(connection=connection))
+        self.project.refresh_from_db()
+        self.assertEqual(self.project.slug, f'project-{self.project.pk}')

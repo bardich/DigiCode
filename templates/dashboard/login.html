@@ -1,19 +1,17 @@
 {% load i18n static %}
 <!DOCTYPE html>
-<html lang="{{ CURRENT_LANGUAGE }}">
+<html lang="{{ CURRENT_LANGUAGE }}" dir="{% if IS_RTL %}rtl{% else %}ltr{% endif %}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% trans "Dashboard Login" %} | {{ site_settings.site_name|default:"DigiCode" }}</title>
     
     <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{% static 'css/tailwind.css' %}">
+    <link rel="stylesheet" href="{% static 'css/site.css' %}">
     
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
+    {% if IS_RTL %}<link rel="preload" href="{% static 'fonts/fustat-arabic.woff2' %}" as="font" type="font/woff2" crossorigin>{% endif %}
+
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     
@@ -22,7 +20,7 @@
             font-family: 'Inter', sans-serif;
         }
         [dir="rtl"] body {
-            font-family: 'Cairo', sans-serif;
+            font-family: Fustat, Inter, sans-serif;
         }
         .gradient-bg {
             background: linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #2563EB 100%);
