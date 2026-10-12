@@ -1,36 +1,43 @@
 {% extends 'base.html' %}
-{% load i18n %}
-
-{% block meta %}
-<title>{% trans "About Us - DigiCode Web Agency" %}</title>
-<meta name="description" content="{% trans 'Learn more about DigiCode Web Agency, our mission, and our team in Morocco.' %}">
-{% endblock %}
-
-{% block content %}
-<section class="pt-32 pb-12 bg-gradient-to-br from-primary to-slate-800">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 class="text-4xl lg:text-5xl font-bold text-white mb-4">{% trans "About DigiCode" %}</h1>
-        <p class="text-xl text-gray-300 max-w-2xl text-left" dir="auto">
-            {% trans "Your trusted partner for professional web development in Morocco." %}
-        </p>
-    </div>
+{% load ui %}
+{% block title %}
+{% text "À propos" "من نحن" %} · DigiCode{% endblock %}
+{% block content %}<section class="page-intro shell">
+<p class="eyebrow">{% text "À propos de DigiCode" "عن ديجي كود" %}</p>
+<h1>{% text "Un partenaire digital.<br>Une ambition commune." "شريك رقمي.<br>طموح مشترك." %}</h1>
+<p class="intro-copy">{% text "Nous concevons des sites web et des solutions métier pour les entreprises au Maroc et à l’international." "نصمم مواقع ويب وحلولاً للأعمال للشركات في المغرب والعالم." %}</p>
 </section>
-
-<section class="py-20 bg-background">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="prose prose-lg max-w-none text-gray-600">
-            <h2 class="text-3xl font-bold text-primary mb-6">{% trans "Our Story" %}</h2>
-            <p class="mb-4">
-                {% trans "DigiCode is a leading web development agency based in Morocco. We specialize in creating professional, modern websites that help businesses grow their online presence and reach more customers." %}
-            </p>
-            <p class="mb-4">
-                {% trans "Our team of experienced developers and designers work closely with clients to understand their needs and deliver solutions that exceed expectations. From rental car websites to e-commerce platforms, we have the expertise to bring your vision to life." %}
-            </p>
-            <h2 class="text-3xl font-bold text-primary mb-6 mt-12">{% trans "Our Mission" %}</h2>
-            <p class="mb-4">
-                {% trans "To empower Moroccan businesses with professional digital solutions that drive growth and success. We believe every business deserves a stunning website that represents their brand and connects them with their customers." %}
-            </p>
-        </div>
-    </div>
-</section>
+<section class="why-section">
+<div class="shell why-grid">
+<div data-reveal>
+<p class="eyebrow">{% text "La différence DigiCode" "ما يميز ديجي كود" %}</p>
+<h2>{% text "Du sens dans le design.<br>Du soin dans le code." "تصميم له معنى.<br>برمجة بعناية." %}</h2>
+<p>{% text "Nous réunissons une présentation soignée et des fonctionnalités utiles à votre activité." "نجمع بين عرض بصري متقن ووظائف مفيدة لنشاطك." %}</p>
+</div>
+<div class="why-list">
+<article data-reveal>
+<span aria-hidden="true">01</span>
+<div>
+<h3>{% text "Adapté à votre métier" "مناسب لأعمالك" %}</h3>
+<p>{% text "Des parcours et des fonctionnalités définis autour de vos objectifs." "مسارات ووظائف مبنية حول أهدافك." %}</p>
+</div>
+</article>
+<article data-reveal>
+<span aria-hidden="true">02</span>
+<div>
+<h3>{% text "À l’aise sur chaque écran" "يناسب كل شاشة" %}</h3>
+<p>{% text "Une expérience responsive pour les visiteurs sur mobile et ordinateur." "تجربة متجاوبة للزوار على الهاتف والحاسوب." %}</p>
+</div>
+</article>
+<article data-reveal>
+<span aria-hidden="true">03</span>
+<div>
+<h3>{% text "Français & arabe" "الفرنسية والعربية" %}</h3>
+<p>{% text "Une attention portée au contenu et au sens de lecture de chaque langue." "اهتمام بالمحتوى واتجاه القراءة لكل لغة." %}</p>
+</div>
+</article>
+</div>
+</div>
+</section>{% include "includes/process.html" %}
+{% include "includes/cta.html" %}
 {% endblock %}

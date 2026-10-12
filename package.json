@@ -1,0 +1,16 @@
+{
+  "name": "digicode-webagency",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "build": "tailwindcss -i static/css/tailwind.input.css -o static/css/tailwind.css --minify && cp node_modules/alpinejs/dist/cdn.min.js static/js/alpine.min.js && cp node_modules/htmx.org/dist/htmx.min.js static/js/htmx.min.js",
+    "watch": "tailwindcss -i static/css/tailwind.input.css -o static/css/tailwind.css --watch"
+  },
+  "devDependencies": {
+    "tailwindcss": "3.4.17",
+    "@tailwindcss/forms": "0.5.10",
+    "@tailwindcss/typography": "0.5.16",
+    "alpinejs": "3.14.9",
+    "htmx.org": "2.0.4"
+  }
+}

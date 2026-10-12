@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load i18n %}
+{% load i18n ui %}
 
 {% block extra_css %}
 <style>
@@ -250,6 +250,7 @@
             {% trans "Dashboard" %}
         </a>
         
+        <a class="nav-item" href="{% url 'dashboard:inquiry_list' %}">{% text "Demandes de projet" "طلبات المشاريع" %}</a>
         <div class="nav-section">{% trans "Content" %}</div>
         <a href="{% url 'dashboard:service_list' %}" class="nav-item {% if 'service' in request.resolver_match.url_name %}active{% endif %}">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">

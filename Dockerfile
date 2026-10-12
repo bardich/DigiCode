@@ -1,3 +1,13 @@
+FROM node:20-bookworm-slim AS frontend
+WORKDIR /frontend
+COPY package.json package-lock.json ./
+RUN npm ci --no-audit --no-fund
+COPY tailwind.config.js ./
+COPY templates ./templates
+COPY apps ./apps
+COPY static ./static
+RUN npm run build
+
 FROM python:3.12-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1
@@ -18,19 +28,15 @@ RUN apt-get update && apt-get install -y \
 COPY requirements.txt .
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
-# Install Node.js and Tailwind CSS dependencies
-RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
-    apt-get install -y nodejs && \
-    npm install -g tailwindcss
-
 # Copy project
 COPY . .
+COPY --from=frontend /frontend/static /app/static
 
 # Create necessary directories
 RUN mkdir -p staticfiles media logs
 
 # Collect static files
-RUN python manage.py collectstatic --noinput --clear 2>/dev/null || true
+RUN python manage.py collectstatic --noinput --clear
 
 EXPOSE 8000
 

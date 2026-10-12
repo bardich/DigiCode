@@ -1,5 +1,5 @@
 {% extends 'dashboard/base.html' %}
-{% load i18n %}
+{% load i18n ui %}
 
 {% block dashboard_content %}
 <!-- Header -->
@@ -11,8 +11,8 @@
 </div>
 
 <div class="dashboard-content">
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
+    <form method="post" enctype="multipart/form-data" hx-post="{{ request.path }}" hx-target="body" hx-swap="innerHTML">
+        {% csrf_token %}<div class="p-6 bg-white rounded-xl mb-6"><div class="mb-4"><label class="block" for="home_heading_fr">Titre d’accueil (FR)</label><textarea class="w-full px-3 py-2 border rounded-lg" id="home_heading_fr" name="home_heading_fr"  maxlength="180">{{ settings.home_heading_fr }}</textarea></div><div class="mb-4"><label class="block" for="home_heading_ar">عنوان الرئيسية (AR)</label><textarea class="w-full px-3 py-2 border rounded-lg" id="home_heading_ar" name="home_heading_ar" dir="rtl" maxlength="180">{{ settings.home_heading_ar }}</textarea></div><div class="mb-4"><label class="block" for="home_subheading_fr">Introduction (FR)</label><textarea class="w-full px-3 py-2 border rounded-lg" id="home_subheading_fr" name="home_subheading_fr"  maxlength="500">{{ settings.home_subheading_fr }}</textarea></div><div class="mb-4"><label class="block" for="home_subheading_ar">مقدمة (AR)</label><textarea class="w-full px-3 py-2 border rounded-lg" id="home_subheading_ar" name="home_subheading_ar" dir="rtl" maxlength="500">{{ settings.home_subheading_ar }}</textarea></div></div>
         
         {% if messages %}
         {% for message in messages %}
@@ -251,7 +251,7 @@
             <svg class="w-5 h-5 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/>
             </svg>
-            {% trans "Hero Slider Management" %}
+            {% text "Ancien carrousel — conservé, non affiché sur l’accueil" "العرض الدوار القديم — محفوظ ولا يظهر في الرئيسية" %}
         </h2>
 
             <!-- Existing Slides -->
@@ -489,4 +489,60 @@
         resize: vertical;
     }
 </style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('htmx:beforeRequest', function(evt) {
+    // Show saving indicator
+    const submitBtn = document.querySelector('button[type="submit"]');
+    if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `
+            <svg class="animate-spin h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            {% trans "Saving..." %}
+        `;
+    }
+});
+
+document.addEventListener('htmx:afterRequest', function(evt) {
+    // Restore submit button
+    const submitBtn = document.querySelector('button[type="submit"]');
+    if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '{% trans "Save Settings" %}';
+    }
+    
+    // Handle JSON response
+    if (evt.detail.xhr.response) {
+        try {
+            const response = JSON.parse(evt.detail.xhr.response);
+            
+            if (response.success) {
+                // Show success message
+                const alert = document.createElement('div');
+                alert.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-4 rounded-lg shadow-lg z-50 flex items-center gap-3';
+                alert.innerHTML = `
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    <span>${response.message}</span>
+                `;
+                document.body.appendChild(alert);
+                
+                // Remove alert after 2 seconds and reload page to show updated settings
+                setTimeout(() => {
+                    alert.remove();
+                    window.location.reload();
+                }, 2000);
+            }
+        } catch (e) {
+            console.error('Error parsing response:', e);
+        }
+    }
+});
+</script>
 {% endblock %}

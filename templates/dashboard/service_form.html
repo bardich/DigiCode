@@ -228,7 +228,7 @@
                 </button>
             </div>
 
-            <form method="post" enctype="multipart/form-data" hx-post="" hx-target="body" hx-swap="innerHTML">
+            <form method="post" enctype="multipart/form-data" hx-post="{{ request.path }}" hx-target="body" hx-swap="innerHTML">
             {% csrf_token %}
             
             {% if form.non_field_errors %}
@@ -284,7 +284,7 @@
                         <div class="mb-4">
                             <label class="form-label flex items-center gap-2">
                                 {% trans "URL Slug" %}
-                                <span class="text-red-500">*</span>
+                                <span class="text-gray-400 text-sm">({% trans "Auto-generated" %})</span>
                             </label>
                             {{ form.slug }}
                             {% if form.slug.errors %}
@@ -523,7 +523,7 @@
                     
                     <!-- Action Buttons -->
                     <div class="flex flex-col gap-3">
-                        <button type="submit" class="w-full px-6 py-3 bg-accent text-white rounded-xl font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center gap-2" hx-indicator="#saving-indicator">
+                        <button type="submit" class="w-full px-6 py-3 bg-accent text-white rounded-xl font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center gap-2" hx-indicator="#saving-indicator" hx-disable>
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                             </svg>
@@ -621,5 +621,46 @@ function createErrorContainer() {
     form.insertBefore(container, form.firstChild);
     return container;
 }
+
+// Auto-generate slug from title
+function generateSlug(text) {
+    return text.toString().toLowerCase()
+        .replace(/\s+/g, '-')           // Replace spaces with -
+        .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+        .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+        .replace(/^-+/, '')             // Trim - from start of text
+        .replace(/-+$/, '');            // Trim - from end of text
+}
+
+// Auto-generate slug when title changes
+document.addEventListener('DOMContentLoaded', function() {
+    const titleFr = document.querySelector('input[name="title_fr"]');
+    const titleAr = document.querySelector('input[name="title_ar"]');
+    const slugField = document.querySelector('input[name="slug"]');
+    
+    if (titleFr && titleAr && slugField) {
+        // Don't override existing slug when editing
+        if (slugField.value) {
+            return;
+        }
+        
+        function updateSlug() {
+            const activeLang = document.querySelector('.tab-btn.active')?.textContent.toLowerCase();
+            const title = activeLang?.includes('ar') ? titleAr.value : titleFr.value;
+            
+            if (title) {
+                slugField.value = generateSlug(title);
+            }
+        }
+        
+        titleFr.addEventListener('input', updateSlug);
+        titleAr.addEventListener('input', updateSlug);
+        
+        // Also update when language tab changes
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', updateSlug);
+        });
+    }
+});
 </script>
 {% endblock %}

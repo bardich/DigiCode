@@ -13,3 +13,5 @@ django-extensions>=3.2.3
 django-htmx>=1.17.2
 django-browser-reload>=1.12.1
 django-tailwind>=3.8.0
+
+Unidecode==1.4.0

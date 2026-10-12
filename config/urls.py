@@ -8,11 +8,12 @@ from django.contrib.sitemaps.views import sitemap
 from django.urls import path, include
 from django.views.generic import TemplateView
 from django.utils.translation import gettext_lazy as _
-from apps.core.sitemaps import StaticViewSitemap, ServiceSitemap
+from apps.core.sitemaps import StaticViewSitemap, ServiceSitemap, ProjectSitemap
 
 sitemaps = {
     'static': StaticViewSitemap,
     'services': ServiceSitemap,
+    'projects': ProjectSitemap,
 }
 
 urlpatterns = [

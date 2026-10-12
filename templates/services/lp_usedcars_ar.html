@@ -1,639 +1,83 @@
 {% extends 'base.html' %}
-{% load i18n %}
-
-{% block meta_description %}AutoMaroc - منصة إدارة وعرض السيارات المستعملة في المغرب - حل متكامل لإدارة مخزون السيارات والتواصل مع العملاء{% endblock %}
-
-{% block content %}
-<!-- Hero Section -->
-<section class="relative min-h-screen flex items-center bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 overflow-hidden" dir="rtl">
-    <!-- Background Pattern -->
-    <div class="absolute inset-0 opacity-10">
-        <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.4\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
-    </div>
-    
-    <!-- Floating Elements -->
-    <div class="absolute top-20 right-10 w-20 h-20 bg-accent/20 rounded-full blur-xl"></div>
-    <div class="absolute bottom-20 left-10 w-32 h-32 bg-highlight/20 rounded-full blur-2xl"></div>
-    
-    <div class="relative w-full px-4 sm:px-6 lg:px-8 xl:px-12 py-20">
-        <div class="max-w-7xl mx-auto">
-            <div class="grid lg:grid-cols-2 gap-12 items-center">
-                <!-- Content -->
-                <div class="text-right">
-                    <!-- Badge -->
-                    <div class="inline-flex items-center gap-2 px-4 py-2 bg-highlight/20 border border-highlight/30 rounded-full mb-6">
-                        <span class="text-highlight font-semibold text-sm">🚗 للمعارض ووكلاء السيارات في المغرب</span>
-                    </div>
-                    
-                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
-                        منصة إدارة وعرض
-                        <span class="text-highlight">السيارات المستعملة</span>
-                        المتكاملة
-                    </h1>
-                    
-                    <p class="text-xl text-gray-300 mb-8 leading-relaxed">
-                        نظام رقمي متقدم لإدارة مخزون السيارات وعرضها بشكل احترافي. بحث متقدم، صفحات تفصيلية، تكامل مع واتساب، ولوحة تحكم ذكية.
-                    </p>
-                    
-                    <!-- CTA Buttons -->
-                    <div class="flex flex-wrap gap-4 justify-end">
-                        <a href="#pricing" class="inline-flex items-center gap-2 px-8 py-4 bg-highlight hover:bg-highlight/90 text-white font-semibold rounded-xl transition-all transform hover:scale-105 shadow-lg shadow-highlight/30">
-                            <span>اطلب نسختك الآن</span>
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-                            </svg>
-                        </a>
-                        <a href="#features" class="inline-flex items-center gap-2 px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl border border-white/20 transition-all">
-                            <span>اكتشف المميزات</span>
-                        </a>
-                    </div>
-                    
-                    <!-- Trust Badges -->
-                    <div class="flex flex-wrap gap-6 mt-10 justify-end text-gray-400 text-sm">
-                        <div class="flex items-center gap-2">
-                            <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                            </svg>
-                            <span>تجربة مجانية</span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                            </svg>
-                            <span>دعم فني 24/7</span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                            </svg>
-                            <span>تحديثات مجانية</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Hero Visual - Car Showcase Preview -->
-                <div class="hidden lg:block relative">
-                    <div class="relative bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl p-6 border border-slate-700 shadow-2xl">
-                        <!-- Car Showcase Preview -->
-                        <div class="bg-slate-950 rounded-2xl p-4">
-                            <!-- Header -->
-                            <div class="flex items-center justify-between mb-4">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-10 h-10 bg-highlight rounded-lg flex items-center justify-center">
-                                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                                        </svg>
-                                    </div>
-                                    <span class="text-white font-semibold">AutoMaroc</span>
-                                </div>
-                                <div class="flex gap-2">
-                                    <div class="w-3 h-3 bg-red-500 rounded-full"></div>
-                                    <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                                    <div class="w-3 h-3 bg-green-500 rounded-full"></div>
-                                </div>
-                            </div>
-                            
-                            <!-- Featured Cars Grid -->
-                            <div class="grid grid-cols-2 gap-3 mb-4">
-                                <div class="bg-slate-900 rounded-xl overflow-hidden border border-slate-800">
-                                    <div class="h-24 bg-gradient-to-br from-blue-500/20 to-blue-600/20 flex items-center justify-center">
-                                        <span class="text-4xl">🚗</span>
-                                    </div>
-                                    <div class="p-3">
-                                        <div class="text-white font-semibold text-sm">مرسيدس C-Class</div>
-                                        <div class="text-highlight text-sm">250,000 درهم</div>
-                                    </div>
-                                </div>
-                                <div class="bg-slate-900 rounded-xl overflow-hidden border border-slate-800">
-                                    <div class="h-24 bg-gradient-to-br from-purple-500/20 to-purple-600/20 flex items-center justify-center">
-                                        <span class="text-4xl">🚙</span>
-                                    </div>
-                                    <div class="p-3">
-                                        <div class="text-white font-semibold text-sm">بي ام دبليو X5</div>
-                                        <div class="text-highlight text-sm">380,000 درهم</div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Search Bar Preview -->
-                            <div class="bg-slate-900 rounded-xl p-3 border border-slate-800 mb-4">
-                                <div class="flex items-center gap-2 text-gray-400 text-sm mb-2">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                                    </svg>
-                                    <span>ابحث عن سيارة...</span>
-                                </div>
-                                <div class="flex gap-2">
-                                    <div class="flex-1 bg-slate-800 rounded-lg px-3 py-2 text-gray-400 text-xs">الماركة</div>
-                                    <div class="flex-1 bg-slate-800 rounded-lg px-3 py-2 text-gray-400 text-xs">السنة</div>
-                                    <div class="flex-1 bg-slate-800 rounded-lg px-3 py-2 text-gray-400 text-xs">السعر</div>
-                                    <div class="bg-highlight text-white px-3 py-2 rounded-lg text-xs">بحث</div>
-                                </div>
-                            </div>
-                            
-                            <!-- Stats Bar -->
-                            <div class="flex justify-between text-center">
-                                <div>
-                                    <div class="text-xl font-bold text-white">156</div>
-                                    <div class="text-gray-400 text-xs">سيارة</div>
-                                </div>
-                                <div>
-                                    <div class="text-xl font-bold text-white">12</div>
-                                    <div class="text-gray-400 text-xs">ماركة</div>
-                                </div>
-                                <div>
-                                    <div class="text-xl font-bold text-white">8</div>
-                                    <div class="text-gray-400 text-xs">فئة</div>
-                                </div>
-                                <div>
-                                    <div class="text-xl font-bold text-white">50+</div>
-                                    <div class="text-gray-400 text-xs">عميل</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Floating Badge -->
-                    <div class="absolute -bottom-4 -right-4 bg-white rounded-xl p-4 shadow-xl border border-gray-100">
-                        <div class="flex items-center gap-3">
-                            <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center">
-                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                                </svg>
-                            </div>
-                            <div>
-                                <div class="font-bold text-gray-900">نظام آمن</div>
-                                <div class="text-sm text-gray-500">حماية كاملة للبيانات</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+{% load ui %}
+{% block title %}
+{% text "Vente de véhicules" "منصة بيع السيارات المستعملة" %} · DigiCode{% endblock %}
+{% block content %}<div lang="ar" dir="rtl" class="arabic-content">
+<section class="page-intro shell">
+<p class="eyebrow">حلول متخصصة · DigiCode</p>
+<h1>منصة بيع السيارات المستعملة</h1>
+<p class="intro-copy">كتالوج سيارات ومسارات تربط البائعين بالمشترين.</p>
 </section>
-
-<!-- Features Section -->
-<section id="features" class="py-20 bg-white" dir="rtl">
-    <div class="w-full px-4 sm:px-6 lg:px-8 xl:px-12">
-        <div class="max-w-7xl mx-auto">
-            <!-- Section Header -->
-            <div class="text-center mb-16">
-                <span class="inline-block px-4 py-2 bg-highlight/10 text-highlight font-semibold rounded-full mb-4">
-                    ✨ المميزات الرئيسية
-                </span>
-                <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
-                    كل ما تحتاجه لإدارة معرض سياراتك
-                </h2>
-                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                    نظام متكامل يوفر جميع الأدوات اللازمة لإدارة مخزون سياراتك وعرضها بشكل احترافي
-                </p>
-            </div>
-            
-            <!-- Features Grid -->
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Professional Homepage -->
-                <div class="group bg-slate-50 rounded-2xl p-8 hover:bg-white hover:shadow-xl transition-all border border-slate-100">
-                    <div class="w-14 h-14 bg-blue-500 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-3">صفحة رئيسية احترافية</h3>
-                    <ul class="space-y-2 text-gray-600">
-                        <li class="flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
-                            تصميم عصري يناسب السوق المغربي
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
-                            عرض السيارات المميزة بشكل بارز
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
-                            أقسام للفئات والماركات
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
-                            أحدث السيارات المعروضة
-                        </li>
-                    </ul>
-                </div>
-                
-                <!-- Advanced Search -->
-                <div class="group bg-slate-50 rounded-2xl p-8 hover:bg-white hover:shadow-xl transition-all border border-slate-100">
-                    <div class="w-14 h-14 bg-green-500 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-3">نظام بحث متقدم</h3>
-                    <ul class="space-y-2 text-gray-600">
-                        <li class="flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
-                            بحث حسب الماركة والفئة والسعر
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
-                            فلترة حسب نوع الوقود
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
-                            فلترة حسب نوع الجير
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
-                            ترتيب حسب السعر أو السنة
-                        </li>
-                    </ul>
-                </div>
-                
-                <!-- Car Detail Pages -->
-                <div class="group bg-slate-50 rounded-2xl p-8 hover:bg-white hover:shadow-xl transition-all border border-slate-100">
-                    <div class="w-14 h-14 bg-purple-500 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-3">صفحات تفصيلية للسيارات</h3>
-                    <ul class="space-y-2 text-gray-600">
-                        <li class="flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 bg-purple-500 rounded-full"></span>
-                            معرض صور حتى 15 صورة
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 bg-purple-500 rounded-full"></span>
-                            مواصفات شاملة (سنة، مسافة...)
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 bg-purple-500 rounded-full"></span>
-                            قائمة التجهيزات الكاملة
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 bg-purple-500 rounded-full"></span>
-                            سيارات مشابهة في الأسفل
-                        </li>
-                    </ul>
-                </div>
-                
-                <!-- WhatsApp Integration -->
-                <div class="group bg-slate-50 rounded-2xl p-8 hover:bg-white hover:shadow-xl transition-all border border-slate-100">
-                    <div class="w-14 h-14 bg-green-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <svg class="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-3">تكامل مع واتساب</h3>
-                    <ul class="space-y-2 text-gray-600">
-                        <li class="flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 bg-green-600 rounded-full"></span>
-                            زر واتساب ثابت في جميع الصفحات
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 bg-green-600 rounded-full"></span>
-                            رسالة مخصصة تلقائية
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 bg-green-600 rounded-full"></span>
-                            معلومات السيارة في الرسالة
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 bg-green-600 rounded-full"></span>
-                            رقم قابل للتخصيص
-                        </li>
-                    </ul>
-                </div>
-                
-                <!-- Dashboard -->
-                <div class="group bg-slate-50 rounded-2xl p-8 hover:bg-white hover:shadow-xl transition-all border border-slate-100">
-                    <div class="w-14 h-14 bg-yellow-500 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-3">لوحة تحكم ذكية</h3>
-                    <ul class="space-y-2 text-gray-600">
-                        <li class="flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 bg-yellow-500 rounded-full"></span>
-                            تحميل 6 صور دفعة واحدة
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 bg-yellow-500 rounded-full"></span>
-                            إدارة حالة البيع (متاح/محجوز)
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 bg-yellow-500 rounded-full"></span>
-                            إدارة الفئات والماركات
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 bg-yellow-500 rounded-full"></span>
-                            سيارات مميزة (En Vedette)
-                        </li>
-                    </ul>
-                </div>
-                
-                <!-- Multi-language -->
-                <div class="group bg-slate-50 rounded-2xl p-8 hover:bg-white hover:shadow-xl transition-all border border-slate-100">
-                    <div class="w-14 h-14 bg-cyan-500 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-3">دعم متعدد اللغات</h3>
-                    <ul class="space-y-2 text-gray-600">
-                        <li class="flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></span>
-                            واجهة عربية وفرنسية
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></span>
-                            RTL للغة العربية
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></span>
-                            ترجمة احترافية
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></span>
-                            تحويل تلقائي للغة
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
+<section class="section shell section-tight">
+<div class="service-grid">
+<article class="service-card" data-reveal>
+<span class="service-number" aria-hidden="true">01</span>
+<h3>صفحة رئيسية احترافية</h3>
+<ul class="benefit-list">
+<li>تصميم عصري يناسب السوق المغربي</li>
+<li>عرض السيارات المميزة بشكل بارز</li>
+<li>أقسام للفئات والماركات</li>
+<li>أحدث السيارات المعروضة</li>
+</ul>
+</article>
+<article class="service-card" data-reveal>
+<span class="service-number" aria-hidden="true">02</span>
+<h3>نظام بحث متقدم</h3>
+<ul class="benefit-list">
+<li>بحث حسب الماركة والفئة والسعر</li>
+<li>فلترة حسب نوع الوقود</li>
+<li>فلترة حسب نوع الجير</li>
+<li>ترتيب حسب السعر أو السنة</li>
+</ul>
+</article>
+<article class="service-card" data-reveal>
+<span class="service-number" aria-hidden="true">03</span>
+<h3>صفحات تفصيلية للسيارات</h3>
+<ul class="benefit-list">
+<li>معرض صور حتى 15 صورة</li>
+<li>مواصفات شاملة (سنة، مسافة...)</li>
+<li>قائمة التجهيزات الكاملة</li>
+<li>سيارات مشابهة في الأسفل</li>
+</ul>
+</article>
+<article class="service-card" data-reveal>
+<span class="service-number" aria-hidden="true">04</span>
+<h3>تكامل مع واتساب</h3>
+<ul class="benefit-list">
+<li>زر واتساب ثابت في جميع الصفحات</li>
+<li>رسالة مخصصة تلقائية</li>
+<li>معلومات السيارة في الرسالة</li>
+<li>رقم قابل للتخصيص</li>
+</ul>
+</article>
+<article class="service-card" data-reveal>
+<span class="service-number" aria-hidden="true">05</span>
+<h3>لوحة تحكم ذكية</h3>
+<ul class="benefit-list">
+<li>تحميل 6 صور دفعة واحدة</li>
+<li>إدارة حالة البيع (متاح/محجوز)</li>
+<li>إدارة الفئات والماركات</li>
+<li>سيارات مميزة (En Vedette)</li>
+</ul>
+</article>
+<article class="service-card" data-reveal>
+<span class="service-number" aria-hidden="true">06</span>
+<h3>دعم متعدد اللغات</h3>
+<ul class="benefit-list">
+<li>واجهة عربية وفرنسية</li>
+<li>RTL للغة العربية</li>
+<li>ترجمة احترافية</li>
+<li>تحويل تلقائي للغة</li>
+</ul>
+</article>
+</div>
 </section>
-
-<!-- Why Choose Us -->
-<section class="py-20 bg-slate-50" dir="rtl">
-    <div class="w-full px-4 sm:px-6 lg:px-8 xl:px-12">
-        <div class="max-w-7xl mx-auto">
-            <div class="grid lg:grid-cols-2 gap-12 items-center">
-                <div>
-                    <span class="inline-block px-4 py-2 bg-blue-100 text-blue-700 font-semibold rounded-full mb-4">
-                        💡 لماذا AutoMaroc؟
-                    </span>
-                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-6">
-                        الحل الأمثل لإدارة معرض السيارات في المغرب
-                    </h2>
-                    <div class="space-y-6">
-                        <div class="flex items-start gap-4">
-                            <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                                </svg>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-slate-900 mb-1">سهل الاستخدام</h4>
-                                <p class="text-gray-600">لا يحتاج خبرة تقنية. واجهة بديهية يمكن لأي شخص استخدامها من اليوم الأول.</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start gap-4">
-                            <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-                                </svg>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-slate-900 mb-1">آمن وموثوق</h4>
-                                <p class="text-gray-600">حماية CSRF، XSS، وحقن SQL. نسخ احتياطي تلقائي لجميع بياناتك.</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start gap-4">
-                            <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                                <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                                </svg>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-slate-900 mb-1">سريع وأداء عالي</h4>
-                                <p class="text-gray-600">مبني على Django مع تحسين SEO وتحميل سريع للصور والمحتوى.</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start gap-4">
-                            <div class="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                                <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/>
-                                </svg>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-slate-900 mb-1">قابل للتوسع</h4>
-                                <p class="text-gray-600">يمكن إضافة API، تطبيق موبايل، تقارير متقدمة، والمزيد مستقبلاً.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="relative">
-                    <div class="absolute inset-0 bg-gradient-to-br from-highlight/20 to-accent/20 rounded-3xl transform -rotate-3"></div>
-                    <div class="relative bg-white rounded-3xl p-8 shadow-xl border border-slate-100">
-                        <h3 class="text-2xl font-bold text-slate-900 mb-6 text-center">الفئات المستهدفة</h3>
-                        <div class="grid grid-cols-1 gap-4">
-                            <div class="flex items-center gap-4 bg-slate-50 rounded-xl p-4">
-                                <div class="w-14 h-14 bg-blue-500 rounded-xl flex items-center justify-center flex-shrink-0">
-                                    <span class="text-white text-2xl">🏢</span>
-                                </div>
-                                <div>
-                                    <div class="font-bold text-slate-900">معارض السيارات</div>
-                                    <div class="text-gray-500 text-sm">إدارة مخزون احترافية وعرض للعملاء</div>
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-4 bg-slate-50 rounded-xl p-4">
-                                <div class="w-14 h-14 bg-green-500 rounded-xl flex items-center justify-center flex-shrink-0">
-                                    <span class="text-white text-2xl">🤝</span>
-                                </div>
-                                <div>
-                                    <div class="font-bold text-slate-900">وكلاء السيارات المستعملة</div>
-                                    <div class="text-gray-500 text-sm">تنظيم حسب الفئة والماركة</div>
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-4 bg-slate-50 rounded-xl p-4">
-                                <div class="w-14 h-14 bg-purple-500 rounded-xl flex items-center justify-center flex-shrink-0">
-                                    <span class="text-white text-2xl">💼</span>
-                                </div>
-                                <div>
-                                    <div class="font-bold text-slate-900">المستثمرون في مجال السيارات</div>
-                                    <div class="text-gray-500 text-sm">نظام متكامل قابل للتوسع</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<section class="section shell scope-panel">
+<p class="eyebrow">نطاق مشروعك</p>
+<h2>حل يناسب نشاطك، وعرض يناسب احتياجاتك.</h2>
+<p>نحدد معاً الوظائف والمحتوى والتكاملات المطلوبة. تُراجع إمكانية كل وظيفة ضمن نطاق المشروع قبل الاتفاق على التنفيذ.</p>
+<a class="button" href="{% url 'core:contact' %}
+{% if service %}?service={{ service.slug|urlencode }}{% endif %}#project-form">ناقش مشروعك معنا ↗</a>
 </section>
-
-<!-- Pricing Section -->
-<section id="pricing" class="py-20 bg-slate-900" dir="rtl">
-    <div class="w-full px-4 sm:px-6 lg:px-8 xl:px-12">
-        <div class="max-w-5xl mx-auto">
-            <!-- Section Header -->
-            <div class="text-center mb-16">
-                <span class="inline-block px-4 py-2 bg-highlight/20 text-highlight font-semibold rounded-full mb-4">
-                    💰 باقات الاشتراك
-                </span>
-                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
-                    اختر الباقة المناسبة لمعرضك
-                </h2>
-                <p class="text-xl text-gray-400 max-w-2xl mx-auto">
-                    باقات مرنة تشمل جميع المميزات مع دعم فني على مدار الساعة
-                </p>
-            </div>
-            
-            <!-- Pricing Cards -->
-            <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                <!-- 6 Months Plan -->
-                <div class="bg-slate-800 rounded-2xl p-8 border border-slate-700 hover:border-slate-600 transition-all">
-                    <div class="text-center mb-8">
-                        <div class="inline-block px-4 py-2 bg-blue-500/20 text-blue-400 font-semibold rounded-full mb-4">
-                            6 أشهر
-                        </div>
-                        <div class="flex items-baseline justify-center gap-2">
-                            <span class="text-5xl font-bold text-white">3,800</span>
-                            <span class="text-gray-400 text-lg">درهم</span>
-                        </div>
-                    </div>
-                    <ul class="space-y-4 mb-8">
-                        <li class="flex items-center gap-3 text-gray-300">
-                            <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                            </svg>
-                            نسخة كاملة مع جميع المميزات
-                        </li>
-                        <li class="flex items-center gap-3 text-gray-300">
-                            <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                            </svg>
-                            دعم فني 24/7
-                        </li>
-                        <li class="flex items-center gap-3 text-gray-300">
-                            <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                            </svg>
-                            اسم النطاق .ma لمدة سنة
-                        </li>
-                        <li class="flex items-center gap-3 text-gray-300">
-                            <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                            </svg>
-                            استضافة لمدة 6 أشهر
-                        </li>
-                    </ul>
-                    <a href="https://wa.me/{{ site_settings.whatsapp_number|default:'+212600000000'|cut:'+' }}" target="_blank" class="block w-full py-4 px-4 bg-slate-700 hover:bg-slate-600 text-white text-center font-semibold rounded-xl transition-all">
-                        اطلب الآن
-                    </a>
-                </div>
-                
-                <!-- 1 Year Plan (Popular) -->
-                <div class="bg-gradient-to-br from-highlight/20 to-highlight/5 rounded-2xl p-8 border-2 border-highlight relative transform scale-105">
-                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                        <span class="px-4 py-1 bg-highlight text-white text-sm font-semibold rounded-full">الأفضل قيمة</span>
-                    </div>
-                    <div class="text-center mb-8">
-                        <div class="inline-block px-4 py-2 bg-highlight/20 text-highlight font-semibold rounded-full mb-4">
-                            سنة كاملة
-                        </div>
-                        <div class="flex items-baseline justify-center gap-2">
-                            <span class="text-5xl font-bold text-highlight">4,500</span>
-                            <span class="text-gray-400 text-lg">درهم</span>
-                        </div>
-                        <div class="text-green-400 text-sm mt-2">وفّر 3100 درهم!</div>
-                    </div>
-                    <ul class="space-y-4 mb-8">
-                        <li class="flex items-center gap-3 text-gray-300">
-                            <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                            </svg>
-                            نسخة كاملة مع جميع المميزات
-                        </li>
-                        <li class="flex items-center gap-3 text-gray-300">
-                            <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                            </svg>
-                            دعم فني 24/7
-                        </li>
-                        <li class="flex items-center gap-3 text-gray-300">
-                            <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                            </svg>
-                            اسم النطاق .ma لمدة سنة
-                        </li>
-                        <li class="flex items-center gap-3 text-gray-300">
-                            <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                            </svg>
-                            استضافة لمدة 12 شهر
-                        </li>
-                        <li class="flex items-center gap-3 text-highlight">
-                            <svg class="w-5 h-5 text-highlight" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                            </svg>
-                            <span class="font-semibold">الاستفادة من تحديثات النظام</span>
-                        </li>
-                    </ul>
-                    <a href="https://wa.me/{{ site_settings.whatsapp_number|default:'+212600000000'|cut:'+' }}" target="_blank" class="block w-full py-4 px-4 bg-highlight hover:bg-highlight/90 text-white text-center font-semibold rounded-xl transition-all shadow-lg shadow-highlight/30">
-                        اطلب الآن
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Tech Stack 
-<section class="py-20 bg-white" dir="rtl">
-    <div class="w-full px-4 sm:px-6 lg:px-8 xl:px-12">
-        <div class="max-w-7xl mx-auto">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold text-slate-900 mb-4">التقنيات المستخدمة</h2>
-                <p class="text-gray-600">أحدث التقنيات لضمان الأداء والأمان والSEO</p>
-            </div>
-            
-            <div class="flex flex-wrap justify-center gap-8 items-center">
-                <div class="flex items-center gap-3 px-6 py-4 bg-slate-50 rounded-xl">
-                    <div class="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">Py</div>
-                    <span class="font-semibold text-slate-900">Django 5</span>
-                </div>
-                <div class="flex items-center gap-3 px-6 py-4 bg-slate-50 rounded-xl">
-                    <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">Pg</div>
-                    <span class="font-semibold text-slate-900">PostgreSQL</span>
-                </div>
-                <div class="flex items-center gap-3 px-6 py-4 bg-slate-50 rounded-xl">
-                    <div class="w-10 h-10 bg-red-500 rounded-lg flex items-center justify-center text-white font-bold text-sm">Re</div>
-                    <span class="font-semibold text-slate-900">Redis</span>
-                </div>
-                <div class="flex items-center gap-3 px-6 py-4 bg-slate-50 rounded-xl">
-                    <div class="w-10 h-10 bg-cyan-500 rounded-lg flex items-center justify-center text-white font-bold text-sm">Tw</div>
-                    <span class="font-semibold text-slate-900">Tailwind CSS</span>
-                </div>
-                <div class="flex items-center gap-3 px-6 py-4 bg-slate-50 rounded-xl">
-                    <div class="w-10 h-10 bg-indigo-500 rounded-lg flex items-center justify-center text-white font-bold text-sm">Al</div>
-                    <span class="font-semibold text-slate-900">Alpine.js</span>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
--->
-<!-- CTA Section -->
-<section id="contact" class="py-20 bg-gradient-to-br from-accent to-accent/90" dir="rtl">
-    <div class="w-full px-4 sm:px-6 lg:px-8 xl:px-12">
-        <div class="max-w-4xl mx-auto text-center">
-            <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
-                جاهز لتحويل معرضك الرقمي؟
-            </h2>
-            <p class="text-xl text-white/80 mb-8 text-center">
-                احصل على نظام AutoMaroc واحدث معرضك للعصر الرقمي
-            </p>
-            <div class="flex justify-center">
-                <a href="https://wa.me/{{ site_settings.whatsapp_number|default:'+212600000000'|cut:'+' }}" target="_blank" class="inline-flex items-center gap-3 px-8 py-4 bg-green-500 hover:bg-green-600 text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-xl">
-                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-                    </svg>
-                    تواصل معنا عبر واتساب
-                </a>
-            </div>
-        </div>
-    </div>
-</section>
+</div>{% include "includes/cta.html" %}
 {% endblock %}

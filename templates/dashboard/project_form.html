@@ -1,5 +1,5 @@
 {% extends 'dashboard/base.html' %}
-{% load i18n %}
+{% load i18n ui %}
 
 {% block extra_css %}
 <style>
@@ -37,8 +37,8 @@
             </div>
         </div>
 
-        <form method="post" enctype="multipart/form-data" class="lg:grid lg:grid-cols-3 lg:gap-8" hx-post="" hx-target="body" hx-swap="innerHTML">
-            {% csrf_token %}
+        <form method="post" enctype="multipart/form-data" class="lg:grid lg:grid-cols-3 lg:gap-8" hx-post="{{ request.path }}" hx-target="body" hx-swap="innerHTML">
+            {% csrf_token %}<div class="p-4 bg-white rounded-lg mb-4"><label>{{ form.is_featured }} {% text "Afficher sur l’accueil" "عرض في الرئيسية" %}</label><label class="block mt-3" for="id_display_order">{% text "Ordre d’affichage" "ترتيب العرض" %}</label>{{ form.display_order }}{{ form.display_order.errors }}</div>
 
             <!-- Main Content -->
             <div class="lg:col-span-2 space-y-6">
@@ -182,9 +182,16 @@
                 <!-- Actions -->
                 <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                     <div class="p-6 space-y-3">
-                        <button type="submit" class="w-full px-4 py-2.5 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium">
+                        <button type="submit" class="w-full px-4 py-2.5 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium" hx-indicator="#saving-indicator" hx-disable>
                             {% if object %}{% trans "Save Changes" %}{% else %}{% trans "Create Project" %}{% endif %}
                         </button>
+                        <div id="saving-indicator" class="hidden mt-2 text-center">
+                            <svg class="animate-spin h-5 w-5 mx-auto text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            <p class="text-sm text-gray-600 mt-1">{% trans "Saving..." %}</p>
+                        </div>
                         <a href="{% url 'dashboard:project_list' %}" class="w-full block text-center px-4 py-2.5 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium">
                             {% trans "Cancel" %}
                         </a>
@@ -275,5 +282,41 @@ function createErrorContainer() {
     form.insertBefore(container, form.firstChild);
     return container;
 }
+
+// Auto-generate slug from title
+function generateSlug(text) {
+    return text.toString().toLowerCase()
+        .replace(/\s+/g, '-')           // Replace spaces with -
+        .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+        .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+        .replace(/^-+/, '')             // Trim - from start of text
+        .replace(/-+$/, '');            // Trim - from end of text
+}
+
+// Auto-generate slug when title changes
+document.addEventListener('DOMContentLoaded', function() {
+    const titleFr = document.querySelector('input[name="title_fr"]');
+    const titleAr = document.querySelector('input[name="title_ar"]');
+    const slugField = document.querySelector('input[name="slug"]');
+    
+    if (titleFr && titleAr && slugField) {
+        // Don't override existing slug when editing
+        if (slugField.value) {
+            return;
+        }
+        
+        function updateSlug() {
+            // Use Arabic title if it's filled, otherwise French
+            const title = titleAr.value || titleFr.value;
+            
+            if (title) {
+                slugField.value = generateSlug(title);
+            }
+        }
+        
+        titleFr.addEventListener('input', updateSlug);
+        titleAr.addEventListener('input', updateSlug);
+    }
+});
 </script>
 {% endblock %}

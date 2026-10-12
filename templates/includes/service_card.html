@@ -1,0 +1,8 @@
+{% load ui %}<article class="service-card" data-reveal>
+<span class="service-number" aria-hidden="true">0{{ forloop.counter }}</span>{% if service.featured_image %}<img class="service-thumbnail" src="{{ service.featured_image.url }}" alt="{{ service.get_title }}" width="640" height="360" loading="lazy" decoding="async">{% endif %}<h3>
+<a href="{{ service.get_absolute_url }}">{{ service.get_title }}</a>
+</h3>
+<p>{{ service.get_short_description }}</p>
+<a class="text-link" href="{{ service.get_absolute_url }}">{% text 'Explorer le service' 'اكتشف الخدمة' %}<span class="arrow" aria-hidden="true">↗</span>
+</a>
+</article>

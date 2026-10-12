@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.http import JsonResponse
 from apps.services.models import Service
 from apps.analytics.models import PageView, ClickEvent, ServiceViewCount
-from apps.core.models import SiteSettings, HeroSlide, Project
+from apps.core.models import SiteSettings, HeroSlide, Project, Inquiry
 
 
 from django.utils import timezone
@@ -175,7 +175,8 @@ class SettingsView(LoginRequiredMixin, TemplateView):
             'linkedin_url', 'youtube_url', 'meta_title', 'meta_description',
             'google_analytics_id',
             'footer_text_fr', 'footer_text_ar',
-            'primary_color', 'accent_color', 'highlight_color'
+            'primary_color', 'accent_color', 'highlight_color',
+            'home_heading_fr', 'home_heading_ar', 'home_subheading_fr', 'home_subheading_ar'
         ]
         
         for field in fields:
@@ -195,6 +196,14 @@ class SettingsView(LoginRequiredMixin, TemplateView):
         
         settings.save()
         messages.success(request, _('Settings updated successfully.'))
+        
+        # Handle HTMX request
+        if request.headers.get('HX-Request'):
+            return JsonResponse({
+                'success': True,
+                'message': _('Settings updated successfully.'),
+                'redirect_url': reverse('dashboard:settings')
+            })
         return redirect('dashboard:settings')
     
     def handle_slide_action(self, request):
@@ -299,7 +308,7 @@ class ProjectCreateView(LoginRequiredMixin, CreateView):
     template_name = 'dashboard/project_form.html'
     fields = [
         'title_fr', 'title_ar', 'image', 'short_description_fr', 'short_description_ar',
-        'full_description_fr', 'full_description_ar', 'link', 'is_active',
+        'full_description_fr', 'full_description_ar', 'link', 'is_active', 'is_featured', 'display_order',
     ]
     success_url = reverse_lazy('dashboard:project_list')
 
@@ -348,7 +357,7 @@ class ProjectUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'dashboard/project_form.html'
     fields = [
         'title_fr', 'title_ar', 'image', 'short_description_fr', 'short_description_ar',
-        'full_description_fr', 'full_description_ar', 'link', 'is_active',
+        'full_description_fr', 'full_description_ar', 'link', 'is_active', 'is_featured', 'display_order',
     ]
     success_url = reverse_lazy('dashboard:project_list')
 
@@ -409,3 +418,21 @@ class DashboardLogoutView(TemplateView):
         logout(request)
         messages.success(request, _('You have been logged out.'))
         return redirect('dashboard:login')
+
+
+class InquiryListView(LoginRequiredMixin, ListView):
+    model = Inquiry
+    template_name = 'dashboard/inquiry_list.html'
+    context_object_name = 'inquiries'
+    paginate_by = 20
+
+    def get_queryset(self):
+        return Inquiry.objects.select_related('service')
+
+
+class InquiryUpdateView(LoginRequiredMixin, UpdateView):
+    model = Inquiry
+    fields = ['status']
+    template_name = 'dashboard/inquiry_detail.html'
+    context_object_name = 'inquiry'
+    success_url = reverse_lazy('dashboard:inquiry_list')

@@ -1,229 +1,30 @@
-{% load i18n static compress %}
-<!DOCTYPE html>
+{% load static ui %}
+<!doctype html>
 <html lang="{{ CURRENT_LANGUAGE|default:'fr' }}" dir="{% if IS_RTL %}rtl{% else %}ltr{% endif %}">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    
-    {% block meta %}
-    <title>{% block title %}{{ site_settings.site_name }}{% endblock %}</title>
-    <meta name="description" content="{% block meta_description %}{{ site_settings.site_description_fr }}{% endblock %}">
-    {% endblock %}
-    
-    <!-- Canonical URL -->
-    <link rel="canonical" href="{{ request.build_absolute_uri }}">
-    
-    <!-- Favicon -->
-    {% if site_settings.favicon %}
-    <link rel="icon" type="image/png" href="{{ site_settings.favicon.url }}">
-    {% endif %}
-    
-    <!-- Resource Hints -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    
-    <!-- Preload Critical Fonts -->
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Alyamama:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Alyamama:wght@400;500;600;700&display=swap"></noscript>
-    
-    <!-- Alpine.js - deferred (non-blocking) -->
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    
-    <!-- Critical JS for navbar scroll state -->
-    <script>
-        // Set initial scroll state before Alpine loads
-        document.documentElement.dataset.scrolled = window.scrollY > 50 ? 'true' : 'false';
-        document.documentElement.dataset.rtl = '{{ CURRENT_LANGUAGE }}' === 'ar' ? 'true' : 'false';
-    </script>
-    
-    <!-- Minimal Critical CSS -->
-    <style>
-        *,*:before,*:after{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,sans-serif;line-height:1.5}
-        :root{--color-primary:{{ site_settings.primary_color|default:'#0F172A' }};--color-accent:{{ site_settings.accent_color|default:'#2563EB' }};--color-highlight:{{ site_settings.highlight_color|default:'#F59E0B' }};--color-background:#F8FAFC}
-        .bg-primary{background-color:var(--color-primary)}.text-white{color:#fff}.text-accent{color:var(--color-accent)}
-        .gradient-text{background:linear-gradient(135deg,var(--color-accent),var(--color-highlight));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-        .relative{position:relative}.absolute{position:absolute}.inset-0{inset:0}.flex{display:flex}.grid{display:grid}.hidden{display:none}
-        .items-center{align-items:center}.justify-center{justify-content:center}.min-h-\[80vh\]{min-height:80vh}.w-full{width:100%}.h-full{height:100%}.max-w-7xl{max-width:80rem}.mx-auto{margin-left:auto;margin-right:auto}.px-4{padding-left:1rem;padding-right:1rem}.py-16{padding-top:4rem;padding-bottom:4rem}.pt-20{padding-top:5rem}.text-center{text-align:center}.overflow-hidden{overflow:hidden}
-        .bg-gradient-to-br{background-image:linear-gradient(to bottom right,var(--tw-gradient-stops))}.from-primary{--tw-gradient-from:var(--color-primary);--tw-gradient-stops:var(--tw-gradient-from),rgba(15,23,42,0)}.via-slate-900{--tw-gradient-stops:var(--tw-gradient-from),#0f172a,rgba(15,23,42,0)}.to-slate-800{--tw-gradient-to:#1e293b}
-        .text-sm{font-size:.875rem}.text-lg{font-size:1.125rem}.text-xl{font-size:1.25rem}.text-3xl{font-size:1.875rem}.text-4xl{font-size:2.25rem}.font-medium{font-weight:500}.font-semibold{font-weight:600}.font-bold{font-weight:700}.leading-tight{line-height:1.25}
-        .gap-4{gap:1rem}.gap-6{gap:1.5rem}.mb-4{margin-bottom:1rem}.mb-6{margin-bottom:1.5rem}.mb-8{margin-bottom:2rem}.mt-12{margin-top:3rem}
-        .grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}.grid-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
-        .flex-col{flex-direction:column}@media(min-width:1024px){.lg\\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}.lg\\:text-left{text-align:left}.lg\\:text-right{text-align:right}.lg\\:py-24{padding-top:6rem;padding-bottom:6rem}.lg\\:text-6xl{font-size:3.75rem;line-height:1}}
-        .opacity-5{opacity:.05}.inline-flex{display:inline-flex}[x-cloak]{display:none!important}
-        @font-face{font-family:Inter;font-style:normal;font-weight:400;font-display:swap;src:local('Inter')}@font-face{font-family:Inter;font-style:normal;font-weight:700;font-display:swap;src:local('Inter Bold')}
-    </style>
-
-    <!-- Tailwind CSS - Load synchronously to prevent FOUC -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        // Tailwind Config
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: 'var(--color-primary)',
-                        accent: 'var(--color-accent)',
-                        highlight: 'var(--color-highlight)',
-                        background: 'var(--color-background)',
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'system-ui', 'sans-serif'],
-                        arabic: ['Alyamama', 'Noto Sans Arabic', 'system-ui', 'sans-serif'],
-                    }
-                }
-            }
-        };
-    </script>
-    
-    {% block extra_head %}{% endblock %}
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+{% block meta %}<title>{% block title %}{{ site_settings.site_name|default:'DigiCode' }}{% endblock %}</title><meta name="description" content="{% block meta_description %}{{ page_description }}{% endblock %}">{% endblock %}
+<link rel="canonical" href="{{ canonical_url }}">
+{% if site_settings.favicon %}<link rel="icon" href="{{ site_settings.favicon.url }}">{% endif %}
+<link rel="stylesheet" href="{% static 'css/tailwind.css' %}">
+<link rel="stylesheet" href="{% static 'css/site.css' %}">
+<link rel="preload" href="{% static 'fonts/inter-latin.woff2' %}" as="font" type="font/woff2" crossorigin>
+{% if IS_RTL %}<link rel="preload" href="{% static 'fonts/noto-arabic.woff2' %}" as="font" type="font/woff2" crossorigin>{% endif %}
+{% if request.resolver_match.namespace == 'dashboard' %}
+<script defer src="{% static 'js/alpine.min.js' %}"></script>
+<script defer src="{% static 'js/htmx.min.js' %}"></script>
+{% endif %}
+<script defer src="{% static 'js/site.js' %}"></script>
+{% block extra_css %}{% endblock %}
 </head>
-<body class="font-sans antialiased" style="background-color:#F8FAFC;color:#0F172A;" 
-      x-data="{ mobileMenu: false, scrolled: false }" 
-      x-init="scrolled = window.scrollY > 50; window.addEventListener('scroll', () => scrolled = window.scrollY > 50)"
-      :class="{ 'font-arabic': '{{ CURRENT_LANGUAGE }}' === 'ar' }" 
-      :dir="'{{ CURRENT_LANGUAGE }}' === 'ar' ? 'rtl' : 'ltr'"
-      hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
-    
-    {% include 'includes/header.html' %}
-    
-    <main>
-        {% block content %}{% endblock %}
-    </main>
-    
-    {% include 'includes/footer.html' %}
-    {% include 'includes/whatsapp_button.html' %}
-    
-    <!-- Toast Notifications -->
-    <div x-data="{ toasts: [] }" 
-         @toast.window="toasts.push({message: $event.detail.message, type: $event.detail.type}); setTimeout(() => toasts.shift(), 5000)"
-         class="fixed bottom-4 right-4 rtl:right-auto rtl:left-4 z-50 space-y-2">
-        <template x-for="(toast, index) in toasts" :key="index">
-            <div class="px-4 py-3 rounded-lg shadow-lg text-white animate-fade-in"
-                 :class="toast.type === 'success' ? 'bg-green-500' : 'bg-red-500'"
-                 x-text="toast.message"></div>
-        </template>
-    </div>
-    
-    {% block extra_js %}{% endblock %}
-    
-    <!-- Deferred CSS and Scripts -->
-    {% compress css %}
-    <link rel="stylesheet" href="{% static 'css/tailwind.css' %}">
-    {% endcompress %}
-    
-    <!-- Custom Styles -->
-    <style>
-        /* RTL Base Styles */
-        [dir="rtl"] { 
-            text-align: right; 
-            font-family: 'Alyamama', 'Noto Sans Arabic', system-ui, sans-serif;
-            direction: rtl;
-        }
-        
-        /* Ensure all text inherits RTL alignment */
-        [dir="rtl"] body,
-        [dir="rtl"] p,
-        [dir="rtl"] h1,
-        [dir="rtl"] h2,
-        [dir="rtl"] h3,
-        [dir="rtl"] h4,
-        [dir="rtl"] h5,
-        [dir="rtl"] h6,
-        [dir="rtl"] span,
-        [dir="rtl"] div,
-        [dir="rtl"] a,
-        [dir="rtl"] li,
-        [dir="rtl"] label,
-        [dir="rtl"] button {
-            text-align: right;
-        }
-        
-        /* Flex direction for RTL */
-        [dir="rtl"] .flex {
-            direction: rtl;
-        }
-        
-        /* Space direction for RTL */
-        [dir="rtl"] .space-x-1 > * + *,
-        [dir="rtl"] .space-x-2 > * + *,
-        [dir="rtl"] .space-x-3 > * + *,
-        [dir="rtl"] .space-x-4 > * + *,
-        [dir="rtl"] .space-x-6 > * + *,
-        [dir="rtl"] .space-x-8 > * + * {
-            --tw-space-x-reverse: 1;
-        }
-        
-        /* Margin/padding utilities for RTL */
-        [dir="rtl"] .ml-1, [dir="rtl"] .ml-2, [dir="rtl"] .ml-3, [dir="rtl"] .ml-4,
-        [dir="rtl"] .ml-6, [dir="rtl"] .ml-8, [dir="rtl"] .ml-auto {
-            margin-left: 0;
-        }
-        
-        [dir="rtl"] .mr-1, [dir="rtl"] .mr-2, [dir="rtl"] .mr-3, [dir="rtl"] .mr-4,
-        [dir="rtl"] .mr-6, [dir="rtl"] .mr-8, [dir="rtl"] .mr-auto {
-            margin-right: 0;
-        }
-        
-        /* Fix text alignment for specific elements */
-        [dir="rtl"] .text-left {
-            text-align: right;
-        }
-        
-        [dir="rtl"] .text-center {
-            text-align: center !important;
-        }
-        
-        /* Hero section h1 should be right-aligned in RTL */
-        [dir="rtl"] section:first-of-type h1,
-        [dir="rtl"] .text-center.lg\:text-left h1,
-        [dir="rtl"] h1.text-4xl {
-            text-align: right !important;
-        }
-        
-        /* Ensure title sections stay centered in RTL */
-        [dir="rtl"] h1.text-center,
-        [dir="rtl"] h2.text-center,
-        [dir="rtl"] h3.text-center,
-        [dir="rtl"] .text-center h1,
-        [dir="rtl"] .text-center h2,
-        [dir="rtl"] .text-center h3,
-        [dir="rtl"] section .text-center {
-            text-align: center !important;
-        }
-        
-        /* Font family utilities */
-        .font-arabic { 
-            font-family: 'Alyamama', 'Noto Sans Arabic', system-ui, sans-serif; 
-        }
-        
-        /* Ensure body has RTL when Arabic */
-        body.font-arabic {
-            direction: rtl;
-            text-align: right;
-        }
-        .gradient-text {
-            background: linear-gradient(135deg, #2563EB 0%, #F59E0B 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        .card-hover { transition: all 0.3s ease; }
-        .card-hover:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(15, 23, 42, 0.15); }
-        .btn-hover { transition: all 0.3s ease; }
-        .btn-hover:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3); }
-        .shadow-soft { box-shadow: 0 4px 20px rgba(15, 23, 42, 0.08); }
-        .shadow-medium { box-shadow: 0 10px 40px rgba(15, 23, 42, 0.12); }
-        .animate-fade-in { animation: fadeIn 0.6s ease-out forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .line-clamp-1 { display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
-        .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-        .line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-    </style>
-    
-    {% block extra_css %}{% endblock %}
-    
-    <!-- HTMX - Non-blocking -->
-    <script src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-D1Kt99CQMDuVetoL1lrEwbo" crossorigin="anonymous"></script>
-</body>
-</html>
+<body>
+<a class="skip-link" href="#main-content">{% text "Aller au contenu" "انتقل إلى المحتوى" %}</a>
+{% include 'includes/header.html' %}
+<main id="main-content" tabindex="-1">
+{% if messages %}<div class="shell messages" role="status">{% for message in messages %}<p>{{ message }}</p>{% endfor %}</div>{% endif %}
+{% block content %}{% endblock %}
+</main>
+{% include 'includes/footer.html' %}
+{% include 'includes/whatsapp_button.html' %}
+{% block extra_js %}{% endblock %}
+</body></html>

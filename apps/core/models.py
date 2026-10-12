@@ -1,5 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _, get_language
+from django.urls import reverse
+from apps.core.utils import create_unique_slug, normalize_arabic_text
 
 
 class HeroSlide(models.Model):
@@ -83,6 +85,11 @@ class SiteSettings(models.Model):
     site_description_fr = models.TextField(_('Site Description (FR)'), blank=True)
     site_description_ar = models.TextField(_('Site Description (AR)'), blank=True)
 
+    home_heading_fr = models.CharField(max_length=180, blank=True)
+    home_heading_ar = models.CharField(max_length=180, blank=True)
+    home_subheading_fr = models.TextField(max_length=500, blank=True)
+    home_subheading_ar = models.TextField(max_length=500, blank=True)
+
     # Footer Text
     footer_text_fr = models.TextField(_('Footer Text (FR)'), blank=True, help_text=_('Copyright text or tagline for footer'))
     footer_text_ar = models.TextField(_('Footer Text (AR)'), blank=True, help_text=_('Copyright text or tagline for footer (Arabic)'))
@@ -152,6 +159,7 @@ class Project(models.Model):
     """Project/portfolio item showcasing completed work."""
     title_fr = models.CharField(_('Title (FR)'), max_length=200, default='')
     title_ar = models.CharField(_('Title (AR)'), max_length=200, blank=True, default='')
+    slug = models.SlugField(_('Slug'), unique=True, max_length=100, blank=True)
     image = models.ImageField(_('Image'), upload_to='projects/', blank=True, null=True, help_text=_('Project thumbnail or screenshot'))
     short_description_fr = models.TextField(_('Short Description (FR)'), max_length=500, default='', help_text=_('Brief summary shown on the list page'))
     short_description_ar = models.TextField(_('Short Description (AR)'), max_length=500, blank=True, default='')
@@ -161,6 +169,9 @@ class Project(models.Model):
     is_active = models.BooleanField(_('Active'), default=True)
     created_at = models.DateTimeField(_('Created At'), auto_now_add=True)
     updated_at = models.DateTimeField(_('Updated At'), auto_now=True)
+
+    is_featured = models.BooleanField(default=False)
+    display_order = models.PositiveIntegerField(default=0)
 
     class Meta:
         verbose_name = _('Project')
@@ -184,3 +195,34 @@ class Project(models.Model):
         if get_language() == 'ar' and self.full_description_ar:
             return self.full_description_ar
         return self.full_description_fr
+    
+    def save(self, *args, **kwargs):
+        # Generate slug if not provided
+        if not self.slug:
+            # Use Arabic title if available, otherwise French
+            title = self.title_ar if self.title_ar else self.title_fr
+            self.slug = create_unique_slug(Project, title, self)
+        super().save(*args, **kwargs)
+    
+    def get_absolute_url(self):
+        return reverse('core:project_detail', kwargs={'slug': self.slug})
+
+
+class Inquiry(models.Model):
+    STATUS_CHOICES = [('new', _('New')), ('contacted', _('Contacted')), ('closed', _('Closed'))]
+    name = models.CharField(max_length=120)
+    email = models.EmailField()
+    company = models.CharField(max_length=160, blank=True)
+    phone = models.CharField(max_length=40, blank=True)
+    service = models.ForeignKey('services.Service', null=True, blank=True, on_delete=models.SET_NULL)
+    brief = models.TextField(max_length=5000)
+    language = models.CharField(max_length=2, choices=[('fr', 'Français'), ('ar', 'العربية')])
+    source_page = models.CharField(max_length=500, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='new')
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f'{self.name} — {self.created_at:%Y-%m-%d}'

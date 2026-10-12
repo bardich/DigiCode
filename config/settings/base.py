@@ -77,6 +77,7 @@ TEMPLATES = [
                 'django.template.context_processors.i18n',
                 'apps.core.context_processors.site_settings',
                 'apps.core.context_processors.current_language',
+                'apps.core.context_processors.redesign',
                 'apps.services.context_processors.services_processor',
             ],
         },

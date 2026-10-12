@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _, get_language
+from apps.core.utils import create_unique_slug, normalize_arabic_text
 
 
 class Service(models.Model):
@@ -18,8 +19,8 @@ class Service(models.Model):
     title_fr = models.CharField(_('Title (FR)'), max_length=200)
     title_ar = models.CharField(_('Title (AR)'), max_length=200, blank=True)
     
-    # Slug for URL
-    slug = models.SlugField(_('Slug'), unique=True)
+    # Slug for URL (supports Arabic)
+    slug = models.SlugField(_('Slug'), unique=True, max_length=100)
     
     # Short description for listings
     short_description_fr = models.TextField(_('Short Description (FR)'))
@@ -58,15 +59,20 @@ class Service(models.Model):
         verbose_name_plural = _('Services')
     
     def __str__(self):
-        return self.title_fr
-    
-    def get_absolute_url(self):
-        return reverse('services:detail', kwargs={'slug': self.slug})
+        return self.get_title()
     
     def save(self, *args, **kwargs):
+        # Generate slug if not provided
+        if not self.slug:
+            # Use Arabic title if available, otherwise French
+            title = self.title_ar if self.title_ar else self.title_fr
+            self.slug = create_unique_slug(Service, title, self)
         super().save(*args, **kwargs)
         from django.core.cache import cache
         cache.delete('header_services')  # Invalidate header cache
+    
+    def get_absolute_url(self):
+        return reverse('services:detail', kwargs={'slug': self.slug})
     
     def delete(self, *args, **kwargs):
         from django.core.cache import cache

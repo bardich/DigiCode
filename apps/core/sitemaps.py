@@ -8,7 +8,7 @@ class StaticViewSitemap(Sitemap):
     changefreq = 'weekly'
 
     def items(self):
-        return ['core:home', 'core:about', 'core:contact', 'services:list']
+        return ['core:home', 'core:about', 'core:contact', 'services:list', 'core:project_list', 'services:rental_landing', 'services:usedcars_landing', 'services:artisana_landing']
 
     def location(self, item):
         return reverse(item)
@@ -20,6 +20,18 @@ class ServiceSitemap(Sitemap):
 
     def items(self):
         return Service.objects.filter(is_active=True)
+
+    def lastmod(self, obj):
+        return obj.updated_at
+
+
+class ProjectSitemap(Sitemap):
+    changefreq = 'monthly'
+    priority = 0.7
+
+    def items(self):
+        from .models import Project
+        return Project.objects.filter(is_active=True)
 
     def lastmod(self, obj):
         return obj.updated_at

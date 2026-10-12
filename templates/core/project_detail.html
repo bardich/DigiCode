@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load ui %}
+{% block title %}{{ project.get_title }} · DigiCode{% endblock %}
+{% block meta_description %}{{ project.get_short_description }}{% endblock %}
+{% block content %}<section class="page-intro shell">
+<p class="eyebrow">{% text "Réalisation DigiCode" "من أعمال ديجي كود" %}</p>
+<h1>{{ project.get_title }}</h1>
+<p class="intro-copy">{{ project.get_short_description }}</p>
+</section>
+<section class="section shell section-tight">
+<div class="project-detail-frame">
+<div class="browser-bar" aria-hidden="true">
+<i>
+</i>
+<i>
+</i>
+<i>
+</i>
+<span>{{ project.get_title }}</span>
+</div>{% if project.image %}<img src="{{ project.image.url }}" alt="{{ project.get_title }}" width="1280" height="800">{% else %}<div class="image-placeholder">
+<span class="placeholder-symbol" aria-hidden="true">↗</span>
+<span>{{ project.get_title }}</span>
+<small>{% text "Aperçu à venir" "المعاينة قريباً" %}</small>
+</div>{% endif %}</div>
+<div class="detail-grid project-description">
+<div>
+<p class="eyebrow">{% text "Le projet" "المشروع" %}</p>
+<div class="prose-content">{{ project.get_full_description|linebreaks }}</div>
+</div>
+<aside>{% if project.link %}<a class="button" href="{{ project.link }}" target="_blank" rel="noopener noreferrer">{% text "Visiter le site" "زيارة الموقع" %} ↗</a>{% endif %}<a class="text-link section-link" href="{% url 'core:project_list' %}">{% text "Toutes nos réalisations" "جميع أعمالنا" %} ↗</a>
+</aside>
+</div>
+</section>{% include "includes/cta.html" %}
+{% endblock %}

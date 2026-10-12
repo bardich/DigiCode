@@ -1,0 +1,14 @@
+{% load ui %}<section class="cta-section">
+<div class="shell cta-inner" data-reveal>
+<div>
+<p class="eyebrow">{% text 'La prochaine étape' 'الخطوة التالية' %}</p>
+<h2>{% text 'Une idée en tête ?' 'لديك فكرة؟' %}<br>
+<span>{% text 'Donnons-lui vie.' 'لنحولها إلى واقع.' %}</span>
+</h2>
+<p>{% text 'Parlez-nous de votre activité. Construisons la bonne solution, ensemble.' 'حدثنا عن نشاطك. لنبنِ الحل المناسب معاً.' %}</p>
+</div>
+<a class="button button-light" href="{% url 'core:contact' %}
+{% if service %}?service={{ service.slug|urlencode }}{% endif %}#project-form">{% text 'Démarrer mon projet' 'ابدأ مشروعي' %}<span class="arrow" aria-hidden="true">↗</span>
+</a>
+</div>
+</section>

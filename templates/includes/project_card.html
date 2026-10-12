@@ -1,0 +1,27 @@
+{% load ui %}<article class="project-card" data-reveal>
+<a href="{{ project.get_absolute_url }}" class="project-image" aria-label="{{ project.get_title }}">
+<div class="browser-bar" aria-hidden="true">
+<i>
+</i>
+<i>
+</i>
+<i>
+</i>
+<span>DigiCode / {% text 'réalisation' 'أعمالنا' %}</span>
+</div>{% if project.image %}<img src="{{ project.image.url }}" alt="{{ project.get_title }}" width="960" height="600" loading="lazy" decoding="async">{% else %}<div class="image-placeholder">
+<span class="placeholder-symbol" aria-hidden="true">↗</span>
+<span>{{ project.get_title }}</span>
+<small>{% text 'Aperçu à venir' 'المعاينة قريباً' %}</small>
+</div>{% endif %}</a>
+<div class="project-caption">
+<div>
+<h3>
+<a href="{{ project.get_absolute_url }}">{{ project.get_title }}</a>
+</h3>
+<p>{{ project.get_short_description }}</p>
+</div>
+<a class="circle-link" href="{{ project.get_absolute_url }}" aria-label="{% text 'Découvrir' 'اكتشف' %} {{ project.get_title }}">
+<span class="arrow" aria-hidden="true">↗</span>
+</a>
+</div>
+</article>

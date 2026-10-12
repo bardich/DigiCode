@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
-from .models import SiteSettings, Project
+from .models import SiteSettings, Project, Inquiry
 
 
 @admin.register(SiteSettings)
@@ -35,10 +35,21 @@ class ProjectAdmin(admin.ModelAdmin):
             )
         }),
         (_('Link & Status'), {
-            'fields': ('link', 'is_active')
+            'fields': ('link', 'is_active', 'is_featured', 'display_order')
         }),
         (_('Timestamps'), {
             'fields': ('created_at', 'updated_at'),
             'classes': ('collapse',)
         }),
     )
+
+
+@admin.register(Inquiry)
+class InquiryAdmin(admin.ModelAdmin):
+    list_display = ['name', 'email', 'service', 'status', 'created_at']
+    list_filter = ['status', 'language']
+    search_fields = ['name', 'email', 'company']
+    readonly_fields = ['name', 'email', 'company', 'phone', 'service', 'brief', 'language', 'source_page', 'created_at']
+
+    def has_add_permission(self, request):
+        return False
