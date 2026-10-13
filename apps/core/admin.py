@@ -35,7 +35,7 @@ class ProjectAdmin(admin.ModelAdmin):
             )
         }),
         (_('Link & Status'), {
-            'fields': ('link', 'is_active', 'is_featured', 'display_order')
+            'fields': ('link', 'is_active', 'is_featured', 'display_order', 'landing_page')
         }),
         (_('Timestamps'), {
             'fields': ('created_at', 'updated_at'),

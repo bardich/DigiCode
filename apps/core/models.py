@@ -170,6 +170,7 @@ class Project(models.Model):
     created_at = models.DateTimeField(_('Created At'), auto_now_add=True)
     updated_at = models.DateTimeField(_('Updated At'), auto_now=True)
 
+    landing_page = models.CharField(max_length=30, blank=True, default='', choices=[('', _('Standard project')), ('car_rental', _('Car rental landing page')), ('ecommerce', _('E-commerce landing page'))])
     is_featured = models.BooleanField(default=False)
     display_order = models.PositiveIntegerField(default=0)
 
@@ -206,6 +207,15 @@ class Project(models.Model):
                 kwargs['update_fields'] = set(kwargs['update_fields']) | {'slug'}
         super().save(*args, **kwargs)
     
+    def get_image_url(self):
+        if self.image:
+            return self.image.url
+        if self.landing_page == 'car_rental':
+            from django.templatetags.static import static
+            language = 'ar' if get_language() == 'ar' else 'fr'
+            return static(f'images/rental-public-{language}.png')
+        return ''
+
     def get_absolute_url(self):
         # Keep the gallery renderable for unmigrated or bulk-imported records.
         if not self.slug:

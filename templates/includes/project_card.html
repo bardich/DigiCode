@@ -8,7 +8,7 @@
 <i>
 </i>
 <span>DigiCode / {% text 'réalisation' 'أعمالنا' %}</span>
-</div>{% if project.image %}<img src="{{ project.image.url }}" alt="{{ project.get_title }}" width="960" height="600" loading="lazy" decoding="async">{% else %}<div class="image-placeholder">
+</div>{% if project.get_image_url %}<img src="{{ project.get_image_url }}" alt="{{ project.get_title }}" width="960" height="600" loading="lazy" decoding="async">{% elif project.landing_page == 'ecommerce' %}{% include 'includes/ecommerce_preview.html' with compact=True %}{% else %}<div class="image-placeholder">
 <span class="placeholder-symbol" aria-hidden="true">↗</span>
 <span>{{ project.get_title }}</span>
 <small>{% text 'Aperçu à venir' 'المعاينة قريباً' %}</small>

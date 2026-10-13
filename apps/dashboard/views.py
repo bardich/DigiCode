@@ -308,7 +308,7 @@ class ProjectCreateView(LoginRequiredMixin, CreateView):
     template_name = 'dashboard/project_form.html'
     fields = [
         'title_fr', 'title_ar', 'image', 'short_description_fr', 'short_description_ar',
-        'full_description_fr', 'full_description_ar', 'link', 'is_active', 'is_featured', 'display_order',
+        'full_description_fr', 'full_description_ar', 'link', 'is_active', 'is_featured', 'display_order', 'landing_page',
     ]
     success_url = reverse_lazy('dashboard:project_list')
 
@@ -357,7 +357,7 @@ class ProjectUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'dashboard/project_form.html'
     fields = [
         'title_fr', 'title_ar', 'image', 'short_description_fr', 'short_description_ar',
-        'full_description_fr', 'full_description_ar', 'link', 'is_active', 'is_featured', 'display_order',
+        'full_description_fr', 'full_description_ar', 'link', 'is_active', 'is_featured', 'display_order', 'landing_page',
     ]
     success_url = reverse_lazy('dashboard:project_list')
 

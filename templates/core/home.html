@@ -32,7 +32,7 @@
 </i>
 <span>{% text "digicode / studio" "ديجي كود / الاستوديو" %}</span>
 </div>{% with project=featured_projects.0 %}
-{% if project.image %}<img class="hero-project-image" src="{{ project.image.url }}" alt="{{ project.get_title }}" width="720" height="520" fetchpriority="high">{% else %}<div class="concept-art">
+{% if project.get_image_url %}<img class="hero-project-image" src="{{ project.get_image_url }}" alt="{{ project.get_title }}" width="720" height="520" fetchpriority="high">{% else %}<div class="concept-art">
 <span class="eyebrow">{% text "DIGICODE / DESIGN & DÉVELOPPEMENT" "ديجي كود / تصميم وتطوير" %}</span>
 <span class="concept-title">{% text "Place à<br>votre vision." "مساحة<br>لرؤيتك." %}</span>
 <div class="concept-bottom">

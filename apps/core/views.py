@@ -58,7 +58,17 @@ class ContactView(TemplateView):
         if 'form' not in context:
             from apps.services.models import Service
             service = Service.objects.filter(is_active=True, slug=self.request.GET.get('service', '')).first()
-            context['form'] = InquiryForm(initial={'service': service})
+            initial = {'service': service}
+            project = Project.objects.filter(is_active=True, slug=self.request.GET.get('project', '')).first()
+            intent = self.request.GET.get('intent', '')
+            if project and intent in ['demo', 'quote']:
+                business_fr = 'Mon entreprise' if project.landing_page == 'ecommerce' else 'Mon agence'
+                business_ar = 'نشاطي' if project.landing_page == 'ecommerce' else 'وكالتي'
+                initial['brief'] = bilingual(
+                    f"Je souhaite {'une démonstration' if intent == 'demo' else 'un devis'} pour {project.get_title()}. {business_fr} : ",
+                    f"أرغب في {'عرض توضيحي' if intent == 'demo' else 'عرض سعر'} لمشروع {project.get_title()}. {business_ar}: "
+                )
+            context['form'] = InquiryForm(initial=initial)
         context['submitted'] = self.request.session.pop('inquiry_submitted', False)
         return context
 
@@ -108,3 +118,20 @@ class ProjectDetailView(DetailView):
     
     def get_queryset(self):
         return Project.objects.filter(is_active=True)
+
+    def get_template_names(self):
+        if self.object.landing_page == 'car_rental':
+            return ['core/project_rental.html']
+        if self.object.landing_page == 'ecommerce':
+            return ['core/project_ecommerce.html']
+        return super().get_template_names()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.object.landing_page == 'car_rental':
+            from .rental_content import rental_context
+            context.update(rental_context(self.request, self.object))
+        elif self.object.landing_page == 'ecommerce':
+            from .ecommerce_content import ecommerce_context
+            context.update(ecommerce_context(self.request, self.object))
+        return context

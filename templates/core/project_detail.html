@@ -17,7 +17,7 @@
 <i>
 </i>
 <span>{{ project.get_title }}</span>
-</div>{% if project.image %}<img src="{{ project.image.url }}" alt="{{ project.get_title }}" width="1280" height="800">{% else %}<div class="image-placeholder">
+</div>{% if project.get_image_url %}<img src="{{ project.get_image_url }}" alt="{{ project.get_title }}" width="1280" height="800">{% else %}<div class="image-placeholder">
 <span class="placeholder-symbol" aria-hidden="true">↗</span>
 <span>{{ project.get_title }}</span>
 <small>{% text "Aperçu à venir" "المعاينة قريباً" %}</small>

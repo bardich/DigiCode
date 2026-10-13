@@ -167,7 +167,8 @@ class RedesignTests(TestCase):
                     self.assertContains(response, fr if lang == 'fr' else ar)
                     self.assertNotContains(response, ar if lang == 'fr' else fr)
                     self.assertContains(response, 'dir="ltr"' if lang == 'fr' else 'dir="rtl"')
-                    self.assertContains(response, 'Démarrer mon projet' if lang == 'fr' else 'ابدأ مشروعي')
+                    cta = ('Demander une démonstration' if lang == 'fr' else 'اطلب عرضاً توضيحياً') if slug == 'rental' else ('Démarrer mon projet' if lang == 'fr' else 'ابدأ مشروعي')
+                    self.assertContains(response, cta)
                     self.assertNotContains(response, 'En Vedette')
                     self.assertNotContains(response, 'real-time')
                     if lang == 'ar':
@@ -247,3 +248,181 @@ class RedesignTests(TestCase):
         migration.backfill_project_slugs(apps, SimpleNamespace(connection=connection))
         self.project.refresh_from_db()
         self.assertEqual(self.project.slug, f'project-{self.project.pk}')
+
+
+@override_settings(MIDDLEWARE=TEST_MIDDLEWARE)
+class RentalProjectTests(TestCase):
+    def setUp(self):
+        SiteSettings.objects.create(whatsapp_number='+212 600-123-456')
+
+    def seed(self):
+        from django.core.management import call_command
+        from io import StringIO
+        call_command('seed_rental_project', stdout=StringIO())
+        return Project.objects.get(landing_page='car_rental')
+
+    def test_seed_reuses_legacy_entry_and_is_repeatable(self):
+        legacy = Project.objects.create(slug='project-1', link='https://rental.digicode.ma/')
+        project = self.seed()
+        self.assertEqual(project.pk, legacy.pk)
+        self.assertEqual(project.slug, 'project-1')
+        self.assertEqual(project.link, 'https://rental.digicode.ma/')
+        self.assertTrue(project.is_active and project.is_featured)
+        self.assertTrue(project.title_ar and project.title_fr)
+        project.title_fr = 'Titre édité par le propriétaire'
+        project.save()
+        self.assertEqual(self.seed().title_fr, 'Titre édité par le propriétaire')
+        self.assertEqual(Project.objects.count(), 1)
+
+    def test_seed_creates_new_project_without_replacing_named_project(self):
+        original = Project.objects.create(title_fr='Un autre projet', link='https://rental.digicode.ma/')
+        project = self.seed()
+        self.assertNotEqual(original.pk, project.pk)
+        self.assertEqual(project.slug, 'car-rental')
+        self.assertEqual(Project.objects.count(), 2)
+
+    def test_project_gallery_home_and_sitemap_include_rental(self):
+        project = self.seed()
+        self.assertContains(self.client.get('/projects/'), project.get_absolute_url())
+        self.assertContains(self.client.get('/'), project.get_absolute_url())
+        self.assertContains(self.client.get('/sitemap.xml'), project.get_absolute_url())
+        self.assertContains(self.client.get('/projects/'), 'images/rental-public-fr.png')
+
+    def test_bilingual_landing_and_accurate_scope(self):
+        project = self.seed()
+        for lang in ['fr', 'ar']:
+            self.client.get(f'/set-language/{lang}/')
+            for path in [project.get_absolute_url(), '/services/lp/rental/']:
+                with self.subTest(lang=lang, path=path):
+                    response = self.client.get(path)
+                    self.assertEqual(response.status_code, 200)
+                    self.assertTemplateUsed(response, 'core/project_rental.html')
+                    self.assertContains(response, 'https://rental.digicode.ma/')
+                    self.assertContains(response, f'images/rental-public-{lang}.png')
+                    self.assertContains(response, '7 à 29 jours' if lang == 'fr' else 'من 7 إلى 29 يوماً')
+                    self.assertContains(response, 'Le paiement en ligne n’est pas disponible' if lang == 'fr' else 'الدفع الإلكتروني غير موجود')
+                    self.assertContains(response, 'sans expiration automatique' if lang == 'fr' else 'دون انتهاء تلقائي')
+                    self.assertContains(response, 'pas les paiements encaissés ni les bénéfices' if lang == 'fr' else 'ليست مدفوعات محصلة أو أرباحاً')
+                    self.assertContains(response, 'https://wa.me/212600123456?text=')
+                    self.assertContains(response, f'project={project.slug}&amp;intent=demo')
+                    self.assertNotContains(response, 'GPS')
+
+    def test_inactive_project_is_not_published(self):
+        project = self.seed()
+        project.is_active = False
+        project.save()
+        self.assertEqual(self.client.get(project.get_absolute_url()).status_code, 404)
+        self.assertNotContains(self.client.get('/projects/'), project.get_absolute_url())
+
+    def test_demo_and_quote_prefill_and_successful_submission(self):
+        project = self.seed()
+        for lang in ['fr', 'ar']:
+            self.client.get(f'/set-language/{lang}/')
+            for intent in ['demo', 'quote']:
+                response = self.client.get(f'/contact/?project={project.slug}&intent={intent}')
+                brief = response.context['form']['brief'].value()
+                self.assertIn(project.get_title(), brief)
+                self.assertIn('Je souhaite' if lang == 'fr' else 'أرغب', brief)
+        response = self.client.post('/contact/', {'name':'Owner', 'email':'owner@example.com', 'brief': brief + ' Agence de Casablanca.'})
+        self.assertEqual(response.status_code, 302)
+        self.assertIn('أرغب', Inquiry.objects.get().brief)
+        project.is_active = False
+        project.save()
+        response = self.client.get(f'/contact/?project={project.slug}&intent=demo')
+        self.assertIsNone(response.context['form']['brief'].value())
+
+
+@override_settings(MIDDLEWARE=TEST_MIDDLEWARE)
+class EcommerceProjectTests(TestCase):
+    def setUp(self):
+        SiteSettings.objects.create()
+
+    def seed(self):
+        from django.core.management import call_command
+        from io import StringIO
+        call_command('seed_ecommerce_project', stdout=StringIO())
+        return Project.objects.get(landing_page='ecommerce')
+
+    def test_seed_adds_separate_project_without_external_link(self):
+        rental = Project.objects.create(title_fr='Location', slug='rental-existing', landing_page='car_rental', link='https://rental.digicode.ma/')
+        project = self.seed()
+        self.assertEqual(project.slug, 'safaa-ecommerce')
+        self.assertEqual(project.link, '')
+        self.assertTrue(project.is_active and project.is_featured)
+        self.assertTrue(project.title_ar and project.title_fr)
+        rental.refresh_from_db()
+        self.assertEqual(rental.link, 'https://rental.digicode.ma/')
+        self.assertEqual(Project.objects.count(), 2)
+        project.title_fr = 'Safaa, titre personnalisé'
+        project.short_description_ar = 'وصف معدل'
+        project.save()
+        again = self.seed()
+        self.assertEqual(again.title_fr, 'Safaa, titre personnalisé')
+        self.assertEqual(again.short_description_ar, 'وصف معدل')
+        self.assertEqual(Project.objects.count(), 2)
+
+    def test_bilingual_page_explains_demo_and_future_features(self):
+        project = self.seed()
+        for lang in ['fr', 'ar']:
+            self.client.get(f'/set-language/{lang}/')
+            response = self.client.get(project.get_absolute_url())
+            self.assertEqual(response.status_code, 200)
+            self.assertTemplateUsed(response, 'core/project_ecommerce.html')
+            self.assertContains(response, 'Les commandes publiques sont désactivées' if lang == 'fr' else 'الطلبات العامة معطلة')
+            self.assertContains(response, 'expiration après 48 heures' if lang == 'fr' else 'تنتهي بعد 48 ساعة')
+            self.assertContains(response, ('le stock physique est déduit à l’expédition' if lang == 'fr' else 'يُخصم المخزون الفعلي عند الشحن'))
+            self.assertContains(response, 'ne font pas partie de la première version' if lang == 'fr' else 'ليست ضمن النسخة الأولى')
+            self.assertContains(response, 'Composition illustrative' if lang == 'fr' else 'تكوين توضيحي')
+            self.assertContains(response, 'Un seul code par commande' if lang == 'fr' else 'رمز واحد لكل طلب')
+            self.assertContains(response, ('Démonstration, pas boutique en activité' if lang == 'fr' else 'عرض تجريبي وليس متجراً نشطاً'))
+            self.assertNotContains(response, 'rental.digicode.ma')
+            self.assertNotContains(response, 'Visiter le site')
+            self.assertNotContains(response, 'rental-public-')
+            self.assertNotContains(response, '37 backend')
+
+    def test_all_project_calls_to_action_use_contact(self):
+        from html.parser import HTMLParser
+        class MainLinks(HTMLParser):
+            in_main = False
+            links = []
+            def handle_starttag(self, tag, attrs):
+                attrs = dict(attrs)
+                if tag == 'main':
+                    self.in_main = True
+                if tag == 'a' and self.in_main:
+                    self.links.append(attrs.get('href'))
+            def handle_endtag(self, tag):
+                if tag == 'main':
+                    self.in_main = False
+        project = self.seed()
+        response = self.client.get(project.get_absolute_url())
+        parser = MainLinks()
+        parser.feed(response.content.decode())
+        self.assertGreaterEqual(len(parser.links), 6)
+        for link in parser.links:
+            self.assertTrue(link.startswith('/contact/?project=safaa-ecommerce&intent='), link)
+            self.assertTrue(link.endswith('#project-form'), link)
+
+    def test_portfolio_home_and_sitemap_show_project(self):
+        project = self.seed()
+        for path in ['/', '/projects/', '/sitemap.xml']:
+            self.assertContains(self.client.get(path), project.get_absolute_url())
+        self.assertContains(self.client.get('/projects/'), 'Composition illustrative')
+        project.is_active = False
+        project.save()
+        self.assertEqual(self.client.get(project.get_absolute_url()).status_code, 404)
+        self.assertNotContains(self.client.get('/projects/'), project.get_absolute_url())
+
+    def test_demo_and_quote_contact_briefs_match_each_language(self):
+        project = self.seed()
+        for lang in ['fr', 'ar']:
+            self.client.get(f'/set-language/{lang}/')
+            for intent in ['demo', 'quote']:
+                response = self.client.get(f'/contact/?project={project.slug}&intent={intent}')
+                brief = response.context['form']['brief'].value()
+                self.assertIn(project.get_title(), brief)
+                self.assertIn('Je souhaite' if lang == 'fr' else 'أرغب', brief)
+                self.assertIn('Mon entreprise' if lang == 'fr' else 'نشاطي', brief)
+        response = self.client.post('/contact/', {'name':'Merchant', 'email':'merchant@example.com', 'brief':brief + ' متجر للمنتجات الطبيعية.'})
+        self.assertEqual(response.status_code, 302)
+        self.assertIn('صفاء', Inquiry.objects.get().brief)

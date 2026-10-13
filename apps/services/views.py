@@ -4,19 +4,16 @@ from .models import Service
 
 
 class RentalLandingPageView(TemplateView):
-    """Landing page for Rental Cars service in Arabic."""
-    template_name = 'services/lp_rental_ar.html'
-    
+    """Bilingual sales page for the car-rental project."""
+    template_name = 'core/project_rental.html'
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Get the rental cars service if it exists
-        try:
-            context['service'] = Service.objects.filter(
-                is_active=True,
-                slug__icontains='rental'
-            ).first()
-        except Service.DoesNotExist:
-            context['service'] = None
+        from apps.core.models import Project
+        from apps.core.rental_content import rental_context
+        project = Project.objects.filter(is_active=True, landing_page='car_rental').order_by('display_order', 'pk').first()
+        context['project'] = project
+        context.update(rental_context(self.request, project))
         return context
 
 
