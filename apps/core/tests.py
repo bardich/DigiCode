@@ -172,9 +172,9 @@ class RedesignTests(TestCase):
                     self.assertNotContains(response, 'En Vedette')
                     self.assertNotContains(response, 'real-time')
                     if lang == 'ar':
-                        self.assertContains(response, 'fonts/fustat-arabic.woff2')
+                        self.assertContains(response, 'fonts/beiruti-arabic.woff2')
                     else:
-                        self.assertNotContains(response, 'fonts/fustat-arabic.woff2')
+                        self.assertNotContains(response, 'fonts/beiruti-arabic.woff2')
 
     def test_missing_translations_do_not_leak_another_language(self):
         from django.utils.translation import override
@@ -195,16 +195,16 @@ class RedesignTests(TestCase):
                     self.assertNotIn('عربي', getattr(obj, method)())
                     self.assertTrue(getattr(obj, method)())
 
-    def test_arabic_font_is_fustat_in_public_and_login(self):
+    def test_arabic_font_is_beiruti_in_public_and_login(self):
         from pathlib import Path
         from django.conf import settings
         self.client.get('/set-language/ar/')
         for path in ['/', '/contact/', '/dashboard/login/']:
-            self.assertContains(self.client.get(path), 'fonts/fustat-arabic.woff2')
+            self.assertContains(self.client.get(path), 'fonts/beiruti-arabic.woff2')
         css = (settings.BASE_DIR / 'static/css/site.css').read_text()
-        self.assertIn('font-family:Fustat', css)
+        self.assertIn('font-family:Beiruti', css)
         self.assertNotIn('Noto Sans Arabic', css)
-        self.assertTrue((settings.BASE_DIR / 'static/fonts/fustat-arabic.woff2').exists())
+        self.assertTrue((settings.BASE_DIR / 'static/fonts/beiruti-arabic.woff2').exists())
 
     def test_project_without_slug_does_not_break_gallery(self):
         Project.objects.filter(pk=self.project.pk).update(slug='')
