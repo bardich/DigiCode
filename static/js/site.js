@@ -2,7 +2,7 @@
   const header = document.querySelector('.site-header');
   const toggle = document.querySelector('#menu-toggle');
   const nav = document.querySelector('#mobile-nav');
-  const mobile = matchMedia('(max-width:1000px)');
+  const mobile = matchMedia('(max-width:1180px)');
   if (header && toggle && nav) {
     toggle.hidden = !mobile.matches;
     nav.hidden = true;
