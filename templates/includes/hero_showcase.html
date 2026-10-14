@@ -1,0 +1,31 @@
+{% load ui %}
+<div class="hero-art hero-showcase hero-enter" data-showcase role="region" aria-roledescription="{% text 'diaporama' 'عرض شرائح' %}" aria-label="{% text 'Nos projets à découvrir' 'مشاريعنا التي يمكنك اكتشافها' %}" data-play-label="{% text 'Reprendre le diaporama' 'استئناف عرض الشرائح' %}" data-pause-label="{% text 'Mettre le diaporama en pause' 'إيقاف عرض الشرائح مؤقتاً' %}">
+    <div class="showcase-glow" aria-hidden="true"></div>
+    <div class="art-grid" aria-hidden="true"></div>
+    <div class="showcase-heading"><span class="showcase-status" aria-hidden="true"></span>{% text "Du design aux solutions concrètes" "من التصميم إلى حلول عملية" %}<span class="showcase-edition" dir="ltr">DIGICODE / STUDIO</span></div>
+    <div class="showcase-deck">
+        <div class="showcase-back showcase-back-one" aria-hidden="true"></div><div class="showcase-back showcase-back-two" aria-hidden="true"></div>
+        <div class="hero-browser showcase-browser">
+            <div class="browser-bar" aria-hidden="true"><i></i><i></i><i></i><span>{% text "DigiCode / réalisations" "ديجي كود / أعمالنا" %}</span><span class="showcase-window-icon">↗</span></div>
+            <div class="showcase-stage">
+                {% for project in featured_projects %}
+                <article class="showcase-slide {% if forloop.first %}is-active{% endif %}" data-slide {% if not forloop.first %}hidden{% endif %} role="group" aria-roledescription="{% text 'diapositive' 'شريحة' %}" aria-label="{{ forloop.counter }} / {{ featured_projects|length }}" id="hero-project-{{ forloop.counter }}">
+                    <a class="showcase-project" href="{{ project.get_absolute_url }}" aria-label="{% text 'Découvrir' 'اكتشف' %} {{ project.get_title }}">
+                        <div class="showcase-media">{% if project.get_image_url %}<img src="{{ project.get_image_url }}" alt="{{ project.get_title }}" width="1265" height="712" {% if forloop.first %}fetchpriority="high"{% else %}loading="lazy"{% endif %} decoding="async">{% elif project.landing_page == 'ecommerce' %}{% include 'includes/ecommerce_preview.html' with compact=True %}{% else %}<div class="showcase-placeholder"><span aria-hidden="true">d.</span><strong>{{ project.get_title }}</strong><small>{% text 'Aperçu à venir' 'المعاينة قريباً' %}</small></div>{% endif %}</div>
+                        <div class="showcase-project-caption"><div><span class="showcase-kicker">{% if project.landing_page == "ecommerce" and not project.get_image_url %}{% text "Composition illustrative" "تكوين توضيحي" %}{% else %}{% text "Projet à découvrir" "مشروع يستحق الاكتشاف" %}{% endif %}</span><strong>{{ project.get_title }}</strong></div><span class="showcase-link-icon" aria-hidden="true">↗</span></div>
+                    </a>
+                </article>
+                {% empty %}
+                <div class="showcase-placeholder"><span aria-hidden="true">d.</span><strong>{% text "Place à votre vision." "مساحة لرؤيتك." %}</strong><small>{% text "Design & développement DigiCode" "تصميم وتطوير ديجي كود" %}</small></div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% if featured_projects|length > 1 %}
+    <div class="showcase-controls" data-showcase-controls hidden>
+        <div class="showcase-pagination" aria-label="{% text 'Choisir un projet' 'اختر مشروعاً' %}">{% for project in featured_projects %}<button type="button" class="showcase-dot" data-slide-to="{{ forloop.counter0 }}" aria-controls="hero-project-{{ forloop.counter }}" aria-label="{{ project.get_title }}" aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}"><span class="showcase-dot-track" aria-hidden="true"></span><span class="sr-only">{{ forloop.counter }}</span></button>{% endfor %}</div>
+        <div class="showcase-buttons"><span class="showcase-counter" data-slide-counter aria-hidden="true">01 / {{ featured_projects|length|stringformat:'02d' }}</span><button type="button" data-slide-prev aria-label="{% text 'Projet précédent' 'المشروع السابق' %}"><span class="showcase-prev-icon" aria-hidden="true">←</span></button><button type="button" data-slide-next aria-label="{% text 'Projet suivant' 'المشروع التالي' %}"><span class="showcase-next-icon" aria-hidden="true">→</span></button><button type="button" data-slide-pause aria-label="{% text 'Mettre le diaporama en pause' 'إيقاف عرض الشرائح مؤقتاً' %}" aria-pressed="false"><span data-play-icon aria-hidden="true">Ⅱ</span></button></div>
+    </div>
+    <p class="sr-only" data-slide-announcement role="status" aria-live="polite" aria-atomic="true"></p>
+    {% endif %}
+</div>

@@ -124,6 +124,8 @@ class ProjectDetailView(DetailView):
             return ['core/project_rental.html']
         if self.object.landing_page == 'ecommerce':
             return ['core/project_ecommerce.html']
+        if self.object.landing_page == 'used_cars':
+            return ['core/project_usedcars.html']
         return super().get_template_names()
 
     def get_context_data(self, **kwargs):
@@ -134,4 +136,7 @@ class ProjectDetailView(DetailView):
         elif self.object.landing_page == 'ecommerce':
             from .ecommerce_content import ecommerce_context
             context.update(ecommerce_context(self.request, self.object))
+        elif self.object.landing_page == 'used_cars':
+            from .usedcars_content import usedcars_context
+            context.update(usedcars_context(self.request, self.object))
         return context

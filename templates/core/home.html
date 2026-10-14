@@ -17,40 +17,7 @@
 <span class="note-line" aria-hidden="true">
 </span>{% text "Stratégie. Design. Développement." "استراتيجية. تصميم. تطوير." %}</div>
 </div>
-<div class="hero-art hero-enter" aria-label="{% text "Composition graphique DigiCode" "تكوين بصري ديجي كود" %}">
-<div class="art-grid" aria-hidden="true">
-</div>
-<span class="art-orbit" aria-hidden="true">
-</span>
-<div class="hero-browser">
-<div class="browser-bar" aria-hidden="true">
-<i>
-</i>
-<i>
-</i>
-<i>
-</i>
-<span>{% text "digicode / studio" "ديجي كود / الاستوديو" %}</span>
-</div>{% with project=featured_projects.0 %}
-{% if project.get_image_url %}<img class="hero-project-image" src="{{ project.get_image_url }}" alt="{{ project.get_title }}" width="720" height="520" fetchpriority="high">{% else %}<div class="concept-art">
-<span class="eyebrow">{% text "DIGICODE / DESIGN & DÉVELOPPEMENT" "ديجي كود / تصميم وتطوير" %}</span>
-<span class="concept-title">{% text "Place à<br>votre vision." "مساحة<br>لرؤيتك." %}</span>
-<div class="concept-bottom">
-<span dir="ltr" class="concept-shape" aria-hidden="true">d.</span>
-<span>{% text "Une toile pour<br>vos ambitions." "مساحة<br>لطموحاتك." %}</span>
-</div>
-<small>{% text "Exploration visuelle · DigiCode" "تصور بصري · ديجي كود" %}</small>
-</div>{% endif %}
-{% endwith %}</div>
-<div class="art-label">
-<span class="art-label-icon" aria-hidden="true">✳</span>
-<div>
-<strong>{% text "Pensé pour vous." "مصمم لك." %}</strong>
-<span>{% text "Construit avec soin." "مبني بعناية." %}</span>
-</div>
-</div>
-<span class="art-caption">{% text "SAVOIR-FAIRE DIGITAL / DIGICODE" "خبرة رقمية / ديجي كود" %}</span>
-</div>
+{% include 'includes/hero_showcase.html' %}
 </section>
 <div class="capability-strip">
 <div class="shell">

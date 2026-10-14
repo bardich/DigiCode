@@ -157,7 +157,7 @@ class RedesignTests(TestCase):
 
     def test_specialist_pages_have_consistent_language(self):
         titles = {'rental': ('Site de location de voitures', 'موقع تأجير السيارات'),
-                  'usedcars': ('Plateforme de vente de véhicules d’occasion', 'منصة بيع السيارات المستعملة'),
+                  'usedcars': ('Site de vente de voitures d’occasion', 'موقع بيع السيارات المستعملة'),
                   'artisana': ('Boutique en ligne pour les artisans', 'متجر إلكتروني للحرفيين')}
         for lang in ['fr', 'ar']:
             self.client.get(f'/set-language/{lang}/')
@@ -168,6 +168,8 @@ class RedesignTests(TestCase):
                     self.assertNotContains(response, ar if lang == 'fr' else fr)
                     self.assertContains(response, 'dir="ltr"' if lang == 'fr' else 'dir="rtl"')
                     cta = ('Demander une démonstration' if lang == 'fr' else 'اطلب عرضاً توضيحياً') if slug == 'rental' else ('Démarrer mon projet' if lang == 'fr' else 'ابدأ مشروعي')
+                    if slug == 'usedcars':
+                        cta = 'Demander un devis' if lang == 'fr' else 'اطلب عرض سعر'
                     self.assertContains(response, cta)
                     self.assertNotContains(response, 'En Vedette')
                     self.assertNotContains(response, 'real-time')
@@ -426,3 +428,90 @@ class EcommerceProjectTests(TestCase):
         response = self.client.post('/contact/', {'name':'Merchant', 'email':'merchant@example.com', 'brief':brief + ' متجر للمنتجات الطبيعية.'})
         self.assertEqual(response.status_code, 302)
         self.assertIn('صفاء', Inquiry.objects.get().brief)
+
+
+@override_settings(MIDDLEWARE=TEST_MIDDLEWARE)
+class UsedCarsProjectTests(TestCase):
+    def setUp(self):
+        from django.core.cache import cache
+        cache.clear()
+        self.settings = SiteSettings.objects.create(whatsapp_number='+212 682-868-549')
+
+    def tearDown(self):
+        from django.core.cache import cache
+        cache.clear()
+
+    def seed(self):
+        from django.core.management import call_command
+        from io import StringIO
+        call_command('seed_usedcars_project', stdout=StringIO())
+        return Project.objects.get(landing_page='used_cars')
+
+    def test_seed_preserves_other_projects_and_custom_content(self):
+        previous = Project.objects.create(title_fr='Safaa', landing_page='ecommerce', link='')
+        project = self.seed()
+        self.assertEqual(project.link, 'https://cars.digicode.ma/')
+        self.assertTrue(project.title_ar and project.title_fr and project.is_featured)
+        project.title_fr = 'Mon titre'
+        project.full_description_ar = 'وصف مخصص'
+        project.save()
+        again = self.seed()
+        self.assertEqual(again.pk, project.pk)
+        self.assertEqual(again.title_fr, 'Mon titre')
+        self.assertEqual(again.full_description_ar, 'وصف مخصص')
+        self.assertEqual(Project.objects.count(), 2)
+        previous.refresh_from_db()
+        self.assertEqual(previous.link, '')
+
+    def test_complete_bilingual_page_and_existing_route(self):
+        project = self.seed()
+        for lang in ['fr', 'ar']:
+            self.client.get(f'/set-language/{lang}/')
+            for path in [project.get_absolute_url(), '/services/lp/usedcars/']:
+                response = self.client.get(path)
+                self.assertTemplateUsed(response, 'core/project_usedcars.html')
+                self.assertContains(response, 'Achat unique' if lang == 'fr' else 'شراء لمرة واحدة')
+                self.assertContains(response, 'jusqu’à 15 photos' if lang == 'fr' else 'حتى 15 صورة')
+                self.assertContains(response, 'sur son appareil' if lang == 'fr' else 'على جهازه')
+                self.assertContains(response, 'convenus séparément' if lang == 'fr' else 'باتفاق منفصل')
+                self.assertContains(response, 'traduction automatique n’est pas incluse' if lang == 'fr' else 'لا يشمل الحل ترجمة آلية')
+                self.assertContains(response, 'cars-public-' + lang + '.png')
+                self.assertContains(response, 'dir="rtl"' if lang == 'ar' else 'dir="ltr"')
+                self.assertNotContains(response, 'Votre showroom en ligne' if lang == 'ar' else 'معرضك على الإنترنت')
+                self.assertEqual(len(response.context['cars_rows']), 16)
+                self.assertEqual(len(response.context['cars_faq']), 8)
+
+    def test_contextual_whatsapp_and_external_link(self):
+        from urllib.parse import urlparse, parse_qs
+        project = self.seed()
+        for lang in ['fr', 'ar']:
+            self.client.get(f'/set-language/{lang}/')
+            response = self.client.get(project.get_absolute_url())
+            url = urlparse(response.context['cars_sales_url'])
+            self.assertEqual(url.netloc, 'wa.me')
+            self.assertEqual(url.path, '/212682868549')
+            message = parse_qs(url.query)['text'][0]
+            self.assertIn('achat unique' if lang == 'fr' else 'لمرة واحدة', message)
+            self.assertEqual(response.context['cars_external_url'], project.link)
+            self.assertContains(response, 'href="https://cars.digicode.ma/"')
+
+    def test_missing_whatsapp_falls_back_to_contact(self):
+        from django.core.cache import cache
+        project = self.seed()
+        self.settings.whatsapp_number = ''
+        self.settings.save()
+        cache.clear()
+        response = self.client.get(project.get_absolute_url())
+        self.assertEqual(response.context['cars_sales_url'], '/contact/#project-form')
+        self.assertFalse(response.context['cars_has_whatsapp'])
+        self.assertNotContains(response, 'href=""')
+
+    def test_visibility_home_gallery_and_sitemap(self):
+        project = self.seed()
+        for path in ['/', '/projects/', '/sitemap.xml']:
+            self.assertContains(self.client.get(path), project.get_absolute_url())
+        project.is_active = False
+        project.save()
+        self.assertEqual(self.client.get(project.get_absolute_url()).status_code, 404)
+        for path in ['/', '/projects/', '/sitemap.xml']:
+            self.assertNotContains(self.client.get(path), project.get_absolute_url())

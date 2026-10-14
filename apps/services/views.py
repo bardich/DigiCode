@@ -18,19 +18,16 @@ class RentalLandingPageView(TemplateView):
 
 
 class UsedCarsLandingPageView(TemplateView):
-    """Landing page for Used Cars service (AutoMaroc) in Arabic."""
-    template_name = 'services/lp_usedcars_ar.html'
-    
+    """Bilingual AutoMaroc sales page, also available at its original URL."""
+    template_name = 'core/project_usedcars.html'
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Get the used cars service if it exists
-        try:
-            context['service'] = Service.objects.filter(
-                is_active=True,
-                slug__icontains='used'
-            ).first()
-        except Service.DoesNotExist:
-            context['service'] = None
+        from apps.core.models import Project
+        from apps.core.usedcars_content import usedcars_context
+        project = Project.objects.filter(is_active=True, landing_page='used_cars').order_by('display_order', 'pk').first()
+        context['project'] = project
+        context.update(usedcars_context(self.request, project))
         return context
 
 

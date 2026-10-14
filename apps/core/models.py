@@ -170,7 +170,7 @@ class Project(models.Model):
     created_at = models.DateTimeField(_('Created At'), auto_now_add=True)
     updated_at = models.DateTimeField(_('Updated At'), auto_now=True)
 
-    landing_page = models.CharField(max_length=30, blank=True, default='', choices=[('', _('Standard project')), ('car_rental', _('Car rental landing page')), ('ecommerce', _('E-commerce landing page'))])
+    landing_page = models.CharField(max_length=30, blank=True, default='', choices=[('', _('Standard project')), ('car_rental', _('Car rental landing page')), ('ecommerce', _('E-commerce landing page')), ('used_cars', _('Used cars landing page'))])
     is_featured = models.BooleanField(default=False)
     display_order = models.PositiveIntegerField(default=0)
 
@@ -210,10 +210,11 @@ class Project(models.Model):
     def get_image_url(self):
         if self.image:
             return self.image.url
-        if self.landing_page == 'car_rental':
+        if self.landing_page in ('car_rental', 'used_cars'):
             from django.templatetags.static import static
             language = 'ar' if get_language() == 'ar' else 'fr'
-            return static(f'images/rental-public-{language}.png')
+            prefix = 'cars' if self.landing_page == 'used_cars' else 'rental'
+            return static(f'images/{prefix}-public-{language}.png')
         return ''
 
     def get_absolute_url(self):
