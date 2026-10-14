@@ -515,3 +515,154 @@ class UsedCarsProjectTests(TestCase):
         self.assertEqual(self.client.get(project.get_absolute_url()).status_code, 404)
         for path in ['/', '/projects/', '/sitemap.xml']:
             self.assertNotContains(self.client.get(path), project.get_absolute_url())
+
+
+@override_settings(MIDDLEWARE=TEST_MIDDLEWARE)
+class CVPortfolioTests(TestCase):
+    def setUp(self):
+        from django.core.management import call_command
+        from django.core.cache import cache
+        from io import StringIO
+        cache.clear()
+        SiteSettings.objects.create(whatsapp_number='+212682868549')
+        call_command('seed_cv_portfolio', stdout=StringIO())
+        self.service = Service.objects.get(slug='cv-portfolio')
+        self.projects = list(Project.objects.filter(landing_page__in=['cv_professional', 'cv_creative']))
+
+    def tearDown(self):
+        from django.core.cache import cache
+        cache.clear()
+
+    def test_repeatable_setup_preserves_content_and_home_selection(self):
+        from django.core.management import call_command
+        from io import StringIO
+        project = self.projects[0]
+        project.title_ar = 'عنوان معدل'
+        project.is_active = False
+        project.save()
+        self.service.title_fr = 'Titre personnalisé'
+        self.service.save()
+        existing = Project.objects.create(title_fr='Existing featured project',is_featured=True)
+        call_command('seed_cv_portfolio', stdout=StringIO())
+        project.refresh_from_db()
+        self.service.refresh_from_db()
+        self.assertEqual(project.title_ar, 'عنوان معدل')
+        self.assertFalse(project.is_active)
+        self.assertFalse(project.is_featured)
+        self.assertEqual(self.service.title_fr, 'Titre personnalisé')
+        self.assertEqual(Service.objects.count(), 1)
+        self.assertEqual(Project.objects.count(), 3)
+        self.assertEqual(list(self.client.get('/').context['featured_projects']), [existing])
+
+    def test_all_pages_localize_and_static_delivery_is_clear(self):
+        for lang in ['fr','ar']:
+            self.client.get(f'/set-language/{lang}/')
+            response = self.client.get(self.service.get_absolute_url())
+            self.assertTemplateUsed(response, 'services/cv_portfolio.html')
+            self.assertContains(response, 'Vos fichiers' if lang == 'fr' else 'ملفاتك')
+            self.assertContains(response, 'convenus séparément' if lang == 'fr' else 'باتفاق منفصل')
+            self.assertContains(response, 'Aucun téléversement de CV' if lang == 'fr' else 'لا يُطلب رفع السيرة')
+            for project in self.projects:
+                self.assertFalse(project.link)
+                response = self.client.get(project.get_demo_url())
+                self.assertEqual(response.status_code, 200)
+                self.assertContains(response, 'dir="ltr"' if lang == 'fr' else 'dir="rtl"')
+                self.assertContains(response, 'Exemple fictif' if lang == 'fr' else 'نموذج خيالي')
+                self.assertContains(response, 'cv-demo.js')
+                self.assertNotContains(response, 'Donner du sens' if lang == 'ar' else 'أمنح العمل معنى')
+                self.assertNotContains(response, 'Des idées.' if lang == 'ar' else 'أفكار.')
+                response = self.client.get(project.get_absolute_url())
+                self.assertTemplateUsed(response, 'core/project_cv.html')
+                self.assertContains(response, project.get_demo_url())
+
+    def test_anchor_navigation_targets_existing_sections(self):
+        from html.parser import HTMLParser
+        class Anchors(HTMLParser):
+            def __init__(self):
+                super().__init__(); self.ids=set(); self.targets=[]
+            def handle_starttag(self, tag, attrs):
+                attrs = dict(attrs)
+                if 'id' in attrs: self.ids.add(attrs['id'])
+                if tag == 'a' and attrs.get('href','').startswith('#'): self.targets.append(attrs['href'][1:])
+        for project in self.projects:
+            parser = Anchors()
+            parser.feed(self.client.get(project.get_demo_url()).content.decode())
+            self.assertGreaterEqual(len(parser.targets), 8)
+            self.assertTrue(set(parser.targets).issubset(parser.ids))
+
+    def test_contextual_quote_and_whatsapp_in_both_languages(self):
+        from urllib.parse import urlparse, parse_qs
+        for lang in ['fr','ar']:
+            self.client.get(f'/set-language/{lang}/')
+            for project in self.projects:
+                response = self.client.get(project.get_demo_url())
+                quote = response.context['cv_quote_url']
+                params = parse_qs(urlparse(quote).query)
+                self.assertEqual(params['service'], ['cv-portfolio'])
+                self.assertEqual(params['project'], [project.slug])
+                contact = self.client.get(quote)
+                self.assertEqual(contact.context['form'].initial['service'], self.service)
+                brief = contact.context['form'].initial['brief']
+                self.assertIn(project.get_title(), brief)
+                self.assertNotIn('Mon agence', brief)
+                self.assertNotIn('وكالتي', brief)
+                whatsapp = urlparse(response.context['cv_whatsapp_url'])
+                self.assertEqual(whatsapp.netloc, 'wa.me')
+                self.assertEqual(whatsapp.path, '/212682868549')
+                self.assertIn(project.get_title(), parse_qs(whatsapp.query)['text'][0])
+
+    def test_invalid_inquiry_retains_selection_and_brief(self):
+        project = self.projects[0]
+        response = self.client.post('/contact/', {'name':'Test', 'email':'not-email','service':self.service.pk,'brief':'My approved project brief','website':''})
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.context['form']['service'].value(), str(self.service.pk))
+        self.assertEqual(response.context['form']['brief'].value(), 'My approved project brief')
+
+    def test_listing_sitemap_and_inactive_demo(self):
+        self.assertContains(self.client.get('/services/'), self.service.get_absolute_url())
+        self.assertContains(self.client.get('/'), self.service.get_absolute_url())
+        for project in self.projects:
+            self.assertContains(self.client.get('/projects/'), project.get_absolute_url())
+            self.assertContains(self.client.get('/sitemap.xml'), project.get_demo_url())
+            self.assertContains(self.client.get('/sitemap.xml'), project.get_absolute_url())
+            project.is_active = False
+            project.save()
+            self.assertEqual(self.client.get(project.get_demo_url()).status_code,404)
+            self.assertEqual(self.client.get(project.get_absolute_url()).status_code,404)
+            self.assertNotContains(self.client.get('/sitemap.xml'), project.get_demo_url())
+            self.assertNotContains(self.client.get(self.service.get_absolute_url()), project.get_demo_url())
+        self.service.is_active=False
+        self.service.save()
+        self.assertEqual(self.client.get(self.service.get_absolute_url()).status_code,404)
+
+    def test_dashboard_project_form_offers_both_demo_types(self):
+        user = get_user_model().objects.create_user(username='cv-editor',password='test-pass',is_staff=True)
+        self.client.force_login(user)
+        response = self.client.get(reverse('dashboard:project_create'))
+        self.assertContains(response,'value="cv_professional"')
+        self.assertContains(response,'value="cv_creative"')
+
+    def test_valid_cv_inquiry_saves_selected_service_and_editable_brief(self):
+        self.client.get('/set-language/ar/')
+        response = self.client.post('/contact/', {'name':'عميل تجريبي','email':'cv@example.test','service':self.service.pk,'brief':'أرغب في موقع سيرة بأسلوب النموذج المهني.','website':''})
+        self.assertEqual(response.status_code,302)
+        inquiry = Inquiry.objects.get(email='cv@example.test')
+        self.assertEqual(inquiry.service,self.service)
+        self.assertEqual(inquiry.language,'ar')
+        self.assertIn('النموذج المهني',inquiry.brief)
+
+    def test_server_rendered_demos_remain_readable_without_scripts(self):
+        from html.parser import HTMLParser
+        class VisibleSections(HTMLParser):
+            def __init__(self):
+                super().__init__(); self.sections=[]; self.nav=[]
+            def handle_starttag(self, tag, attrs):
+                attrs=dict(attrs)
+                if tag=='section': self.sections.append(attrs)
+                if tag=='nav': self.nav.append(attrs)
+        for project in self.projects:
+            html=self.client.get(project.get_demo_url()).content.decode()
+            parser=VisibleSections(); parser.feed(html)
+            self.assertGreaterEqual(len(parser.sections),6)
+            self.assertTrue(all('hidden' not in attrs for attrs in parser.sections+parser.nav))
+            self.assertNotIn('demo-reveal-pending',html)

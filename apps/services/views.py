@@ -63,12 +63,20 @@ class ServiceDetailView(DetailView):
     context_object_name = 'service'
     slug_url_kwarg = 'slug'
     
+    def get_template_names(self):
+        if self.object.slug == 'cv-portfolio':
+            return ['services/cv_portfolio.html']
+        return super().get_template_names()
+
     def get_queryset(self):
         return Service.objects.filter(is_active=True)
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         service = self.get_object()
+        if service.slug == 'cv-portfolio':
+            from apps.core.cv_content import cv_context
+            context.update(cv_context(self.request, service=service))
         
         # Get related services (exclude current)
         context['related_services'] = Service.objects.filter(

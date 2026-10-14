@@ -1,4 +1,5 @@
 from django.shortcuts import redirect, get_object_or_404
+from django.http import Http404
 from django.views.generic import TemplateView, View, ListView, DetailView
 from django.utils.translation import activate, get_language
 from django.contrib import messages
@@ -68,6 +69,8 @@ class ContactView(TemplateView):
                     f"Je souhaite {'une démonstration' if intent == 'demo' else 'un devis'} pour {project.get_title()}. {business_fr} : ",
                     f"أرغب في {'عرض توضيحي' if intent == 'demo' else 'عرض سعر'} لمشروع {project.get_title()}. {business_ar}: "
                 )
+            if project and project.landing_page in ('cv_professional', 'cv_creative') and intent == 'quote':
+                initial['brief'] = bilingual(f'Je souhaite transformer mon CV en site web, dans l’esprit du modèle « {project.get_title()} ». Mon profil : ', f'أرغب في تحويل سيرتي الذاتية إلى موقع مستوحى من نموذج « {project.get_title()} ». نبذة عني: ')
             context['form'] = InquiryForm(initial=initial)
         context['submitted'] = self.request.session.pop('inquiry_submitted', False)
         return context
@@ -126,6 +129,8 @@ class ProjectDetailView(DetailView):
             return ['core/project_ecommerce.html']
         if self.object.landing_page == 'used_cars':
             return ['core/project_usedcars.html']
+        if self.object.get_demo_url():
+            return ['core/project_cv.html']
         return super().get_template_names()
 
     def get_context_data(self, **kwargs):
@@ -139,4 +144,24 @@ class ProjectDetailView(DetailView):
         elif self.object.landing_page == 'used_cars':
             from .usedcars_content import usedcars_context
             context.update(usedcars_context(self.request, self.object))
+        elif self.object.get_demo_url():
+            from .cv_content import cv_context
+            context.update(cv_context(self.request, self.object))
+        return context
+
+
+class CVPortfolioDemoView(TemplateView):
+    presentation = None
+
+    def get_template_names(self):
+        return ['demos/creative.html' if self.presentation == 'cv_creative' else 'demos/professional.html']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        from .cv_content import cv_context
+        project = Project.objects.filter(is_active=True, landing_page=self.presentation).order_by('display_order', 'pk').first()
+        if project is None:
+            raise Http404('Portfolio example unavailable')
+        context.update(cv_context(self.request, project))
+        context['project'] = project
         return context

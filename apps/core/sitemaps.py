@@ -35,3 +35,18 @@ class ProjectSitemap(Sitemap):
 
     def lastmod(self, obj):
         return obj.updated_at
+
+
+class DemoSitemap(Sitemap):
+    changefreq = 'monthly'
+    priority = 0.5
+
+    def items(self):
+        from .models import Project
+        return Project.objects.filter(is_active=True, landing_page__in=['cv_professional', 'cv_creative'])
+
+    def location(self, obj):
+        return obj.get_demo_url()
+
+    def lastmod(self, obj):
+        return obj.updated_at

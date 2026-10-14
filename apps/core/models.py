@@ -170,7 +170,7 @@ class Project(models.Model):
     created_at = models.DateTimeField(_('Created At'), auto_now_add=True)
     updated_at = models.DateTimeField(_('Updated At'), auto_now=True)
 
-    landing_page = models.CharField(max_length=30, blank=True, default='', choices=[('', _('Standard project')), ('car_rental', _('Car rental landing page')), ('ecommerce', _('E-commerce landing page')), ('used_cars', _('Used cars landing page'))])
+    landing_page = models.CharField(max_length=30, blank=True, default='', choices=[('', _('Standard project')), ('car_rental', _('Car rental landing page')), ('ecommerce', _('E-commerce landing page')), ('used_cars', _('Used cars landing page')), ('cv_professional', _('Professional CV demo')), ('cv_creative', _('Creative portfolio demo'))])
     is_featured = models.BooleanField(default=False)
     display_order = models.PositiveIntegerField(default=0)
 
@@ -215,7 +215,15 @@ class Project(models.Model):
             language = 'ar' if get_language() == 'ar' else 'fr'
             prefix = 'cars' if self.landing_page == 'used_cars' else 'rental'
             return static(f'images/{prefix}-public-{language}.png')
+        if self.landing_page in ('cv_professional', 'cv_creative'):
+            from django.templatetags.static import static
+            language = 'ar' if get_language() == 'ar' else 'fr'
+            return static(f'images/{self.landing_page}-{language}.png')
         return ''
+
+    def get_demo_url(self):
+        routes = {'cv_professional': 'core:cv_professional_demo', 'cv_creative': 'core:cv_creative_demo'}
+        return reverse(routes[self.landing_page]) if self.landing_page in routes else ''
 
     def get_absolute_url(self):
         # Keep the gallery renderable for unmigrated or bulk-imported records.
