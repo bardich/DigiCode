@@ -300,6 +300,7 @@
             {% trans "Analytics" %}
         </a>
         
+        {% if request.user.is_superuser %}<a class="nav-item {% if 'marketing' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'dashboard:marketing_list' %}">{% text "Codes marketing" "شفرات التسويق" %}</a>{% endif %}
         <div class="nav-section">{% trans "Account" %}</div>
         <a href="{% url 'admin:index' %}" class="nav-item" target="_blank">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">

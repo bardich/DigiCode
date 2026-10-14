@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _, get_language
 from django.urls import reverse
 from apps.core.utils import create_unique_slug, normalize_arabic_text
+from .marketing import validate_snippet
 
 
 class HeroSlide(models.Model):
@@ -115,6 +116,8 @@ class SiteSettings(models.Model):
     meta_title = models.CharField(_('Meta Title'), max_length=70, blank=True)
     meta_description = models.TextField(_('Meta Description'), blank=True)
     google_analytics_id = models.CharField(_('Google Analytics ID'), max_length=20, blank=True)
+
+    marketing_enabled = models.BooleanField(default=False)
 
     # Theme Colors
     primary_color = models.CharField(_('Primary Color'), max_length=7, default='#0F172A', help_text=_('Dark slate color'))
@@ -250,3 +253,20 @@ class Inquiry(models.Model):
 
     def __str__(self):
         return f'{self.name} — {self.created_at:%Y-%m-%d}'
+
+
+class MarketingSnippet(models.Model):
+    name = models.CharField(max_length=150)
+    code = models.TextField(validators=[validate_snippet])
+    position = models.CharField(max_length=12, choices=[('head', 'Head'), ('body_start', 'Body start')], default='head')
+    is_enabled = models.BooleanField(default=False)
+    display_order = models.PositiveIntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    last_editor = models.ForeignKey('users.User', on_delete=models.SET_NULL, null=True, blank=True, editable=False)
+
+    class Meta:
+        ordering = ['display_order', 'pk']
+
+    def __str__(self):
+        return self.name

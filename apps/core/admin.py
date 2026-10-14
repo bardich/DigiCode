@@ -6,6 +6,9 @@ from .models import SiteSettings, Project, Inquiry
 @admin.register(SiteSettings)
 class SiteSettingsAdmin(admin.ModelAdmin):
     list_display = ['site_name', 'whatsapp_number', 'email']
+
+    def get_readonly_fields(self, request, obj=None):
+        return [] if request.user.is_superuser else ['marketing_enabled']
     
     def has_add_permission(self, request):
         if SiteSettings.objects.exists():
@@ -53,3 +56,33 @@ class InquiryAdmin(admin.ModelAdmin):
 
     def has_add_permission(self, request):
         return False
+
+
+from apps.core.models import MarketingSnippet
+from apps.dashboard.marketing_forms import MarketingSnippetForm
+
+
+@admin.register(MarketingSnippet)
+class MarketingSnippetAdmin(admin.ModelAdmin):
+    form = MarketingSnippetForm
+    list_display = ['name', 'position', 'is_enabled', 'display_order', 'last_editor', 'updated_at']
+    readonly_fields = ['last_editor', 'created_at', 'updated_at']
+
+    def has_module_permission(self, request):
+        return request.user.is_active and request.user.is_superuser
+
+    def has_view_permission(self, request, obj=None):
+        return self.has_module_permission(request)
+
+    def has_add_permission(self, request):
+        return self.has_module_permission(request)
+
+    def has_change_permission(self, request, obj=None):
+        return self.has_module_permission(request)
+
+    def has_delete_permission(self, request, obj=None):
+        return self.has_module_permission(request)
+
+    def save_model(self, request, obj, form, change):
+        obj.last_editor = request.user
+        super().save_model(request, obj, form, change)

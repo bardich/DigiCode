@@ -18,6 +18,7 @@
 </div>
 </div>
 <div class="shell footer-bottom">
+{% if marketing_config %}<button class="marketing-privacy-choice" type="button" data-marketing-preferences aria-controls="marketing-consent" hidden>{% text "Choix de confidentialité" "خيارات الخصوصية" %}</button>{% endif %}
 <span>© {% now 'Y' %} DigiCode. {% text 'Tous droits réservés.' 'جميع الحقوق محفوظة.' %}</span>
 <span>{% text 'Conçu avec soin. Développé pour durer.' 'صُمم بعناية. بُني ليدوم.' %}</span>
 </div>

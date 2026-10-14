@@ -15,16 +15,24 @@
 <script defer src="{% static 'js/htmx.min.js' %}"></script>
 {% endif %}
 <script defer src="{% static 'js/site.js' %}?v=3"></script>
+{% block marketing_head %}{% if marketing_config %}
+{{ marketing_config|json_script:'marketing-config' }}
+<link rel="stylesheet" href="{% static 'css/marketing.css' %}">
+<script defer src="{% static 'js/marketing-consent.js' %}"></script>
+<!-- digicode-marketing-head -->
+{% endif %}{% endblock %}
 {% block extra_css %}{% endblock %}
 </head>
 <body>
+{% block marketing_body %}{% if marketing_config %}<!-- digicode-marketing-body-start -->{% endif %}{% endblock %}
 <a class="skip-link" href="#main-content">{% text "Aller au contenu" "انتقل إلى المحتوى" %}</a>
 {% include 'includes/header.html' %}
 <main id="main-content" tabindex="-1">
 {% if messages %}<div class="shell messages" role="status">{% for message in messages %}<p>{{ message }}</p>{% endfor %}</div>{% endif %}
 {% block content %}{% endblock %}
 </main>
-{% include 'includes/footer.html' %}
+{% block footer %}{% include 'includes/footer.html' %}{% endblock %}
 {% include 'includes/whatsapp_button.html' %}
+{% block marketing_consent %}{% include 'includes/marketing_consent.html' %}{% endblock %}
 {% block extra_js %}{% endblock %}
 </body></html>

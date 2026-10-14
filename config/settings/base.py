@@ -78,6 +78,7 @@ TEMPLATES = [
                 'apps.core.context_processors.site_settings',
                 'apps.core.context_processors.current_language',
                 'apps.core.context_processors.redesign',
+                'apps.core.marketing.marketing_context',
                 'apps.services.context_processors.services_processor',
             ],
         },
